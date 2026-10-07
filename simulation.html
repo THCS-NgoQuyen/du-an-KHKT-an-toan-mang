@@ -1,0 +1,971 @@
+`<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phòng Giả Lập & Đấu Trường CTF — An Toàn Mạng THCS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/ctf.css">
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="loader"><div class="loader-emoji">🎮</div><div class="loader-title">PHÒNG GIẢ LẬP & CTF</div><div class="loader-sub" id="loader-text">Đang khởi tạo môi trường...</div><div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div></div>
+<div class="toast-container" id="toast-container"></div>
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><span>🛡️</span> AN TOÀN MẠNG</a>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">🏠 Trang chủ</a></li>
+        <li><a href="cong-dan-so.html">🌐 Công dân số</a></li>
+        <li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li>
+        <li><a href="lua-dao-mang.html">⚠️ Lừa đảo</a></li>
+        <li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li>
+        <li><a href="sach-dien-tu.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(139,92,246,.35);">📖 Sách 3D</a></li>
+        <li><a href="simulation.html" class="nav-sim active">🎮 Giả Lập &amp; CTF</a></li>
+        <li><a href="games.html" class="nav-sim" style="background:linear-gradient(135deg,#f59e0b,#f97316);">🎯 Trò Chơi</a></li>
+        <li><a href="khao-sat.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(99,102,241,.35);">📋 Khảo Sát 32 Câu</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="hero hero-mini" style="min-height:38vh;">
+    <img src="assets/banner.jpg" alt="Phòng giả lập" class="hero-banner">
+    <div class="hero-overlay" style="background:linear-gradient(180deg,rgba(6,182,212,.25) 0%,rgba(15,10,30,.9) 100%);"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><span class="blink">🟡</span> Trải nghiệm như chuyên gia an ninh mạng thực thụ!</div>
+        <h1 class="hero-title" style="font-size:2.6rem;">🎮 Phòng Giả Lập &amp; <span class="grad-text">Đấu Trường CTF</span></h1>
+        <p class="hero-sub" style="font-size:1rem;">Khám phá trọn vẹn <strong>5 mảng CTF tiêu chuẩn</strong>: Web Exploitation, Cryptography, Binary Pwn, Reverse Engineering, Digital Forensics cùng các công cụ bảo mật thực hành!</p>
+    </div>
+</section>
+
+<section class="section" style="padding-top:40px;">
+    <!-- ==================== CTF SCOREBOARD & HUD ==================== -->
+    <div class="ctf-hud reveal" id="ctf-hud">
+        <div class="ctf-hud-header">
+            <div class="ctf-hud-title">
+                <span style="font-size:2rem;">🏆</span>
+                <div>
+                    <h2>ĐẤU TRƯỜNG CTF (CAPTURE THE FLAG)</h2>
+                    <p style="color:var(--muted);font-size:0.88rem;margin:3px 0 0 0;">Dành cho học sinh THCS — Chinh phục 5 lá cờ để trở thành Đại Cao Thủ CTF!</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <div class="ctf-hud-badge">THCS CYBER ARENA 2026</div>
+                <button onclick="CTF_SYSTEM.resetProgress()" class="btn-outline" style="padding:5px 12px;font-size:0.75rem;border-color:rgba(239,68,68,0.4);color:#fca5a5;">
+                    <i class="fas fa-rotate-left"></i> Đặt lại
+                </button>
+            </div>
+        </div>
+
+        <div class="ctf-stats-row">
+            <div class="ctf-stat-card">
+                <div class="ctf-stat-num" id="ctf-stat-count">0/5</div>
+                <div class="ctf-stat-label">Cờ đã chiếm</div>
+            </div>
+            <div class="ctf-stat-card">
+                <div class="ctf-stat-num" id="ctf-stat-score" style="color:#fde68a;">0 PTS</div>
+                <div class="ctf-stat-label">Tổng điểm CTF (Max 500)</div>
+            </div>
+            <div class="ctf-stat-card">
+                <div class="ctf-stat-num" id="ctf-stat-rank" style="font-size:1.15rem;color:#67e8f9;">Tập Sự 🥉</div>
+                <div class="ctf-stat-label">Danh hiệu bảo mật</div>
+            </div>
+        </div>
+
+        <div class="ctf-flags-tracker">
+            <span style="font-size:0.85rem;font-weight:800;color:#c4b5fd;"><i class="fas fa-flag"></i> TIẾN ĐỘ 5 MẢNG CTF:</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span class="ctf-flag-badge" id="ctf-badge-web" onclick="switchSim('ctf-web', document.querySelector('[data-sim="' + id + '"]'))">🚩 WEB</span>
+                <span class="ctf-flag-badge" id="ctf-badge-crypto" onclick="switchSim('ctf-crypto', document.querySelector('[data-sim="' + id + '"]'))">🚩 CRYPTO</span>
+                <span class="ctf-flag-badge" id="ctf-badge-pwn" onclick="switchSim('ctf-pwn', document.querySelector('[data-sim="' + id + '"]'))">🚩 PWN</span>
+                <span class="ctf-flag-badge" id="ctf-badge-re" onclick="switchSim('ctf-re', document.querySelector('[data-sim="' + id + '"]'))">🚩 REVERSE</span>
+                <span class="ctf-flag-badge" id="ctf-badge-forensics" onclick="switchSim('ctf-forensics', document.querySelector('[data-sim="' + id + '"]'))">🚩 FORENSICS</span>
+            </div>
+        </div>
+
+        <!-- GLOBAL QUICK FLAG SUBMIT -->
+        <div class="ctf-flag-submit-box">
+            <i class="fas fa-key" style="color:#a78bfa;font-size:1.2rem;"></i>
+            <span style="font-weight:800;font-size:0.9rem;color:#e2e8f0;">Nộp cờ nhanh:</span>
+            <input type="text" id="ctf-global-flag-inp" class="ctf-flag-input" placeholder="Dán cờ tìm được dạng FLAG{...} vào đây...">
+            <button class="ctf-flag-btn" onclick="CTF_SYSTEM.submitFlag(document.getElementById('ctf-global-flag-inp').value);document.getElementById('ctf-global-flag-inp').value='';">
+                <i class="fas fa-paper-plane"></i> NỘP CỜ
+            </button>
+        </div>
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="sim-tabs reveal" id="sim-tabs">
+        <button class="sim-tab active" data-sim="ctf-web" onclick="switchSim('ctf-web',this)" style="border-color:rgba(59,130,246,0.5);color:#93c5fd;"><i class="fas fa-globe"></i> 1. CTF Web</button>
+        <button class="sim-tab" data-sim="ctf-crypto" onclick="switchSim('ctf-crypto',this)" style="border-color:rgba(139,92,246,0.5);color:#c4b5fd;"><i class="fas fa-lock"></i> 2. CTF Crypto</button>
+        <button class="sim-tab" data-sim="ctf-pwn" onclick="switchSim('ctf-pwn',this)" style="border-color:rgba(239,68,68,0.5);color:#fca5a5;"><i class="fas fa-bomb"></i> 3. CTF Pwn</button>
+        <button class="sim-tab" data-sim="ctf-re" onclick="switchSim('ctf-re',this)" style="border-color:rgba(245,158,11,0.5);color:#fde68a;"><i class="fas fa-puzzle-piece"></i> 4. CTF Reverse</button>
+        <button class="sim-tab" data-sim="ctf-forensics" onclick="switchSim('ctf-forensics',this)" style="border-color:rgba(16,185,129,0.5);color:#6ee7b7;"><i class="fas fa-magnifying-glass"></i> 5. CTF Forensics</button>
+        <button class="sim-tab" data-sim="terminal" onclick="switchSim('terminal',this)">💻 Terminal</button>
+        <button class="sim-tab" data-sim="password" onclick="switchSim('password',this)">🔑 Mật Khẩu</button>
+        <button class="sim-tab" data-sim="scam" onclick="switchSim('scam',this)">🕵️ Thám Tử</button>
+        <button class="sim-tab" data-sim="url" onclick="switchSim('url',this)">🔍 Kiểm Tra URL</button>
+        <button class="sim-tab" data-sim="server" onclick="switchSim('server',this)">🖥️ Bảo Vệ Server</button>
+        <button class="sim-tab" data-sim="pledge" onclick="switchSim('pledge',this)">📜 Cam Kết Số</button>
+    </div>
+
+    <!-- ==================== 1. CTF WEB EXPLOITATION PANEL ==================== -->
+    <div class="sim-panel active" id="panel-ctf-web">
+        <div class="sim-inner">
+            <div class="ctf-lab-card theme-web reveal">
+                <div class="ctf-lab-header">
+                    <div class="ctf-lab-title">
+                        <h3><i class="fas fa-globe" style="color:var(--ctf-web);"></i> MẢNG 1: WEB EXPLOITATION — CỔNG TRƯỜNG HỌC BÍ MẬT</h3>
+                        <p>Khai thác lỗ hổng website phổ biến: SQL Injection (SQLi) &amp; Can thiệp Cookie phân quyền (Privilege Escalation).</p>
+                    </div>
+                    <div class="ctf-points-pill"><i class="fas fa-trophy"></i> 100 PTS</div>
+                </div>
+
+                <div class="ctf-concept-box">
+                    <strong>💡 Kiến thức an ninh mạng:</strong> Lỗ hổng <strong>SQL Injection</strong> xuất hiện khi website ghép dữ liệu người dùng nhập thẳng vào câu lệnh truy vấn dữ liệu mà không làm sạch (sanitize). Bằng cách chèn ký tự nháy đơn <code>'</code> và mệnh đề <code>OR '1'='1'</code>, kẻ tấn công có thể làm câu truy vấn luôn trả về đúng (TRUE) và vượt qua bước kiểm tra mật khẩu!
+                </div>
+
+                <!-- SIMULATED BROWSER (SQLi LOGIN) -->
+                <div class="web-mock-browser">
+                    <div class="web-browser-bar">
+                        <div class="web-browser-dots">
+                            <span class="web-browser-dot" style="background:#ef4444;"></span>
+                            <span class="web-browser-dot" style="background:#f59e0b;"></span>
+                            <span class="web-browser-dot" style="background:#10b981;"></span>
+                        </div>
+                        <div class="web-browser-url"><i class="fas fa-lock" style="color:#10b981;"></i> https://truong-thcs.edu.vn/portal/admin-login.php</div>
+                    </div>
+                    <div class="web-browser-content">
+                        <div class="sqli-form-box">
+                            <div style="text-align:center;margin-bottom:18px;">
+                                <div style="font-size:2.2rem;margin-bottom:6px;">🎓</div>
+                                <h4 style="font-family:'Orbitron',sans-serif;color:#93c5fd;font-size:1.15rem;margin:0;">CỔNG QUẢN TRỊ VIÊN</h4>
+                                <p style="color:var(--muted);font-size:0.8rem;margin:4px 0 0 0;">Yêu cầu quyền truy cập tài khoản Ban Giám Hiệu</p>
+                            </div>
+
+                            <form onsubmit="runSqliLogin(event)">
+                                <div style="margin-bottom:14px;">
+                                    <label style="display:block;font-size:0.85rem;color:#cbd5e1;margin-bottom:6px;font-weight:700;">Tên tài khoản:</label>
+                                    <input type="text" id="sqli-user" oninput="updateSqliLiveQuery()" placeholder="Nhập tài khoản (vd: admin)..." style="width:100%;padding:10px 14px;background:rgba(0,0,0,0.5);border:1px solid rgba(59,130,246,0.4);border-radius:8px;color:#fff;font-family:'Share Tech Mono',monospace;outline:none;box-sizing:border-box;">
+                                </div>
+                                <div style="margin-bottom:16px;">
+                                    <label style="display:block;font-size:0.85rem;color:#cbd5e1;margin-bottom:6px;font-weight:700;">Mật khẩu:</label>
+                                    <input type="password" id="sqli-pass" oninput="updateSqliLiveQuery()" placeholder="Nhập mật khẩu..." style="width:100%;padding:10px 14px;background:rgba(0,0,0,0.5);border:1px solid rgba(59,130,246,0.4);border-radius:8px;color:#fff;font-family:'Share Tech Mono',monospace;outline:none;box-sizing:border-box;">
+                                </div>
+
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;align-items:center;">
+                                    <span style="font-size:0.75rem;color:var(--muted);">Mẫu thử payload:</span>
+                                    <button type="button" class="sqli-payload-btn" onclick="insertSqliPayload(\x27\x27 OR \x271\x27=\x271\x27)">' OR '1'='1</button>
+                                    <button type="button" class="sqli-payload-btn" onclick="insertSqliPayload(\x27admin\x27\x27 --\x27)">admin' --</button>
+                                    <button type="button" class="sqli-payload-btn" onclick="insertSqliPayload(\x27\x27 OR 1=1 --\x27)">' OR 1=1 --</button>
+                                </div>
+
+                                <button type="submit" class="game-btn" style="width:100%;justify-content:center;background:linear-gradient(135deg,#3b82f6,#1d4ed8);">
+                                    <i class="fas fa-arrow-right-to-bracket"></i> ĐĂNG NHẬP
+                                </button>
+                            </form>
+
+                            <!-- LIVE SQL QUERY DISPLAY -->
+                            <div class="sqli-live-query">
+                                <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;"><i class="fas fa-terminal"></i> Câu lệnh SQL Server đang chạy ngầm:</div>
+                                <code id="sqli-sql-preview">SELECT * FROM accounts WHERE username = 'username' AND password = 'password';</code>
+                            </div>
+
+                            <div id="sqli-feedback" style="margin-top:14px;"></div>
+                        </div>
+
+                        <!-- SECRET ADMIN PORTAL (REVEALED ON SQLi SUCCESS) -->
+                        <div id="sqli-admin-portal" style="display:none;margin-top:24px;background:rgba(16,185,129,0.08);border:2px dashed #10b981;border-radius:14px;padding:24px;text-align:center;">
+                            <div style="font-size:2.5rem;margin-bottom:8px;">🚩</div>
+                            <h3 style="font-family:'Orbitron',sans-serif;color:#6ee7b7;font-size:1.3rem;margin:0 0 6px 0;">TRUY CẬP THÀNH CÔNG VÀO HỆ THỐNG QUẢN TRỊ!</h3>
+                            <p style="color:#e2e8f0;font-size:0.9rem;max-width:550px;margin:0 auto 16px auto;">
+                                Bạn đã vượt qua bức tường bảo vệ bằng lỗ hổng SQL Injection. Đây là mã cờ của bạn:
+                            </p>
+                            <div style="display:inline-block;padding:12px 24px;background:#050811;border:2px solid #10b981;border-radius:12px;font-family:'Share Tech Mono',monospace;font-size:1.2rem;font-weight:900;color:#6ee7b7;letter-spacing:1px;box-shadow:0 0 20px rgba(16,185,129,0.3);">
+                                FLAG{web_sqli_bypass_successful_9a5}
+                            </div>
+                            <div style="margin-top:12px;">
+                                <button class="btn-copy" onclick="navigator.clipboard.writeText('FLAG{web_sqli_bypass_successful_9a5}').then(()=>showToast('green','Đã sao chép cờ!','Hãy dán vào ô Nộp Cờ bên dưới'))">
+                                    <i class="fas fa-copy"></i> Sao chép Cờ Web
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB CHALLENGE: COOKIE INSPECTOR -->
+                <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(59,130,246,0.25);border-radius:14px;padding:18px;margin-top:20px;">
+                    <h4 style="color:#93c5fd;font-size:1rem;margin:0 0 8px 0;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-cookie-bite"></i> Thử nghiệm 2: Sửa đổi Cookie (Privilege Escalation)
+                    </h4>
+                    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">Website dùng Cookie để ghi nhớ bạn là "Học sinh" hay "Admin". Hãy đổi Cookie và xem điều kỳ diệu:</p>
+                    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                        <span style="font-family:'Share Tech Mono',monospace;font-size:0.85rem;color:#e2e8f0;background:#050811;padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);" id="cookie-live-str">
+                            session_id=9a5_token_8849; role=student; user=hocsinh
+                        </span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <label style="font-size:0.85rem;color:var(--muted);">Đổi Role:</label>
+                            <select id="cookie-role-select" onchange="updateCookieRole()" style="background:#131b2e;color:#fff;border:1px solid rgba(59,130,246,0.5);border-radius:8px;padding:6px 12px;font-family:'Share Tech Mono',monospace;">
+                                <option value="student">student (Học sinh)</option>
+                                <option value="teacher">teacher (Giáo viên)</option>
+                                <option value="admin">admin (Quản trị tối cao)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="cookie-secret-view" style="display:none;margin-top:14px;padding:10px 14px;background:rgba(59,130,246,0.15);border-radius:8px;border:1px solid #3b82f6;color:#93c5fd;font-size:0.85rem;">
+                        🎉 <strong>Bạn đang xem giao diện với quyền ADMIN!</strong> Học sinh giỏi an ninh mạng sẽ luôn nhớ: Phân quyền phải luôn kiểm tra ở phía Server, không được tin tưởng dữ liệu Cookie gửi từ máy khách!
+                    </div>
+                </div>
+
+                <!-- CHALLENGE HINT & FLAG SUBMIT -->
+                <div class="ctf-hint-toggle" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <i class="fas fa-lightbulb"></i> Bạn cần gợi ý cho thử thách Web? (Click để mở)
+                </div>
+                <div class="ctf-hint-content">
+                    💡 <strong>Gợi ý:</strong> Nhập vào ô tài khoản chuỗi <code>' OR '1'='1</code> rồi nhấn "Đăng nhập". Ký tự nháy đơn đóng chuỗi trước đó, và biểu thức <code>'1'='1'</code> luôn đúng, làm toàn bộ điều kiện WHERE trong SQL thỏa mãn mà không cần biết mật khẩu thật!
+                </div>
+
+                <div class="ctf-flag-submit-box">
+                    <i class="fas fa-flag" style="color:var(--ctf-web);font-size:1.2rem;"></i>
+                    <span style="font-weight:800;font-size:0.9rem;">Nộp cờ Web:</span>
+                    <input type="text" id="ctf-inp-web" class="ctf-flag-input" placeholder="FLAG{...}">
+                    <button class="ctf-flag-btn" style="background:var(--ctf-web);" onclick="CTF_SYSTEM.submitFlag(document.getElementById('ctf-inp-web').value, 'web')">
+                        <i class="fas fa-check"></i> XÁC NHẬN CỜ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 2. CTF CRYPTOGRAPHY PANEL ==================== -->
+    <div class="sim-panel" id="panel-ctf-crypto">
+        <div class="sim-inner">
+            <div class="ctf-lab-card theme-crypto reveal">
+                <div class="ctf-lab-header">
+                    <div class="ctf-lab-title">
+                        <h3><i class="fas fa-lock" style="color:var(--ctf-crypto);"></i> MẢNG 2: CRYPTOGRAPHY — MẬT THƯ ĐIỆP VIÊN & BÁNH XE CAESAR</h3>
+                        <p>Thực hành giải mã bản mật thư đa lớp: Mã hóa Base64 và Mật mã dịch vòng Caesar (ROT13 kinh điển).</p>
+                    </div>
+                    <div class="ctf-points-pill"><i class="fas fa-trophy"></i> 100 PTS</div>
+                </div>
+
+                <div class="ctf-concept-box" style="border-left-color:var(--ctf-crypto);border-color:rgba(139,92,246,0.3);">
+                    <strong>💡 Kiến thức mật mã:</strong> Mật mã <strong>Caesar</strong> do Hoàng đế Julius Caesar phát minh, dịch chuyển từng chữ cái trong bảng chữ cái đi một số bước cố định (Shift $K$). Khi $K=13$ (bảng 26 chữ cái), mã hóa và giải mã là cùng một thao tác, gọi là <strong>ROT13</strong>. Còn <strong>Base64</strong> là chuẩn mã hóa biểu diễn dữ liệu nhị phân thành các ký tự ASCII an toàn để truyền qua mạng.
+                </div>
+
+                <div class="crypto-workbench">
+                    <!-- BƯỚC 1: GIẢI MÃ BASE64 -->
+                    <div class="crypto-tool-card">
+                        <h4 style="color:#c4b5fd;font-size:1.05rem;margin:0 0 10px 0;display:flex;align-items:center;gap:8px;">
+                            <span>📦</span> Bước 1: Mật thư Base64 bị chặn
+                        </h4>
+                        <p style="color:var(--muted);font-size:0.84rem;margin-bottom:12px;">Hacker gửi điệp viên một chuỗi ký tự kết thúc bằng dấu <code>=</code> (dấu hiệu Base64 điển hình):</p>
+                        <div style="background:#070511;padding:12px;border-radius:8px;border:1px solid rgba(139,92,246,0.3);font-family:'Share Tech Mono',monospace;color:#fde68a;font-size:0.92rem;word-break:break-all;margin-bottom:12px;">
+                            T1JZVntNYXRNYV9IZXRoX1RoY3NfMjAyNn0=
+                        </div>
+                        <button class="game-btn" onclick="decodeSecretBase64()" style="width:100%;justify-content:center;background:linear-gradient(135deg,#8b5cf6,#6d28d9);">
+                            <i class="fas fa-unlock"></i> GIẢI MÃ BASE64
+                        </button>
+                        <div id="b64-decode-out" style="margin-top:14px;padding:10px;background:rgba(139,92,246,0.1);border-radius:8px;font-size:0.85rem;color:#cbd5e1;">
+                            <em>Nhấn nút trên để giải mã lớp vỏ Base64...</em>
+                        </div>
+                    </div>
+
+                    <!-- BƯỚC 2: BÁNH XE CAESAR -->
+                    <div class="crypto-tool-card">
+                        <h4 style="color:#c4b5fd;font-size:1.05rem;margin:0 0 10px 0;display:flex;align-items:center;gap:8px;">
+                            <span>🎡</span> Bước 2: Bánh Xe Mật Mã Caesar (ROT13)
+                        </h4>
+                        <p style="color:var(--muted);font-size:0.84rem;margin-bottom:8px;">Trượt thanh Shift hoặc nhấn thử ROT13 để dịch chuyển bảng chữ cái:</p>
+
+                        <div class="caesar-slider-wrap">
+                            <span style="font-size:0.82rem;color:var(--muted);">Dịch chuyển (K):</span>
+                            <input type="range" id="caesar-shift-slider" min="0" max="25" value="0" oninput="runCaesarShift()">
+                            <span class="caesar-shift-badge" id="caesar-shift-badge">Shift: 0</span>
+                        </div>
+
+                        <div style="display:flex;gap:8px;margin-bottom:12px;">
+                            <button class="btn-copy" onclick="document.getElementById('caesar-shift-slider').value=13;runCaesarShift();" style="font-size:0.8rem;padding:6px 12px;background:rgba(139,92,246,0.25);">
+                                ⚡ Thử Shift 13 (ROT13)
+                            </button>
+                            <button class="btn-copy" onclick="document.getElementById('caesar-shift-slider').value=3;runCaesarShift();" style="font-size:0.8rem;padding:6px 12px;">
+                                Thử Shift 3 (Caesar gốc)
+                            </button>
+                        </div>
+
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:0.8rem;color:var(--muted);">Văn bản cần giải mã:</label>
+                            <input type="text" id="caesar-input" oninput="runCaesarShift()" value="ORYV{MatMa_Heth_Thcs_2026}" style="width:100%;padding:8px 12px;background:#05030c;border:1px solid rgba(139,92,246,0.4);border-radius:8px;color:#fff;font-family:'Share Tech Mono',monospace;box-sizing:border-box;">
+                        </div>
+
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--muted);">Kết quả giải mã sau khi dịch chuyển:</label>
+                            <div id="caesar-output" style="padding:10px 14px;background:#05030c;border:1.5px solid #8b5cf6;border-radius:8px;font-family:'Share Tech Mono',monospace;color:#6ee7b7;font-weight:800;font-size:1.05rem;min-height:24px;">
+                                ORYV{MatMa_Heth_Thcs_2026}
+                            </div>
+                        </div>
+
+                        <div id="caesar-solved-msg" style="display:none;margin-top:12px;padding:8px 12px;background:rgba(16,185,129,0.15);border:1px solid #10b981;border-radius:8px;font-size:0.82rem;color:#6ee7b7;">
+                            🎉 <strong>ĐÃ TÌM THẤY CỜ CRYPTO!</strong> Bạn đã giải mã thành công ROT13!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HASH TOOL -->
+                <div style="background:rgba(15,12,30,0.6);border:1px solid rgba(139,92,246,0.25);border-radius:14px;padding:18px;margin-bottom:18px;">
+                    <h4 style="color:#c4b5fd;font-size:1rem;margin:0 0 6px 0;display:flex;align-items:center;gap:8px;">
+                        <span>#️⃣</span> Công cụ phụ trợ: Xem mã băm một chiều (Hash Generator)
+                    </h4>
+                    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:10px;">Hàm băm biến mọi chuỗi văn bản thành mã cố định không thể dịch ngược lại. Hãy gõ thử:</p>
+                    <input type="text" id="hash-input" oninput="runLiveHasher()" placeholder="Gõ thử từ bất kỳ (vd: admin, password123)..." style="width:100%;padding:8px 12px;background:#05030c;border:1px solid rgba(139,92,246,0.3);border-radius:8px;color:#fff;font-family:'Share Tech Mono',monospace;box-sizing:border-box;margin-bottom:10px;">
+                    <div style="font-family:'Share Tech Mono',monospace;font-size:0.8rem;color:#cbd5e1;line-height:1.7;">
+                        <div>MD5 Hash: <span id="hash-md5-out" style="color:#fde68a;">—</span></div>
+                        <div>SHA-256: <span id="hash-sha-out" style="color:#67e8f9;">—</span></div>
+                    </div>
+                </div>
+
+                <!-- HINT & FLAG SUBMIT -->
+                <div class="ctf-hint-toggle" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <i class="fas fa-lightbulb"></i> Bạn cần gợi ý cho thử thách Crypto? (Click để mở)
+                </div>
+                <div class="ctf-hint-content">
+                    💡 <strong>Gợi ý:</strong> Bấm "GIẢI MÃ BASE64" để nhận chuỗi <code>ORYV{...}</code>. Sau đó kéo thanh trượt Shift đến số <strong>13</strong> (hoặc bấm nút "Thử Shift 13"). Chữ O lùi 13 bước thành F, R lùi thành L, Y thành A, V thành G!
+                </div>
+
+                <div class="ctf-flag-submit-box">
+                    <i class="fas fa-flag" style="color:var(--ctf-crypto);font-size:1.2rem;"></i>
+                    <span style="font-weight:800;font-size:0.9rem;">Nộp cờ Crypto:</span>
+                    <input type="text" id="ctf-inp-crypto" class="ctf-flag-input" placeholder="FLAG{...}">
+                    <button class="ctf-flag-btn" style="background:var(--ctf-crypto);" onclick="CTF_SYSTEM.submitFlag(document.getElementById('ctf-inp-crypto').value, 'crypto')">
+                        <i class="fas fa-check"></i> XÁC NHẬN CỜ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 3. CTF BINARY PWN PANEL ==================== -->
+    <div class="sim-panel" id="panel-ctf-pwn">
+        <div class="sim-inner">
+            <div class="ctf-lab-card theme-pwn reveal">
+                <div class="ctf-lab-header">
+                    <div class="ctf-lab-title">
+                        <h3><i class="fas fa-bomb" style="color:var(--ctf-pwn);"></i> MẢNG 3: BINARY PWN — TRỰC QUAN HÓA TRÀN BỘ ĐỆM (BUFFER OVERFLOW)</h3>
+                        <p>Xem cách hacker khai thác lỗ hổng bộ nhớ trong lập trình C/C++ để ghi đè biến điều khiển quyền Admin.</p>
+                    </div>
+                    <div class="ctf-points-pill"><i class="fas fa-trophy"></i> 100 PTS</div>
+                </div>
+
+                <div class="ctf-concept-box" style="border-left-color:var(--ctf-pwn);border-color:rgba(239,68,68,0.3);">
+                    <strong>💡 Kiến thức nhị phân:</strong> Trong ngôn ngữ C, các biến trên ngăn xếp (Stack) nằm cạnh nhau trong bộ nhớ RAM. Nếu chương trình dùng hàm nguy hiểm như <code>gets(buffer)</code> mà không giới hạn số ký tự người dùng nhập vào mảng 16 bytes, các ký tự thừa từ thứ 17 trở đi sẽ <strong>TRÀN</strong> sang vùng nhớ của biến <code>is_admin</code> kế bên, thay đổi giá trị của nó từ 0 thành số khác, mở khóa quyền ROOT!
+                </div>
+
+                <!-- CODE PREVIEW -->
+                <div style="background:#090408;border:1px solid rgba(239,68,68,0.35);border-radius:12px;padding:14px;margin-bottom:18px;font-family:'Share Tech Mono',monospace;font-size:0.85rem;line-height:1.5;">
+                    <div style="color:var(--muted);font-size:0.75rem;margin-bottom:6px;">// Đoạn mã C dễ bị tổn thương (Vulnerable C Program):</div>
+                    <span style="color:#60a5fa;">char</span> buffer[<span style="color:#fbbf24;">16</span>];   <span style="color:#64748b;">// Dành tối đa 16 bytes cho người dùng</span><br>
+                    <span style="color:#60a5fa;">int</span> is_admin = <span style="color:#fbbf24;">0</span>;      <span style="color:#64748b;">// 0: Khách, khác 0: QUYỀN ADMIN TOÀN NĂNG</span><br>
+                    <span style="color:#f43f5e;">gets</span>(buffer);          <span style="color:#ef4444;font-weight:bold;">// ⚠️ LỖ HỔNG: gets() không kiểm tra độ dài!</span><br>
+                    <span style="color:#f43f5e;">if</span> (is_admin != <span style="color:#fbbf24;">0</span>) { <span style="color:#34d399;">give_flag()</span>; } <span style="color:#64748b;">// Cấp cờ khi is_admin bị thay đổi</span>
+                </div>
+
+                <!-- INPUT AND EXPLOIT BUTTON -->
+                <div style="margin-bottom:18px;">
+                    <label style="display:block;font-size:0.88rem;color:#cbd5e1;margin-bottom:8px;font-weight:700;">
+                        Nhập dữ liệu vào mảng <code>buffer</code> (Gõ từng chữ để xem các ô nhớ RAM biến đổi):
+                    </label>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <input type="text" id="pwn-payload-input" oninput="renderPwnMemory()" placeholder="Nhập chuỗi ký tự..." maxlength="28" value="HELLO_STUDENT" style="flex:1;min-width:240px;padding:12px 16px;background:rgba(0,0,0,0.6);border:1.5px solid rgba(239,68,68,0.4);border-radius:10px;color:#fff;font-family:'Share Tech Mono',monospace;font-size:1rem;outline:none;">
+                        <button class="game-btn" onclick="fillPwnExploit()" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">
+                            <i class="fas fa-biohazard"></i> NẠP PAYLOAD TRÀN BỘ ĐỆM (21 KÝ TỰ)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MEMORY VISUALIZER BOARD -->
+                <div class="pwn-memory-board">
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                        <span style="font-weight:800;font-size:0.9rem;color:#fca5a5;"><i class="fas fa-memory"></i> BẢN ĐỒ NGĂN XẾP BỘ NHỚ (STACK MEMORY - 20 BYTES):</span>
+                        <div style="display:flex;gap:12px;font-size:0.75rem;">
+                            <span style="color:#cbd5e1;"><i class="fas fa-square" style="color:#18090d;border:1px solid #ef4444;"></i> Buffer (16B)</span>
+                            <span style="color:#fde68a;"><i class="fas fa-square" style="color:#fbbf24;"></i> Biến is_admin (4B)</span>
+                        </div>
+                    </div>
+
+                    <div class="pwn-memory-grid" id="pwn-memory-grid"></div>
+
+                    <div id="pwn-status-banner" class="warn-box blue" style="margin:14px 0 0 0;"></div>
+
+                    <!-- PWN FLAG RESULT -->
+                    <div id="pwn-flag-result" style="display:none;margin-top:18px;background:rgba(239,68,68,0.12);border:2px dashed #ef4444;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:2.2rem;margin-bottom:6px;">💥</div>
+                        <h3 style="font-family:'Orbitron',sans-serif;color:#fca5a5;margin:0 0 6px 0;">STACK SMASHING DETECTED! BẠN ĐÃ PWN THÀNH CÔNG!</h3>
+                        <p style="color:#e2e8f0;font-size:0.88rem;margin:0 0 12px 0;">Biến <code>is_admin</code> đã bị ghi đè, chương trình đã nhảy vào hàm cấp cờ:</p>
+                        <div style="display:inline-block;padding:10px 20px;background:#080204;border:2px solid #ef4444;border-radius:10px;font-family:'Share Tech Mono',monospace;font-size:1.15rem;font-weight:900;color:#fca5a5;letter-spacing:1px;box-shadow:0 0 15px rgba(239,68,68,0.4);">
+                            FLAG{pwn_buffer_overflow_stack_smashed}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HINT & FLAG SUBMIT -->
+                <div class="ctf-hint-toggle" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <i class="fas fa-lightbulb"></i> Bạn cần gợi ý cho thử thách Pwn? (Click để mở)
+                </div>
+                <div class="ctf-hint-content">
+                    💡 <strong>Gợi ý:</strong> Mảng <code>buffer</code> chỉ có kích thước 16 ký tự. Hãy gõ bất kỳ chuỗi nào dài từ <strong>17 ký tự trở lên</strong> (hoặc bấm nút "NẠP PAYLOAD TRÀN BỘ ĐỆM"). Ký tự thứ 17 sẽ nhảy ngay vào ô nhớ <code>admin[0]</code> và mở khóa cờ!
+                </div>
+
+                <div class="ctf-flag-submit-box">
+                    <i class="fas fa-flag" style="color:var(--ctf-pwn);font-size:1.2rem;"></i>
+                    <span style="font-weight:800;font-size:0.9rem;">Nộp cờ Pwn:</span>
+                    <input type="text" id="ctf-inp-pwn" class="ctf-flag-input" placeholder="FLAG{...}">
+                    <button class="ctf-flag-btn" style="background:var(--ctf-pwn);" onclick="CTF_SYSTEM.submitFlag(document.getElementById('ctf-inp-pwn').value, 'pwn')">
+                        <i class="fas fa-check"></i> XÁC NHẬN CỜ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 4. CTF REVERSE ENGINEERING PANEL ==================== -->
+    <div class="sim-panel" id="panel-ctf-re">
+        <div class="sim-inner">
+            <div class="ctf-lab-card theme-re reveal">
+                <div class="ctf-lab-header">
+                    <div class="ctf-lab-title">
+                        <h3><i class="fas fa-puzzle-piece" style="color:var(--ctf-re);"></i> MẢNG 4: REVERSE ENGINEERING — CRACKME BẺ KHÓA BẢN QUYỀN</h3>
+                        <p>Đọc mã giả lập sau khi dịch ngược (Decompilation) để phân tích thuật toán kiểm tra mã bản quyền phần mềm.</p>
+                    </div>
+                    <div class="ctf-points-pill"><i class="fas fa-trophy"></i> 100 PTS</div>
+                </div>
+
+                <div class="ctf-concept-box" style="border-left-color:var(--ctf-re);border-color:rgba(245,158,11,0.3);">
+                    <strong>💡 Kiến thức dịch ngược (RE):</strong> Kỹ sư dịch ngược đọc hiểu mã máy được dịch ngược thành ngôn ngữ bậc cao (như C hoặc Assembly) để tìm ra quy tắc kiểm tra mật khẩu. Thử thách dưới đây yêu cầu bạn đọc hàm <code>verify_license()</code> để tìm ra License Key hợp lệ!
+                </div>
+
+                <!-- DECOMPILED CODE VIEWER -->
+                <div class="re-code-container">
+                    <div class="re-code-header">
+                        <span><i class="fas fa-file-code"></i> Decompiled Output: license_checker.c</span>
+                        <span>Arch: x86_64 | Decompiler: Ghidra THCS</span>
+                    </div>
+                    <div class="re-code-body">
+                        <div class="re-line"><span class="re-ln">1</span><span><span class="re-hl-kw">bool</span> <span class="re-hl-fn">verify_license</span>(<span class="re-hl-kw">char</span>* key) {</span></div>
+                        <div class="re-line"><span class="re-ln">2</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-kw">if</span> (!<span class="re-hl-fn">starts_with</span>(key, <span class="re-hl-str">"CYBER-"</span>)) <span class="re-hl-kw">return</span> <span class="re-hl-kw">false</span>; <span class="re-hl-cmt">// Phải bắt đầu bằng CYBER-</span></span></div>
+                        <div class="re-line"><span class="re-ln">3</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-kw">char</span>** parts = <span class="re-hl-fn">split</span>(key, <span class="re-hl-str">'-'</span>);</span></div>
+                        <div class="re-line"><span class="re-ln">4</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-kw">if</span> (<span class="re-hl-fn">length</span>(parts) != <span class="re-hl-num">3</span>) <span class="re-hl-kw">return</span> <span class="re-hl-kw">false</span>; <span class="re-hl-cmt">// Định dạng: CYBER-XXXX-YYYY</span></span></div>
+                        <div class="re-line"><span class="re-ln">5</span><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="re-line"><span class="re-ln">6</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-cmt">// [Quy tắc 1]: XXXX là năm hiện tại của dự án này</span></span></div>
+                        <div class="re-line"><span class="re-ln">7</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-kw">if</span> (!<span class="re-hl-fn">equals</span>(parts[<span class="re-hl-num">1</span>], <span class="re-hl-str">"2026"</span>)) <span class="re-hl-kw">return</span> <span class="re-hl-kw">false</span>;</span></div>
+                        <div class="re-line"><span class="re-ln">8</span><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="re-line"><span class="re-ln">9</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-cmt">// [Quy tắc 2]: YYYY là viết tắt cấp học của chúng ta (4 chữ cái in hoa)</span></span></div>
+                        <div class="re-line"><span class="re-ln">10</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-kw">if</span> (!<span class="re-hl-fn">equals</span>(parts[<span class="re-hl-num">2</span>], <span class="re-hl-str">"THCS"</span>)) <span class="re-hl-kw">return</span> <span class="re-hl-kw">false</span>;</span></div>
+                        <div class="re-line"><span class="re-ln">11</span><span>&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                        <div class="re-line"><span class="re-ln">12</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="re-hl-kw">return</span> <span class="re-hl-kw">true</span>; <span class="re-hl-cmt">// Kích hoạt bản quyền trọn đời!</span></span></div>
+                        <div class="re-line"><span class="re-ln">13</span><span>}</span></div>
+                    </div>
+                </div>
+
+                <!-- CRACKME INTERACTIVE INPUT & DEBUGGER -->
+                <div style="background:rgba(18,24,36,0.8);border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:20px;margin-bottom:18px;">
+                    <h4 style="color:#fde68a;font-size:1rem;margin:0 0 10px 0;"><i class="fas fa-key"></i> Kiểm Tra License Key &amp; Chạy Trình Gỡ Lỗi (Debugger Trace)</h4>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+                        <input type="text" id="re-key-input" placeholder="Nhập key thử (vd: CYBER-????-????)..." style="flex:1;min-width:240px;padding:12px 14px;background:#05070c;border:1px solid rgba(245,158,11,0.4);border-radius:8px;color:#fff;font-family:'Share Tech Mono',monospace;font-size:1rem;outline:none;">
+                        <button class="game-btn" onclick="testCrackmeKey()" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                            <i class="fas fa-play"></i> KIỂM TRA MÃ
+                        </button>
+                    </div>
+
+                    <div id="re-trace-result" style="padding:12px 16px;background:#05070c;border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-family:'Share Tech Mono',monospace;font-size:0.85rem;color:#cbd5e1;line-height:1.6;min-height:36px;">
+                        <em>Nhập mã bản quyền và bấm "KIỂM TRA MÃ" để xem trình gỡ lỗi phân tích từng dòng...</em>
+                    </div>
+
+                    <!-- RE FLAG RESULT -->
+                    <div id="re-flag-result" style="display:none;margin-top:16px;background:rgba(245,158,11,0.12);border:2px dashed #f59e0b;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:2.2rem;margin-bottom:6px;">🎉</div>
+                        <h3 style="font-family:'Orbitron',sans-serif;color:#fde68a;margin:0 0 6px 0;">BẺ KHÓA THÀNH CÔNG! PHẦN MỀM ĐÃ ĐƯỢC KÍCH HOẠT!</h3>
+                        <p style="color:#e2e8f0;font-size:0.88rem;margin:0 0 12px 0;">Bạn đã đảo ngược thuật toán kiểm tra key một cách hoàn hảo. Đây là cờ Reverse Engineering:</p>
+                        <div style="display:inline-block;padding:10px 20px;background:#0a0c10;border:2px solid #f59e0b;border-radius:10px;font-family:'Share Tech Mono',monospace;font-size:1.15rem;font-weight:900;color:#fde68a;letter-spacing:1px;box-shadow:0 0 15px rgba(245,158,11,0.35);">
+                            FLAG{rev_crackme_logic_reversed_2026}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HINT & FLAG SUBMIT -->
+                <div class="ctf-hint-toggle" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <i class="fas fa-lightbulb"></i> Bạn cần gợi ý cho thử thách Reverse? (Click để mở)
+                </div>
+                <div class="ctf-hint-content">
+                    💡 <strong>Gợi ý:</strong> Ghép 3 phần theo đúng điều kiện trong code: Tiền tố <code>CYBER-</code> + Năm <code>2026</code> + Cấp học <code>THCS</code>. Ghép lại ta được key hoàn chỉnh: <code>CYBER-2026-THCS</code>!
+                </div>
+
+                <div class="ctf-flag-submit-box">
+                    <i class="fas fa-flag" style="color:var(--ctf-re);font-size:1.2rem;"></i>
+                    <span style="font-weight:800;font-size:0.9rem;">Nộp cờ Reverse:</span>
+                    <input type="text" id="ctf-inp-re" class="ctf-flag-input" placeholder="FLAG{...}">
+                    <button class="ctf-flag-btn" style="background:var(--ctf-re);" onclick="CTF_SYSTEM.submitFlag(document.getElementById('ctf-inp-re').value, 're')">
+                        <i class="fas fa-check"></i> XÁC NHẬN CỜ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 5. CTF DIGITAL FORENSICS PANEL ==================== -->
+    <div class="sim-panel" id="panel-ctf-forensics">
+        <div class="sim-inner">
+            <div class="ctf-lab-card theme-forensics reveal">
+                <div class="ctf-lab-header">
+                    <div class="ctf-lab-title">
+                        <h3><i class="fas fa-magnifying-glass" style="color:var(--ctf-forensics);"></i> MẢNG 5: DIGITAL FORENSICS — SOI MÃ HEX & GIẤU TIN STEGANOGRAPHY</h3>
+                        <p>Điều tra file ảnh nghi vấn bằng Hex Editor, phát hiện dữ liệu giấu lén sau điểm kết thúc file (EOF/IEND).</p>
+                    </div>
+                    <div class="ctf-points-pill"><i class="fas fa-trophy"></i> 100 PTS</div>
+                </div>
+
+                <div class="ctf-concept-box" style="border-left-color:var(--ctf-forensics);border-color:rgba(16,185,129,0.3);">
+                    <strong>💡 Kiến thức điều tra số:</strong> Mỗi định dạng file đều có cấu trúc nhị phân riêng. File PNG luôn bắt đầu bằng 8 bytes <strong>Magic Bytes</strong> (<code>89 50 4E 47 0D 0A 1A 0A</code>) và kết thúc bằng chunk <strong>IEND</strong>. Kẻ xấu thường dùng kỹ thuật <strong>Steganography</strong> để giấu thông điệp hoặc file nén vào sau chunk <code>IEND</code>. Trình xem ảnh thông thường sẽ bỏ qua, nhưng điều tra viên dùng Hex Editor sẽ phát hiện ra ngay!
+                </div>
+
+                <!-- HEX VIEWER -->
+                <div class="hex-editor-wrapper">
+                    <div class="hex-editor-bar">
+                        <span style="font-family:'Share Tech Mono',monospace;font-size:0.85rem;color:#6ee7b7;">
+                            <i class="fas fa-file-image"></i> File điều tra: suspect_cat.png (Kích thước: 160 Bytes)
+                        </span>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="text" id="hex-search-input" placeholder="Tìm chuỗi (vd: FLAG, IEND)..." oninput="searchHexViewer()" style="background:#030805;border:1px solid rgba(16,185,129,0.4);color:#fff;padding:6px 12px;border-radius:6px;font-size:0.8rem;font-family:'Share Tech Mono',monospace;">
+                            <button class="btn-copy" onclick="document.getElementById('hex-search-input').value='FLAG';searchHexViewer();" style="font-size:0.78rem;padding:6px 10px;">
+                                🔍 Quét FLAG
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="padding:6px 14px;background:#020604;border-bottom:1px solid rgba(16,185,129,0.15);font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--muted);display:flex;gap:20px;">
+                        <span style="width:70px;">Offset</span>
+                        <span style="flex:1;">00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F</span>
+                        <span style="width:170px;">Decoded Text</span>
+                    </div>
+
+                    <div class="hex-view-pane" id="hex-view-pane"></div>
+                </div>
+
+                <!-- FORENSICS FLAG RESULT -->
+                <div id="forensics-flag-found" style="display:none;background:rgba(16,185,129,0.12);border:2px dashed #10b981;border-radius:12px;padding:20px;text-align:center;margin-bottom:18px;">
+                    <div style="font-size:2.2rem;margin-bottom:6px;">🕵️‍♂️</div>
+                    <h3 style="font-family:'Orbitron',sans-serif;color:#6ee7b7;margin:0 0 6px 0;">ĐÃ TRÍCH XUẤT THÀNH CÔNG DỮ LIỆU GIẤU LÉN!</h3>
+                    <p style="color:#e2e8f0;font-size:0.88rem;margin:0 0 12px 0;">Sau điểm kết thúc file PNG (chunk IEND), bạn đã tìm thấy chuỗi mật:</p>
+                    <div style="display:inline-block;padding:10px 20px;background:#030805;border:2px solid #10b981;border-radius:10px;font-family:'Share Tech Mono',monospace;font-size:1.15rem;font-weight:900;color:#6ee7b7;letter-spacing:1px;box-shadow:0 0 15px rgba(16,185,129,0.35);">
+                        FLAG{forensics_stego_hidden_in_plain_sight}
+                    </div>
+                </div>
+
+                <!-- FORENSICS PCAP PACKET INSPECTION -->
+                <div style="background:rgba(10,20,15,0.7);border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:18px;margin-bottom:18px;">
+                    <h4 style="color:#6ee7b7;font-size:1rem;margin:0 0 10px 0;"><i class="fas fa-network-wired"></i> Phân Tích Gói Tin Mạng (Wireshark PCAP Capture)</h4>
+                    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px;">Xem cách dữ liệu truyền qua mạng nếu không được mã hóa:</p>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-family:'Share Tech Mono',monospace;font-size:0.82rem;color:#cbd5e1;">
+                            <thead>
+                                <tr style="border-bottom:1px solid rgba(16,185,129,0.3);color:#6ee7b7;text-align:left;">
+                                    <th style="padding:8px;">No.</th>
+                                    <th style="padding:8px;">Protocol</th>
+                                    <th style="padding:8px;">Source IP</th>
+                                    <th style="padding:8px;">Destination IP</th>
+                                    <th style="padding:8px;">Info / Payload</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding:8px;">1</td>
+                                    <td style="padding:8px;color:#60a5fa;">DNS</td>
+                                    <td style="padding:8px;">192.168.1.15</td>
+                                    <td style="padding:8px;">8.8.8.8</td>
+                                    <td style="padding:8px;">Standard query 0x12a4 A ftp.school.edu.vn</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(239,68,68,0.1);">
+                                    <td style="padding:8px;">2</td>
+                                    <td style="padding:8px;color:#ef4444;font-weight:bold;">FTP</td>
+                                    <td style="padding:8px;">192.168.1.15</td>
+                                    <td style="padding:8px;">103.45.67.89</td>
+                                    <td style="padding:8px;color:#fca5a5;"><strong>Request: USER admin | PASS SuperSecretP@ss2026</strong> (Lộ mật khẩu!)</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding:8px;">3</td>
+                                    <td style="padding:8px;color:#10b981;">HTTPS</td>
+                                    <td style="padding:8px;">192.168.1.15</td>
+                                    <td style="padding:8px;">142.250.204.46</td>
+                                    <td style="padding:8px;">Application Data (TLSv1.3 Encrypted - An toàn)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top:10px;font-size:0.8rem;color:#67e8f9;">
+                        💡 <strong>Bài học:</strong> Gói tin số 2 dùng giao thức FTP không mã hóa, mật khẩu gửi đi hoàn toàn ở dạng chữ thô (Cleartext), bất kỳ ai cùng mạng Wifi công cộng cũng có thể đọc được! Vì vậy luôn cần HTTPS/SFTP!
+                    </div>
+                </div>
+
+                <!-- HINT & FLAG SUBMIT -->
+                <div class="ctf-hint-toggle" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <i class="fas fa-lightbulb"></i> Bạn cần gợi ý cho thử thách Forensics? (Click để mở)
+                </div>
+                <div class="ctf-hint-content">
+                    💡 <strong>Gợi ý:</strong> Gõ chữ <code>FLAG</code> vào ô tìm kiếm ở bảng Hex Editor (hoặc nhấn nút "Quét FLAG"). Bạn sẽ thấy cờ nằm ngay sau chuỗi <code>IEND</code> ở cuối file ảnh!
+                </div>
+
+                <div class="ctf-flag-submit-box">
+                    <i class="fas fa-flag" style="color:var(--ctf-forensics);font-size:1.2rem;"></i>
+                    <span style="font-weight:800;font-size:0.9rem;">Nộp cờ Forensics:</span>
+                    <input type="text" id="ctf-inp-forensics" class="ctf-flag-input" placeholder="FLAG{...}">
+                    <button class="ctf-flag-btn" style="background:var(--ctf-forensics);" onclick="CTF_SYSTEM.submitFlag(document.getElementById('ctf-inp-forensics').value, 'forensics')">
+                        <i class="fas fa-check"></i> XÁC NHẬN CỜ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CÁC CÔNG CỤ MÔ PHỎNG CŨ (VẪN BẢO TOÀN 100%) ==================== -->
+    <!-- TERMINAL -->
+    <div class="sim-panel" id="panel-terminal">
+        <div class="sim-inner">
+            <div class="sim-intro reveal"><h3 style="font-weight:900;font-size:1.2rem;margin-bottom:8px;">💻 Terminal Khám Phá Mạng</h3><p style="color:var(--muted);font-size:.9rem;">Trải nghiệm gõ lệnh như chuyên gia bảo mật. Gõ <code style="color:#a78bfa;background:rgba(124,58,237,.15);padding:2px 8px;border-radius:5px;">help</code> để bắt đầu!</p></div>
+            <div class="terminal reveal">
+                <div class="terminal-header"><div class="td r"></div><div class="td y"></div><div class="td g"></div><div class="terminal-title">antoanmang@hocsinh:~$ — Môi trường giả lập an toàn</div></div>
+                <div class="terminal-body" id="terminal-body">
+                    <div class="t-line"><span class="t-info">╔══════════════════════════════════════════════════════╗</span></div>
+                    <div class="t-line"><span class="t-info">║  🛡️  TERMINAL AN TOÀN MẠNG — Dành cho học sinh THCS     ║</span></div>
+                    <div class="t-line"><span class="t-info">║  Gõ 'help' để xem danh sách lệnh có sẵn                  ║</span></div>
+                    <div class="t-line"><span class="t-info">╚══════════════════════════════════════════════════════╝</span></div>
+                    <div class="t-line"><span class="t-out"> </span></div>
+                    <div class="t-input-row"><span class="t-prompt">hocsinh@antoanmang:~$&nbsp;</span><input type="text" id="terminal-input" spellcheck="false" placeholder="Nhập lệnh và nhấn Enter..."></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="sim-panel" id="panel-password">
+        <div class="sim-inner">
+            <div class="sim-intro reveal"><h3 style="font-weight:900;font-size:1.2rem;margin-bottom:8px;">🔑 Kiểm Tra &amp; Tạo Mật Khẩu Mạnh</h3><p style="color:var(--muted);font-size:.9rem;">Nhập mật khẩu giả để kiểm tra độ mạnh và thời gian brute-force. Hoặc tạo mật khẩu ngẫu nhiên mạnh!</p></div>
+            <div class="pw-card reveal">
+                <div class="pw-input-wrap"><input type="password" id="password-input" placeholder="Nhập mật khẩu để kiểm tra..." oninput="checkPw()"><button class="pw-eye" onclick="togglePwEye()"><i class="fas fa-eye" id="pw-eye-icon"></i></button></div>
+                <div class="pw-bar-bg"><div class="pw-bar" id="pw-bar"></div></div>
+                <div class="pw-label"><span>Độ mạnh:</span><span id="pw-strength-text" style="color:var(--muted);">Chưa nhập</span></div>
+                <div class="pw-checks">
+                    <div class="pw-check" id="chk-len"><i class="fas fa-circle-xmark"></i> Ít nhất 8 ký tự</div>
+                    <div class="pw-check" id="chk-upper"><i class="fas fa-circle-xmark"></i> Chữ hoa (A-Z)</div>
+                    <div class="pw-check" id="chk-lower"><i class="fas fa-circle-xmark"></i> Chữ thường (a-z)</div>
+                    <div class="pw-check" id="chk-num"><i class="fas fa-circle-xmark"></i> Chữ số (0-9)</div>
+                    <div class="pw-check" id="chk-sym"><i class="fas fa-circle-xmark"></i> Ký tự đặc biệt</div>
+                    <div class="pw-check" id="chk-long"><i class="fas fa-circle-xmark"></i> Ít nhất 12 ký tự</div>
+                </div>
+                <div class="crack-box"><div class="crack-label">⏱️ Thời gian brute-force ước tính</div><div class="crack-val" id="crack-time">—</div></div>
+                <div class="pw-gen-section">
+                    <h4>🎲 Tạo Mật Khẩu Ngẫu Nhiên</h4>
+                    <div class="pw-length-row"><label>Độ dài:</label><input type="range" min="8" max="32" value="16" id="pw-len-slider" oninput="document.getElementById('pw-len-val').textContent=this.value"><span class="pw-length-val" id="pw-len-val">16</span> ký tự</div>
+                    <div class="pw-gen-options">
+                        <label class="pw-opt-label"><input type="checkbox" id="gen-upper" checked> Chữ hoa</label>
+                        <label class="pw-opt-label"><input type="checkbox" id="gen-lower" checked> Chữ thường</label>
+                        <label class="pw-opt-label"><input type="checkbox" id="gen-num" checked> Số</label>
+                        <label class="pw-opt-label"><input type="checkbox" id="gen-sym" checked> Ký tự đặc biệt</label>
+                    </div>
+                    <div class="pw-generated" id="pw-generated">Nhấn "Tạo mật khẩu" để bắt đầu...</div>
+                    <div class="pw-gen-btn-row"><button class="btn-gen" onclick="generatePw()">🎲 Tạo mật khẩu</button><button class="btn-copy" onclick="copyPw()">📋 Sao chép</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCAM DETECTOR -->
+    <div class="sim-panel" id="panel-scam">
+        <div class="sim-inner">
+            <div class="sim-intro reveal"><h3 style="font-weight:900;font-size:1.2rem;margin-bottom:8px;">🕵️ Thám Tử Lừa Đảo</h3><p style="color:var(--muted);font-size:.9rem;">Phán đoán từng tin nhắn: <strong style="color:#6ee7b7;">An toàn</strong> hay <strong style="color:#fca5a5;">Lừa đảo</strong>?</p></div>
+            <div class="scam-detective reveal">
+                <div class="scam-messages" id="scam-messages"></div>
+                <div class="scam-result" id="scam-result" style="display:none;"><h3 id="scam-result-title"></h3><p id="scam-result-desc"></p><button class="game-btn" style="margin-top:16px;" onclick="resetScam()">🔄 Làm lại</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- URL CHECKER -->
+    <div class="sim-panel" id="panel-url">
+        <div class="sim-inner">
+            <div class="sim-intro reveal"><h3 style="font-weight:900;font-size:1.2rem;margin-bottom:8px;">🔍 Kiểm Tra URL An Toàn</h3><p style="color:var(--muted);font-size:.9rem;">Nhập một URL để giả lập phân tích các dấu hiệu nguy hiểm. Hãy thử các URL ví dụ bên dưới!</p></div>
+            <div class="pw-card reveal">
+                <div class="scan-row">
+                    <input type="text" class="scan-input" id="url-input" placeholder="Nhập URL (vd: http://bank-vcb.fakesite.tk/login)" value="http://vcb-secure.fakelogin.tk/verify">
+                    <button class="scan-btn" onclick="analyzeURL()">🔍 Phân Tích</button>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+                    <button class="btn-copy" onclick="document.getElementById('url-input').value='https://google.com';analyzeURL()" style="font-size:.8rem;padding:6px 12px;">google.com</button>
+                    <button class="btn-copy" onclick="document.getElementById('url-input').value='http://faceb00k.fakelogin.tk/login';analyzeURL()" style="font-size:.8rem;padding:6px 12px;">Fake Facebook</button>
+                    <button class="btn-copy" onclick="document.getElementById('url-input').value='https://roblox.com';analyzeURL()" style="font-size:.8rem;padding:6px 12px;">roblox.com</button>
+                    <button class="btn-copy" onclick="document.getElementById('url-input').value='http://vcb-secure.fakelogin.tk/verify?otp=';analyzeURL()" style="font-size:.8rem;padding:6px 12px;">Fake VCB</button>
+                    <button class="btn-copy" onclick="document.getElementById('url-input').value='https://edu.vn/hocsinh';analyzeURL()" style="font-size:.8rem;padding:6px 12px;">edu.vn</button>
+                </div>
+                <div class="url-check-result" id="url-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVER DEFENSE -->
+    <div class="sim-panel" id="panel-server">
+        <div class="sim-inner">
+            <div class="sim-intro reveal"><h3 style="font-weight:900;font-size:1.2rem;margin-bottom:8px;">🖥️ Bảo Vệ Server</h3><p style="color:var(--muted);font-size:.9rem;">Bạn là quản trị viên mạng! Hãy quyết định <strong style="color:#6ee7b7;">Đồng ý</strong> hoặc <strong style="color:#fca5a5;">Chặn</strong> các kết nối đến server của bạn.</p></div>
+            <div class="pw-card reveal">
+                <div class="server-scene">
+                    <div class="server-visual">
+                        <div class="server-icon">🖥️</div>
+                        <div style="font-weight:800;font-size:.85rem;margin-bottom:8px;color:#6ee7b7;">SERVER</div>
+                        <div class="server-hp-label">❤️ Máu:</div>
+                        <div class="server-hp-bar-bg"><div class="server-hp-bar" id="srv-hp" style="width:100%;"></div></div>
+                        <div class="server-hp-num" id="srv-hp-num">100 HP</div>
+                    </div>
+                    <div class="attack-feed" id="attack-feed"><p style="color:var(--muted);font-size:.9rem;">Nhấn "Bắt đầu giả lập" để xác định các kết nối!</p></div>
+                </div>
+                <div style="text-align:center;margin-top:20px;">
+                    <button class="game-btn" onclick="startServer()" id="srv-start-btn">🚀 Bắt đầu giả lập</button>
+                </div>
+                <div class="scam-result" id="srv-result" style="display:none;margin-top:20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLEDGE -->
+    <div class="sim-panel" id="panel-pledge">
+        <div class="sim-inner">
+            <div class="sim-intro reveal"><h3 style="font-weight:900;font-size:1.2rem;margin-bottom:8px;">📜 Cam Kết Công Dân Số</h3><p style="color:var(--muted);font-size:.9rem;">Hãy đọc và tích vào từng cam kết để nhận huy hiệu Công Dân Số Tiêu Biểu!</p></div>
+            <div class="pledge-card reveal">
+                <h3 style="font-weight:900;font-size:1.1rem;margin-bottom:6px;color:#a78bfa;">📜 Cam Kết Của Tôi</h3>
+                <p style="color:var(--muted);font-size:.88rem;margin-bottom:0;">Tôi — một học sinh THCS — cam kết:</p>
+                <div class="pledge-items" id="pledge-items"></div>
+                <div class="pledge-score"><div class="pledge-score-num" id="pledge-score-num">0/10</div><p id="pledge-score-msg">Hãy đọc và tích vào từng cam kết!</p><div class="pledge-badge-earned" id="pledge-badge">🏅 Công Dân Số Tiêu Biểu!</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>🛡️ AN TOÀN MẠNG</h3><p>Trang web giáo dục miễn phí cho học sinh THCS Việt Nam.</p></div><div><h4>Nội dung học</h4><ul class="footer-links"><li><a href="cong-dan-so.html">🌐 Công dân số</a></li><li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li><li><a href="lua-dao-mang.html">⚠️ Lừa đảo mạng</a></li><li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li></ul></div><div><h4>Thực hành</h4><ul class="footer-links"><li><a href="simulation.html">🎮 Phòng Giả Lập</a></li><li><a href="games.html">🎯 Trò Chơi</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 An Toàn Mạng 🇻🇳</p></div></footer>
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+<script src="js/shared.js"></script>
+<script src="js/ctf-simulations.js"></script>
+<script>
+// === TAB SWITCH ===
+function switchSim(id, btn){
+    document.querySelectorAll('.sim-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.sim-panel').forEach(p=>p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+        const targetBtn = document.querySelector('[data-sim="' + id + '"]');
+        if (targetBtn) targetBtn.classList.add('active');
+    }
+    const panel = document.getElementById('panel-'+id);
+    if (panel) {
+        panel.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    if(id==='terminal')setTimeout(()=>document.getElementById('terminal-input').focus(),100);
+}
+
+// === TERMINAL ===
+const termBody=document.getElementById('terminal-body');
+const termInput=document.getElementById('terminal-input');
+const CMD={
+    help:()=>[
+        {c:'info',t:'📋 Các lệnh có thể dùng:'},
+        {c:'out',t:'  help          — Xem danh sách lệnh này'},
+        {c:'out',t:'  ctf           — Xem hướng dẫn 5 mảng CTF'},
+        {c:'out',t:'  congdanso     — Tìm hiểu Công dân số'},
+        {c:'out',t:'  baolucmang    — Tìm hiểu Bạo lực mạng'},
+        {c:'out',t:'  luadao        — Tìm hiểu Lừa đảo mạng'},
+        {c:'out',t:'  ai            — Tìm hiểu AI và cách dùng đúng'},
+        {c:'out',t:'  matkhau <pw>  — Kiểm tra độ mạnh mật khẩu nhanh'},
+        {c:'out',t:'  matvang       — Xem quy tắc vàng an toàn mạng'},
+        {c:'out',t:'  sotro         — Số điện thoại hỗ trợ khẩn cấp'},
+        {c:'out',t:'  quiz          — Câu hỏi ngẫu nhiên về an toàn mạng'},
+        {c:'out',t:'  clear         — Xóa màn hình'},
+    ],
+    ctf:()=>[
+        {c:'info',t:'🚩 5 MẢNG CTF (CAPTURE THE FLAG):'},
+        {c:'out',t:'  1. WEB: Khai thác SQL Injection và Cookie'},
+        {c:'out',t:'  2. CRYPTO: Giải mã Base64 và Caesar/ROT13'},
+        {c:'out',t:'  3. PWN: Trực quan hóa tràn bộ đệm Buffer Overflow'},
+        {c:'out',t:'  4. REVERSE: Phân tích mã nguồn CrackMe kiểm tra bản quyền'},
+        {c:'out',t:'  5. FORENSICS: Soi mã Hex và phát hiện giấu tin trong file ảnh'},
+        {c:'ok',t:'  👉 Hãy chuyển qua các tab CTF phía trên để trực tiếp chiếm cờ!'}
+    ],
+    congdanso:()=>[{c:'info',t:'🌐 CÔNG DÂN SỐ LÀ GÌ?'},{c:'out',t:'  Người sử dụng công nghệ một cách có trách nhiệm,'},{c:'out',t:'  an toàn và tôn trọng người khác trong thế giới số.'},{c:'ok',t:'  4 Trụ cột: An toàn TT · Đạo đức số · Tư duy PB · Quyền-Trách nhiệm'},{c:'info',t:'  → Học thêm: cong-dan-so.html'}],
+    baolucmang:()=>[{c:'info',t:'🚨 BẠO LỰC MẠNG'},{c:'out',t:'  Dùng công nghệ để bắt nạt, xúc phạm, đe dọa người khác.'},{c:'err',t:'  Đe dọa 24/7, không có nơi trốn tránh!'},{c:'ok',t:'  Xử lý: Dừng phản hồi → Chụp màn hình → Chặn/Báo cáo → Nói với người lớn'},{c:'ok',t:'  📞 Gọi số 111 (miễn phí, 24/7) nếu cần giúp đỡ'}],
+    luadao:()=>[{c:'info',t:'⚠️  LỪA ĐẢO TRÊN MẠNG'},{c:'err',t:'  Dấu hiệu: Áp lực thời gian · Hứa thưởng lớn · Link lạ · Xin OTP'},{c:'ok',t:'  Quy tắc vàng: DỪNG → SUY NGHĨ → XÁC NHẬN'},{c:'info',t:'  → Học thêm: lua-dao-mang.html'}],
+    ai:()=>[{c:'info',t:'🤖 AI - TRÍ TUỆ NHÂN TẠO'},{c:'out',t:'  Phần mềm học từ dữ liệu, không có cảm xúc thật sự.'},{c:'ok',t:'  Nên: Hỏi giải thích bài, brainstorm, luyện tiếng Anh'},{c:'err',t:'  Không: Copy bài AI nộp, chia sẻ thông tin cá nhân, tin tuyệt đối AI'},{c:'info',t:'  → Học thêm: ai-an-toan.html'}],
+    matvang:()=>[{c:'info',t:'🔑 QUY TẮC VÀNG AN TOÀN MẠNG'},{c:'ok',t:'  1. Mật khẩu mạnh, khác nhau mỗi tài khoản'},{c:'ok',t:'  2. DỪNG → SUY NGHĨ → XÁC NHẬN trước khi hành động'},{c:'ok',t:'  3. Không chia sẻ thông tin cá nhân với người lạ'},{c:'ok',t:'  4. Không click link lạ, dù từ người quen'},{c:'ok',t:'  5. Chia sẻ với bố mẹ/thầy cô khi thấy điều bất thường'},{c:'ok',t:'  6. Lưu bằng chứng nếu bị bắt nạt hoặc đe dọa'},{c:'ok',t:'  7. Cân bằng thời gian online!'}],
+    sotro:()=>[{c:'info',t:'📞 SỐ ĐIỆN THOẠI HỖ TRỢ KHẨN CẤP'},{c:'ok',t:'  🆘 111  — Đường dây bảo vệ trẻ em (Miễn phí, 24/7)'},{c:'ok',t:'  👮 113  — Cảnh sát'},{c:'ok',t:'  🔥 114  — Cứu hỏa'},{c:'ok',t:'  🏥 115  — Cấp cứu y tế'}],
+    quiz:()=>{const qs=['❓ Hỏi: Mật khẩu nào mạnh? → abc@XYZ#2026 (dài, đa dạng ký tự)','❓ Hỏi: Nên làm gì khi nhận link lạ? → Không click, hỏi người lớn!','❓ Hỏi: AI có thể sai không? → Có! Luôn kiểm tra lại.','❓ Hỏi: Bị bắt nạt mạng, bước đầu? → Chụp màn hình lưu bằng chứng.'];return [{c:'info',t:'🧠 CÂU HỎI NGẪU NHIÊN:'},{c:'ok',t:'  '+qs[Math.floor(Math.random()*qs.length)]}];}
+};
+
+if (termInput) {
+    termInput.addEventListener('keydown',(e)=>{
+        if(e.key!=='Enter')return;
+        const raw=termInput.value.trim();termInput.value='';
+        if(!raw)return;
+        const parts=raw.split(' ');const cmd=parts[0].toLowerCase();const args=parts.slice(1).join(' ');
+        const il=document.createElement('div');il.className='t-line';
+        il.innerHTML=`<span class="t-prompt">hocsinh@antoanmang:~$&nbsp;</span><span class="t-cmd">${raw}</span>`;
+        termBody.insertBefore(il,termBody.lastElementChild);
+        let output=[];
+        if(cmd==='clear'){const last=termBody.lastElementChild;termBody.innerHTML='';termBody.appendChild(last);return;}
+        else if(CMD[cmd])output=CMD[cmd]();
+        else if(cmd==='matkhau'){
+            if(!args)output=[{c:'err',t:'  Cách dùng: matkhau <mật_khẩu>'}];
+            else{const sc=[args.length>=8,/[A-Z]/.test(args),/[a-z]/.test(args),/[0-9]/.test(args),/[^A-Za-z0-9]/.test(args)].filter(Boolean).length;
+            const lv=['Rất yếu','Yếu','Trung bình','Mạnh','Rất mạnh'];
+            output=[{c:'info',t:`  Kết quả độ mạnh mật khẩu "${args}":`},{c:sc>=4?'ok':'err',t:`  Độ mạnh: ${lv[Math.min(sc-1,4)]||'Đang nhập'}`},{c:'out',t:`  Độ dài: ${args.length} ký tự ${args.length>=12?'✅':'⚠️'}`}];}}
+        else output=[{c:'err',t:`  Lệnh '${cmd}' không tồn tại. Gõ 'help' để xem danh sách lệnh.`}];
+        output.forEach((line,i)=>setTimeout(()=>{const d=document.createElement('div');d.className='t-line';d.innerHTML=`<span class="t-${line.c}">${line.t}</span>`;termBody.insertBefore(d,termBody.lastElementChild);termBody.scrollTop=termBody.scrollHeight;},i*40));
+    });
+}
+
+// === PASSWORD CHECKER ===
+function checkPw(){
+    const pw=document.getElementById('password-input').value;
+    const bar=document.getElementById('pw-bar');const txt=document.getElementById('pw-strength-text');
+    const checks={len:pw.length>=8,upper:/[A-Z]/.test(pw),lower:/[a-z]/.test(pw),num:/[0-9]/.test(pw),sym:/[^A-Za-z0-9]/.test(pw),long:pw.length>=12};
+    Object.entries(checks).forEach(([k,v])=>{const el=document.getElementById('chk-'+k);if(!el)return;el.className='pw-check'+(v?' ok':'');el.querySelector('i').className=v?'fas fa-circle-check':'fas fa-circle-xmark';});
+    const score=Object.values(checks).filter(Boolean).length;
+    const lvls=[{min:0,label:'Chưa nhập',color:'var(--muted)',w:0},{min:1,label:'😰 Rất yếu',color:'#ef4444',w:16},{min:2,label:'😟 Yếu',color:'#f97316',w:33},{min:3,label:'😐 Trung bình',color:'#fbbf24',w:50},{min:4,label:'🙂 Mạnh',color:'#84cc16',w:75},{min:5,label:'😎 Rất mạnh',color:'#10b981',w:90},{min:6,label:'🔥 Cực mạnh!',color:'#06b6d4',w:100}];
+    const lvl=[...lvls].reverse().find(l=>score>=l.min);
+    bar.style.width=lvl.w+'%';bar.style.background=lvl.color;txt.textContent=pw?lvl.label:'Chưa nhập';txt.style.color=lvl.color;
+    const ct=document.getElementById('crack-time');
+    if(!pw){ct.textContent='—';return;}
+    let cs=0;if(/[a-z]/.test(pw))cs+=26;if(/[A-Z]/.test(pw))cs+=26;if(/[0-9]/.test(pw))cs+=10;if(/[^A-Za-z0-9]/.test(pw))cs+=33;
+    const s=Math.pow(cs,pw.length)/1e10;
+    if(s<1)ct.textContent='Tức thì ⚡';
+    else if(s<60)ct.textContent=Math.ceil(s)+' giây';
+    else if(s<3600)ct.textContent=Math.ceil(s/60)+' phút';
+    else if(s<86400)ct.textContent=Math.ceil(s/3600)+' giờ';
+    else if(s<31536000)ct.textContent=Math.ceil(s/86400)+' ngày';
+    else if(s<31536000*1000)ct.textContent=Math.ceil(s/31536000).toLocaleString()+' năm 🔒';
+    else ct.textContent='∞ — Không thể bẻ khóa! 🔒🔒🔒';
+}
+function togglePwEye(){const inp=document.getElementById('password-input');const ico=document.getElementById('pw-eye-icon');inp.type=inp.type==='password'?'text':'password';ico.className=inp.type==='password'?'fas fa-eye':'fas fa-eye-slash';}
+function generatePw(){const len=parseInt(document.getElementById('pw-len-slider').value);let chars='';if(document.getElementById('gen-upper').checked)chars+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';if(document.getElementById('gen-lower').checked)chars+='abcdefghijklmnopqrstuvwxyz';if(document.getElementById('gen-num').checked)chars+='0123456789';if(document.getElementById('gen-sym').checked)chars+='!@#$%^&*()-_=+';if(!chars){showToast('yellow','Chọn ít nhất 1 loại ký tự!','');return;}let pw='';for(let i=0;i<len;i++)pw+=chars[Math.floor(Math.random()*chars.length)];document.getElementById('pw-generated').textContent=pw;}
+function copyPw(){const txt=document.getElementById('pw-generated').textContent;if(txt.includes('Nhấn')){showToast('yellow','Chưa có mật khẩu!','Hãy tạo mật khẩu trước.');return;}navigator.clipboard.writeText(txt).then(()=>showToast('green','Đã sao chép!','Mật khẩu đã được sao chép.'));}
+
+// === SCAM DETECTOR ===
+const SCAM_MSGS=[
+    {sender:'🔔 Thông báo hệ thống',text:'Chúc mừng! Bạn là người dùng thứ 1.000.000! Nhấn vào đây ngay để nhận iPhone 16 Pro miễn phí! Chỉ còn 5 phút!',isScam:true,explain:'🚩 Lừa đảo! Không ai tự nhiên cho bạn iPhone. Câu "chỉ còn 5 phút" là chiêu tạo áp lực điển hình. Đóng tab ngay!'},
+    {sender:'👩 Mẹ',text:'Con ơi, mẹ đang ở siêu thị. Khoảng 30 phút nữa mẹ về. Con nhớ dọn bàn học nhé!',isScam:false,explain:'✅ An toàn! Tin nhắn bình thường từ người thân. Không có yêu cầu tiền bạc hay thông tin.'},
+    {sender:'💬 Hỗ trợ Roblox',text:'Tài khoản của bạn vi phạm điều khoản. Click ngay vào link bit.ly/xxx để xác minh trong 24h hoặc tài khoản bị xóa vĩnh viễn!',isScam:true,explain:'🚩 Lừa đảo! Roblox không bao giờ gửi cảnh báo qua tin nhắn cá nhân. Link bit.ly rút gọn rất đáng ngờ.'},
+    {sender:'🎣 Thầy Minh (GVCN)',text:'Các em ơi, ngày mai lớp mình có tiết kiểm tra Văn. Các em ôn lại bài thơ "Đất nước" nhé!',isScam:false,explain:'✅ An toàn! Thông báo học tập bình thường từ giáo viên. Không có gì đáng ngờ.'},
+    {sender:'💰 Ngân hàng VCB',text:'Tài khoản của bạn vừa bị trừ 5.000.000đ. Nếu không phải bạn, hãy xác nhận OTP: 847291 để hoàn tiền ngay!',isScam:true,explain:'🚩 Lừa đảo rất nguy hiểm! Ngân hàng KHÔNG BAO GIỜ hỏi OTP qua tin nhắn. Đây là chiêu đánh cắp OTP để rút tiền!'},
+    {sender:'🎮 Bạn Nam (lớp bạn)',text:'Ê, chiều nay mày có rảnh không? Tụi tao định ra sân đá bóng, mày đi không?',isScam:false,explain:'✅ An toàn! Tin nhắn bình thường từ bạn bè, không có gì bất thường.'}
+];
+let scamAnswered=new Array(SCAM_MSGS.length).fill(false),scamCorrect=0;
+function renderScam(){const c=document.getElementById('scam-messages');if(!c)return;c.innerHTML='';SCAM_MSGS.forEach((msg,i)=>{const card=document.createElement('div');card.className='scam-msg-card';card.id='sc-'+i;card.innerHTML=`<div class="scam-msg-sender">${msg.sender}</div><div class="scam-msg-text">${msg.text}</div><div class="scam-msg-btns"><button class="scam-btn-safe" onclick="answerScam(${i},false)">✅ An toàn</button><button class="scam-btn-scam" onclick="answerScam(${i},true)">🚨 Lừa đảo!</button></div><div class="scam-feedback" id="sfb-${i}"></div>`;c.appendChild(card);});}
+function answerScam(idx,guessScam){if(scamAnswered[idx])return;scamAnswered[idx]=true;const msg=SCAM_MSGS[idx];const correct=guessScam===msg.isScam;if(correct)scamCorrect++;const card=document.getElementById('sc-'+idx);card.querySelectorAll('.scam-msg-btns button').forEach(b=>b.disabled=true);const fb=document.getElementById('sfb-'+idx);fb.className='scam-feedback '+(correct?'ok':'ng');fb.innerHTML=`<strong>${correct?'🎉 Chính xác!':'❌ Sai rồi.'}</strong> ${msg.explain}`;fb.style.display='block';if(scamAnswered.every(Boolean)){const pct=Math.round(scamCorrect/SCAM_MSGS.length*100);const r=document.getElementById('scam-result');r.style.display='block';document.getElementById('scam-result-title').textContent=`${pct>=80?'🏆':'📚'} Kết quả: ${scamCorrect}/${SCAM_MSGS.length} chính xác!`;document.getElementById('scam-result-desc').textContent=pct>=80?'Xuất sắc! Bạn là thám tử lừa đảo giỏi!':'Hãy đọc lại bài về lừa đảo mạng để nhận biết tốt hơn!';}}
+function resetScam(){scamAnswered=new Array(SCAM_MSGS.length).fill(false);scamCorrect=0;document.getElementById('scam-result').style.display='none';renderScam();}
+renderScam();
+
+// === URL CHECKER ===
+function analyzeURL(){
+    const url=document.getElementById('url-input').value.trim();
+    if(!url){showToast('yellow','Nhập URL!','Vui lòng nhập URL để phân tích.');return;}
+    const flags=[];
+    const isHTTPS=url.startsWith('https://');
+    const domain=url.replace(/https?:\/\//,'').split('/')[0].split('?')[0];
+    const tld=domain.split('.').pop().toLowerCase();
+    const suspTLDs=['tk','ml','ga','cf','gq','xyz','top','click'];
+    const suspKeywords=['login','verify','secure','account','update','bank','confirm','password','free','win','prize'];
+    const hasSuspTLD=suspTLDs.includes(tld);
+    const hasSuspKw=suspKeywords.some(k=>url.toLowerCase().includes(k));
+    const hasIPAddr=/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.test(domain);
+    const isEduGov=domain.endsWith('.edu.vn')||domain.endsWith('.gov.vn')||['google.com','youtube.com','facebook.com','roblox.com','microsoft.com'].some(d=>domain===d||domain.endsWith('.'+d));
+    let riskScore=0;
+    if(!isHTTPS){flags.push({icon:'⚠️',text:'Không có HTTPS — kết nối không được mã hóa, dữ liệu có thể bị đánh cắp!',bad:true});riskScore+=2;}
+    else flags.push({icon:'✅',text:'HTTPS được bật — kết nối được mã hóa (bước đầu tốt, nhưng chưa đủ).',bad:false});
+    if(hasSuspTLD){flags.push({icon:'🚩',text:`Tên miền .${tld} — domain miễn phí thường được dùng để lừa đảo!`,bad:true});riskScore+=3;}
+    if(hasIPAddr){flags.push({icon:'🚨',text:'Sử dụng địa chỉ IP thay vì tên miền — rất đáng ngờ!',bad:true});riskScore+=3;}
+    if(hasSuspKw){flags.push({icon:'🔴',text:'URL chứa từ khóa đáng ngờ (login, verify, bank, free...) — hãy cảnh giác!',bad:true});riskScore+=2;}
+    if(isEduGov){flags.push({icon:'🎓',text:'Domain chính thức (.edu.vn, .gov.vn) hoặc website lớn uy tín.',bad:false});riskScore=Math.max(0,riskScore-3);}
+    const safe=riskScore<=1;
+    const warning=riskScore<=3&&riskScore>1;
+    const res=document.getElementById('url-result');
+    res.className='url-check-result '+(safe?'safe':warning?'warning':'danger');
+    res.style.display='block';
+    res.innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><span style="font-size:2rem;">${safe?'✅':warning?'⚠️':'🚨'}</span><div><div style="font-weight:900;font-size:1.1rem;color:${safe?'#6ee7b7':warning?'#fde68a':'#fca5a5'}">${safe?'URL Này Có Vẻ An Toàn':warning?'Cần Cảnh Giác':'Đây Có Vẻ Là URL Giả Mạo!'}</div><div style="color:var(--muted);font-size:.85rem;">URL: ${url.substring(0,60)}${url.length>60?'...':''}</div></div></div>${flags.map(f=>`<div class="url-flag"><span class="url-flag-icon">${f.icon}</span><span style="color:${f.bad?'#fca5a5':'#6ee7b7'}">${f.text}</span></div>`).join('')}<div style="margin-top:14px;padding:12px 16px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.2);border-radius:10px;font-size:.83rem;color:#67e8f9;">💡 Nhớ: HTTPS chỉ là mã hóa kết nối, không đảm bảo website là hợp pháp! Luôn kiểm tra tên miền thật chính xác.</div>`;
+}
+
+// === SERVER DEFENSE ===
+const ATTACKS=[
+    {type:'📧 Email hợp lệ',detail:'support@school.edu.vn → Yêu cầu cập nhật trình duyệt',safe:true,explain:'Email từ domain .edu.vn hợp lệ, nội dung bình thường.'},
+    {type:'🚨 SQL Injection',detail:'IP 45.33.32.156 gửi: SELECT * FROM users WHERE 1=1--',safe:false,explain:'SQL Injection cố tìm cách đánh cắp toàn bộ dữ liệu. Phải chặn ngay!'},
+    {type:'👤 Đăng nhập bình thường',detail:'user123@gmail.com đăng nhập từ IP Việt Nam',safe:true,explain:'Truy cập hợp lệ từ tài khoản đã đăng ký, IP Việt Nam.'},
+    {type:'🚨 DDoS Attack',detail:'50.000 requests/giây từ botnet 185.x.x.x',safe:false,explain:'Tấn công DDoS cố làm server quá tải và ngừng hoạt động. Chặn ngay!'},
+    {type:'📄 Upload file',detail:'hocsinh01 upload: baitap-van.docx (45KB)',safe:true,explain:'File Word bình thường từ tài khoản học sinh đã xác minh.'},
+    {type:'☠️ Upload Malware',detail:'anonymous upload: update.exe (2.1MB) — chữ ký số không hợp lệ',safe:false,explain:'File .exe từ người dùng ẩn danh là dấu hiệu malware rõ ràng!'},
+    {type:'🌐 Tra cứu bài học',detail:'GET /api/bai-hoc/toan-lop8 — học sinh đã đăng nhập',safe:true,explain:'Truy cập nội dung học tập bình thường sau khi đăng nhập.'},
+    {type:'🚨 Brute Force',detail:'IP 103.45.67.89: 500 lần thử mật khẩu admin trong 60giây',safe:false,explain:'Tấn công brute force cố đoán mật khẩu administrator. Chặn IP này ngay!'},
+];
+let srvHP=100,srvScore=0,srvIdx=0;
+function startServer(){
+    srvHP=100;srvScore=0;srvIdx=0;
+    document.getElementById('srv-start-btn').style.display='none';
+    document.getElementById('srv-result').style.display='none';
+    document.getElementById('srv-hp').style.width='100%';
+    document.getElementById('srv-hp-num').textContent='100 HP';
+    document.getElementById('attack-feed').innerHTML='';
+    loadAttack();
+}
+function loadAttack(){
+    if(srvIdx>=ATTACKS.length||srvHP<=0){showSrvResult();return;}
+    const a=ATTACKS[srvIdx];
+    const item=document.createElement('div');
+    item.className='attack-item';item.id='atk-'+srvIdx;
+    item.innerHTML=`<div class="attack-info"><div class="attack-type">${a.type}</div><div class="attack-detail">${a.detail}</div></div><div class="attack-btns"><button class="attack-allow" onclick="respondAttack(${srvIdx},true)">✅ Đồng ý</button><button class="attack-block" onclick="respondAttack(${srvIdx},false)">🚫 Chặn</button></div>`;
+    document.getElementById('attack-feed').insertBefore(item,document.getElementById('attack-feed').firstChild);
+}
+function respondAttack(idx,allow){
+    const a=ATTACKS[idx];const item=document.getElementById('atk-'+idx);
+    const correct=(allow===a.safe);
+    if(correct)srvScore+=10;
+    else{srvHP=Math.max(0,srvHP-(a.safe?5:20));document.getElementById('srv-hp').style.width=srvHP+'%';document.getElementById('srv-hp-num').textContent=srvHP+' HP';}
+    item.classList.add('processed');
+    item.innerHTML+=`<div style="margin-top:8px;padding:8px 12px;border-radius:8px;font-size:.82rem;background:${correct?'rgba(16,185,129,.1)':'rgba(239,68,68,.1)'};color:${correct?'#6ee7b7':'#fca5a5'};border:1px solid ${correct?'rgba(16,185,129,.25)':'rgba(239,68,68,.25)'}">${correct?'✅ Chính xác!':'❌ Sai!'} ${a.explain}</div>`;
+    srvIdx++;
+    setTimeout(()=>loadAttack(),400);
+}
+function showSrvResult(){
+    const r=document.getElementById('srv-result');
+    r.style.display='block';
+    r.innerHTML=`<h3 id="scam-result-title">${srvHP>0?'🏆 Bảo vệ server thành công!':'💥 Server bị tấn công!'}</h3><p id="scam-result-desc">Điểm: ${srvScore}/80. ${srvScore>=60?'Xuất sắc! Bạn làm quản trị viên giỏi!':'Hãy học thêm về các loại tấn công mạng!'}</p><button class="game-btn" style="margin-top:12px;" onclick="startServer()">🔄 Thử lại</button>`;
+    document.getElementById('srv-start-btn').style.display='inline-flex';
+}
+
+// === PLEDGE ===
+const PLEDGES=[
+    '🔒 Tôi sẽ bảo vệ thông tin cá nhân: không chia sẻ địa chỉ, số điện thoại, ảnh riêng tư với người lạ.',
+    '💬 Tôi sẽ giao tiếp lịch sự, tôn trọng mọi người trên mạng lẫn ngoài đời.',
+    '🔎 Tôi sẽ kiểm tra thông tin trước khi chia sẻ — không lan truyền tin giả.',
+    '🚫 Tôi sẽ không tham gia bắt nạt người khác trên mạng, và lên tiếng khi thấy bạn bị bắt nạt.',
+    '🗣️ Tôi sẽ chia sẻ với bố mẹ hoặc thầy/cô khi gặp điều đáng ngờ trên mạng.',
+    '⏰ Tôi sẽ cân bằng thời gian online — không để mạng xã hội chiếm hết cuộc sống.',
+    '📚 Tôi sẽ sử dụng AI như công cụ học tập, không để AI làm bài thay cho mình.',
+    '🔑 Tôi sẽ dùng mật khẩu mạnh và không chia sẻ mật khẩu với ai, kể cả bạn thân.',
+    '🤔 Tôi sẽ dừng lại và suy nghĩ trước khi hành động với bất kỳ thông tin đáng ngờ nào.',
+    '🌟 Tôi cam kết trở thành một công dân số có trách nhiệm, góp phần làm internet an toàn hơn.'
+];
+let pledgeChecked=new Array(PLEDGES.length).fill(false);
+(function renderPledge(){const c=document.getElementById('pledge-items');if(!c)return;c.innerHTML='';PLEDGES.forEach((p,i)=>{const item=document.createElement('div');item.className='pledge-item'+(pledgeChecked[i]?' checked':'');item.onclick=()=>{pledgeChecked[i]=!pledgeChecked[i];renderPledge2();};item.innerHTML=`<div class="pledge-checkbox">${pledgeChecked[i]?'✓':''}</div><div class="pledge-text">${p}</div>`;c.appendChild(item);});updatePledgeScore();})();
+function renderPledge2(){const c=document.getElementById('pledge-items');if(!c)return;Array.from(c.children).forEach((item,i)=>{item.className='pledge-item'+(pledgeChecked[i]?' checked':'');item.querySelector('.pledge-checkbox').textContent=pledgeChecked[i]?'✓':'';});updatePledgeScore();}
+function updatePledgeScore(){const count=pledgeChecked.filter(Boolean).length;const el=document.getElementById('pledge-score-num');const msg=document.getElementById('pledge-score-msg');const badge=document.getElementById('pledge-badge');if(el)el.textContent=count+'/'+PLEDGES.length;const msgs=['Hãy đọc và tích vào từng cam kết!','Tốt lắm, tiếp tục nhé!','Bạn đang làm rất tốt!','Gần xong rồi, cố lên!','🎉 Xuất sắc! Đã hoàn thành!'];if(msg)msg.textContent=msgs[Math.min(Math.floor(count/PLEDGES.length*4),4)];if(badge)badge.style.display=count===PLEDGES.length?'inline-block':'none';if(count===PLEDGES.length)showToast('green','🏅 Chúc mừng!','Bạn đã hoàn thành Bản cam kết Công dân số!');}
+</script>
+</body>
+</html>
+`;
+
+fs.writeFileSync('C:\\Users\\ADMIN\\.gemini\\antigravity\\scratch\\cybersecurity-web\\simulation.html', htmlContent, 'utf8');
+console.log('Successfully written simulation.html with CTF 5 pillars!')

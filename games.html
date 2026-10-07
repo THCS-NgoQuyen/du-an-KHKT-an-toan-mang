@@ -1,0 +1,4228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi An Toàn Mạng — THCS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="loader"><div class="loader-emoji">🎯</div><div class="loader-title">TRÒ CHƠI</div><div class="loader-sub" id="loader-text">Đang tải...</div><div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div></div>
+<div class="toast-container" id="toast-container"></div>
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><span>🛡️</span> AN TOÀN MẠNG</a>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">🏠 Trang chủ</a></li>
+        <li><a href="cong-dan-so.html">🌐 Công dân số</a></li>
+        <li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li>
+        <li><a href="lua-dao-mang.html">⚠️ Lừa đảo</a></li>
+        <li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li>
+        <li><a href="sach-dien-tu.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(139,92,246,.35);">📖 Sách 3D</a></li>
+        <li><a href="simulation.html" class="nav-sim">🎮 Giả Lập &amp; CTF</a></li>
+        <li><a href="games.html" class="nav-sim active" style="background:linear-gradient(135deg,#f59e0b,#f97316);">🎯 Trò Chơi</a></li>
+        <li><a href="khao-sat.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(99,102,241,.35);">📋 Khảo Sát 32 Câu</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="hero hero-mini" style="min-height:38vh;">
+    <img src="assets/banner.jpg" alt="Trò chơi" class="hero-banner">
+    <div class="hero-overlay" style="background:linear-gradient(180deg,rgba(245,158,11,.25) 0%,rgba(15,10,30,.9) 100%);"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><span class="blink" style="color:#fde68a;">🟡</span> Học qua chơi — Vui mà có ích!</div>
+        <h1 class="hero-title" style="font-size:2.6rem;">🎯 Trò Chơi <span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Giáo Dục</span></h1>
+        <p class="hero-sub" style="font-size:1rem;">5 trò chơi thú vị giúp bạn học kỹ năng an toàn mạng một cách vui vẻ và hiệu quả!</p>
+    </div>
+</section>
+
+<section class="section" style="padding-top:50px;">
+    <!-- GAME SELECTION -->
+    <div class="section-header" style="margin-bottom:28px;">
+        <div class="section-tag tag-yellow reveal">🎮 CHỌỢN TRÒ CHƠI</div>
+        <h2 class="section-title reveal">Bạn Muốn <span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Chơi Gì Hôm Nay?</span></h2>
+    </div>
+    <div class="game-select-grid reveal" id="game-select-grid">
+        <div class="game-select-card active" id="gs-mega" onclick="loadGame('mega')">
+            <span class="gs-emoji">🛡️</span>
+            <div class="gs-name">Chiến Dịch Tường Lửa</div>
+            <div class="gs-diff" style="background:rgba(236,72,153,.25);color:#f472b6;font-weight:800;">🔥 SIÊU HOT</div>
+        </div>
+        <div class="game-select-card" id="gs-0" onclick="loadGame(0)">
+            <span class="gs-emoji">🔐</span>
+            <div class="gs-name">Mật Khẩu Chiến Binh</div>
+            <div class="gs-diff diff-easy">⭐ Dễ</div>
+        </div>
+        <div class="game-select-card" id="gs-1" onclick="loadGame(1)">
+            <span class="gs-emoji">📧</span>
+            <div class="gs-name">Thám Tử Email</div>
+            <div class="gs-diff diff-medium">⭐⭐ Trung bình</div>
+        </div>
+        <div class="game-select-card" id="gs-2" onclick="loadGame(2)">
+            <span class="gs-emoji">🧫</span>
+            <div class="gs-name">Tiêu Diệt Virus</div>
+            <div class="gs-diff diff-medium">⭐⭐ Trung bình</div>
+        </div>
+        <div class="game-select-card" id="gs-3" onclick="loadGame(3)">
+            <span class="gs-emoji">🔡</span>
+            <div class="gs-name">Giải Mã Bí Ẩn</div>
+            <div class="gs-diff diff-hard">⭐⭐⭐ Khó</div>
+        </div>
+        <div class="game-select-card" id="gs-4" onclick="loadGame(4)">
+            <span class="gs-emoji">⚡</span>
+            <div class="gs-name">Tốc Chiến An Toàn</div>
+            <div class="gs-diff diff-hard">⭐⭐⭐ Khó</div>
+        </div>
+    </div>
+
+    <!-- GAME AREAS -->
+
+    <!-- GAME MEGA: CHIẾN DỊCH TƯỜNG LỬA (CYBER DEFENDER: FIREWALL SIEGE) -->
+    <div class="game-area-wrap active" id="game-mega" style="max-width:920px;padding:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+            <div>
+                <h3 style="font-family:'Orbitron';font-size:1.35rem;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:10px;">
+                    <span>🛡️</span> CHIẾN DỊCH TƯỜNG LỬA <span style="font-size:0.75rem;padding:3px 10px;border-radius:50px;background:linear-gradient(135deg,#ec4899,#f43f5e);color:#fff;font-weight:800;">ENDLESS SURVIVOR &amp; ĐUA TOP</span>
+                </h3>
+                <p style="color:var(--muted);font-size:0.88rem;">Sinh tồn vô tận kiểu Vampire Survivors, diệt Boss mã độc tối thượng &amp; đua top điểm liên lớp!</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <div class="player-tag-pill" id="player-profile-pill">
+                    <span>👤</span> <span id="player-display-name">Chưa đăng nhập</span> (<span id="player-display-class">Lớp --</span>)
+                    <button class="player-change-btn" onclick="openCyberLoginModal()">[Đổi]</button>
+                </div>
+                <button class="game-btn-secondary" id="defense-sound-btn" onclick="toggleDefenseAudio()" style="padding:6px 14px;font-size:0.8rem;">
+                    <i class="fas fa-volume-high" id="defense-sound-icon"></i> Âm thanh: BẬT
+                </button>
+            </div>
+        </div>
+
+        <div class="cyber-defense-arena">
+            <!-- TOP HUD -->
+            <div class="defense-top-bar">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#f87171;"><i class="fas fa-server"></i> SERVER:</span>
+                    <div style="width:110px;height:12px;background:rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;border:1px solid rgba(255,255,255,0.2);">
+                        <div id="core-hp-bar" style="width:100%;height:100%;background:linear-gradient(90deg,#10b981,#06b6d4);border-radius:6px;transition:width 0.2s;"></div>
+                    </div>
+                    <span id="core-hp-text" style="font-size:0.78rem;color:#cbd5e1;">100/100</span>
+                </div>
+                <div style="color:#38bdf8;font-weight:800;"><i class="fas fa-star"></i> LV.<span id="defense-level">1</span></div>
+                <div style="color:#67e8f9;"><i class="fas fa-flag"></i> ĐỢT: <span id="defense-wave-num">1</span></div>
+                <div style="color:#fde68a;"><i class="fas fa-clock"></i> <span id="defense-survival-time">00:00</span></div>
+                <div style="color:#f472b6;"><i class="fas fa-coins"></i> <span id="defense-coins">0</span> 🪙</div>
+                <div style="color:#a78bfa;"><i class="fas fa-trophy"></i> <span id="defense-score">0</span> <span id="defense-combo-badge" style="font-size:0.75rem;color:#f472b6;font-weight:800;"></span></div>
+                <div>
+                    <button class="defense-shop-top-btn" onclick="openShopInGame()" title="Mở cửa hàng (Tạm dừng game)">
+                        <i class="fas fa-pause"></i> <i class="fas fa-cart-shopping"></i> SHOP
+                    </button>
+                </div>
+            </div>
+
+            <!-- EXP PROGRESS BAR (VAMPIRE SURVIVORS STYLE) -->
+            <div class="exp-bar-wrap" title="Thanh kinh nghiệm EXP: Thu thập hạt dữ liệu để mở khóa nâng cấp Vampire Survivors!">
+                <div class="exp-bar-fill" id="exp-bar-fill"></div>
+            </div>
+
+            <!-- ACTIVE SKILLS TRAY -->
+            <div class="active-skills-tray" id="active-skills-tray">
+                <span class="active-skills-label"><i class="fas fa-microchip"></i> KỸ NĂNG:</span>
+                <div class="active-skills-list" id="active-skills-list">
+                    <span style="font-size:0.75rem;color:#94a3b8;font-style:italic;">(Chưa có kỹ năng nào - Lên cấp để mở khóa)</span>
+                </div>
+            </div>
+
+            <!-- CANVAS CONTAINER -->
+            <div class="defense-canvas-container" id="defense-canvas-wrap">
+                <!-- Boss Health Bar -->
+                <div class="boss-health-bar-container" id="boss-hud-bar">
+                    <div class="boss-title-tag" id="boss-title-tag">⚠️ BOSS: WANNA-CRY 3.0 RANSOMWARE OVERLORD</div>
+                    <div class="boss-health-bar" id="boss-hp-inner"></div>
+                </div>
+
+                <canvas id="defense-canvas" width="870" height="460"></canvas>
+
+                <!-- VAMPIRE SURVIVORS 3-CARD LEVEL UP MODAL -->
+                <div class="vampire-upgrade-overlay" id="vampire-upgrade-modal">
+                    <div style="font-size:2.8rem;margin-bottom:2px;" id="vampire-modal-icon">⚡</div>
+                    <div class="vampire-upgrade-title" id="vampire-modal-title">HỆ THỐNG NÂNG CẤP ĐỘT PHÁ!</div>
+                    <div class="vampire-upgrade-sub" id="vampire-modal-sub">Chọn 1 trong 3 công nghệ an ninh để tăng cường sức mạnh chiến đấu</div>
+                    <div class="vampire-cards-grid" id="vampire-cards-grid">
+                        <!-- 3 Cards dynamic -->
+                    </div>
+                </div>
+
+                <!-- STUDENT LOGIN / PLAYER REGISTRATION MODAL -->
+                <div class="defense-modal-overlay" id="cyber-login-modal" style="display:none;z-index:40;">
+                    <div class="cyber-login-box">
+                        <div style="font-size:3.2rem;margin-bottom:8px;">🎖️</div>
+                        <h3 style="font-family:'Orbitron';font-size:1.35rem;color:#38bdf8;margin-bottom:6px;">ĐĂNG NHẬP ĐUA TOP</h3>
+                        <p style="color:#94a3b8;font-size:0.86rem;margin-bottom:18px;">Nhập họ tên và lớp của bạn để tham gia thi đua điểm giữa các lớp trên toàn trường!</p>
+                        <input type="text" id="input-player-name" class="cyber-login-input" placeholder="Họ và tên học sinh (vd: Nguyễn Minh Quân)" maxlength="35">
+                        <input type="text" id="input-player-class" class="cyber-login-input" placeholder="Lớp học (vd: 9A, 9B, 8A, 8B, 7A, 6B...)" maxlength="10">
+                        <button class="game-btn" onclick="savePlayerLoginAndStart()" style="width:100%;margin-top:6px;font-size:1rem;padding:12px;">
+                            <i class="fas fa-play"></i> VÀO CHIẾN ĐẤU &amp; GHI DANH
+                        </button>
+                    </div>
+                </div>
+
+                <!-- START MODAL OVERLAY -->
+                <div class="defense-modal-overlay" id="defense-start-modal">
+                    <div style="font-size:3.5rem;margin-bottom:8px;">🛡️</div>
+                    <h2 style="font-family:'Orbitron';font-size:1.6rem;color:#fff;margin-bottom:8px;">CHIẾN DỊCH TƯỜNG LỬA</h2>
+                    <div style="display:inline-block;padding:4px 14px;background:rgba(236,72,153,0.2);border:1px solid #ec4899;border-radius:50px;color:#f472b6;font-weight:800;font-size:0.8rem;margin-bottom:14px;">
+                        🔥 CHẾ ĐỘ SINH TỒN VÔ TẬN (ENDLESS SURVIVOR)
+                    </div>
+                    <p style="color:#cbd5e1;max-width:540px;margin-bottom:18px;line-height:1.6;font-size:0.92rem;">
+                        Chiến đấu chống lại các làn sóng mã độc vô tận! Thu thập hạt EXP để mở khóa 12+ nâng cấp phong cách <em>Vampire Survivors</em> (Tia Sét Lan, Vệ Tinh Lượng Tử, Mìn Tường Lửa, Nam Châm Dữ Liệu...) và chinh phục các Siêu Boss cực mạnh!
+                    </p>
+                    <div style="display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;justify-content:center;">
+                        <span style="font-size:0.8rem;background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);color:#cbd5e1;">🖱️ Rê chuột ngắm</span>
+                        <span style="font-size:0.8rem;background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);color:#cbd5e1;">🎯 Giữ chuột để Bắn</span>
+                        <span style="font-size:0.8rem;background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);color:#cbd5e1;">[1][2][3] Đổi Vũ Khí</span>
+                        <span style="font-size:0.8rem;background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.15);color:#cbd5e1;">[SPACE] Khiên AI</span>
+                    </div>
+                    <button class="game-btn" onclick="checkLoginBeforeStart()" style="font-size:1.1rem;padding:14px 42px;box-shadow:0 0 25px rgba(124,58,237,0.6);">
+                        <i class="fas fa-play"></i> BẮT ĐẦU CHIẾN ĐẤU
+                    </button>
+                </div>
+
+                <!-- SHOP / WAVE CLEAR MODAL -->
+                <div class="defense-modal-overlay" id="defense-shop-modal" style="display:none;">
+                    <div style="font-size:2.8rem;margin-bottom:6px;">🎉</div>
+                    <h3 style="font-family:'Orbitron';font-size:1.4rem;color:#34d399;margin-bottom:4px;" id="shop-wave-title">VƯỢT QUA ĐỢT THÀNH CÔNG!</h3>
+                    <div id="shop-cyber-tip" style="max-width:540px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);border-radius:12px;padding:12px 18px;margin-bottom:16px;font-size:0.88rem;color:#67e8f9;line-height:1.5;"></div>
+                    <div style="color:#fde68a;font-family:'Orbitron';font-size:1.1rem;font-weight:800;margin-bottom:8px;">
+                        Số dư: <span id="shop-coin-balance">0</span> Cyber Coins 🪙
+                    </div>
+                    <div class="defense-shop-grid">
+                        <div class="defense-shop-card" id="shop-up-firerate" onclick="buyDefenseUpgrade('firerate')">
+                            <div class="shop-card-header">
+                                <span style="font-weight:800;color:#fff;">⚡ Tăng Tốc Bắn (+35%)</span>
+                                <span class="shop-card-cost" id="cost-firerate">30 Coins</span>
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--muted);margin:0;">Tăng tốc độ nhả đạn của Tường Lửa giúp diệt nhanh các đợt bão DDoS!</p>
+                        </div>
+                        <div class="defense-shop-card" id="shop-up-dual" onclick="buyDefenseUpgrade('dual')">
+                            <div class="shop-card-header">
+                                <span style="font-weight:800;color:#fff;">💥 Tia Laser Kép (Dual)</span>
+                                <span class="shop-card-cost" id="cost-dual">50 Coins</span>
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--muted);margin:0;">Bắn đồng thời 2 tia laser song song, tăng gấp đôi hỏa lực quét diện rộng!</p>
+                        </div>
+                        <div class="defense-shop-card" id="shop-up-repair" onclick="buyDefenseUpgrade('repair')">
+                            <div class="shop-card-header">
+                                <span style="font-weight:800;color:#fff;">🛡️ Sửa &amp; Gia Cố Server (+40 HP)</span>
+                                <span class="shop-card-cost" id="cost-repair">35 Coins</span>
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--muted);margin:0;">Hồi phục và tăng thêm lượng máu tối đa cho Máy Chủ Dữ Liệu!</p>
+                        </div>
+                        <div class="defense-shop-card" id="shop-up-drone" onclick="buyDefenseUpgrade('drone')">
+                            <div class="shop-card-header">
+                                <span style="font-weight:800;color:#fff;">🤖 Vệ Binh AI Tự Động</span>
+                                <span class="shop-card-cost" id="cost-drone">65 Coins</span>
+                            </div>
+                            <p style="font-size:0.8rem;color:var(--muted);margin:0;">Triệu hồi Drone AI bay xung quanh máy chủ tự động bắn hạ mã độc!</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:15px;">
+                        <button class="game-btn" onclick="closeShopAndResume()" style="padding:12px 35px;font-size:1rem;background:linear-gradient(135deg,#10b981,#06b6d4);">
+                            <i class="fas fa-play"></i> TIẾP TỤC CHIẾN ĐẤU
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GAME OVER MODAL -->
+                <div class="defense-modal-overlay" id="defense-end-modal" style="display:none;">
+                    <div id="end-modal-emoji" style="font-size:3.8rem;margin-bottom:6px;">💥</div>
+                    <h2 style="font-family:'Orbitron';font-size:1.7rem;margin-bottom:6px;" id="end-modal-title">KẾT THÚC LƯỢT ĐẤU</h2>
+                    <div style="font-family:'Orbitron';font-size:2.2rem;font-weight:900;color:#fde68a;margin-bottom:4px;" id="end-modal-score">0</div>
+                    <div style="display:flex;gap:16px;justify-content:center;color:#67e8f9;font-weight:700;margin-bottom:12px;font-size:0.9rem;" id="end-modal-stats">
+                        <span>Đợt: <strong id="end-stat-wave">1</strong></span>
+                        <span>Thời gian: <strong id="end-stat-time">00:00</strong></span>
+                        <span>Quái diệt: <strong id="end-stat-kills">0</strong></span>
+                    </div>
+                    <div id="end-modal-submission-status" style="font-size:0.85rem;color:#34d399;margin-bottom:16px;background:rgba(52,211,153,0.1);padding:6px 14px;border-radius:20px;border:1px solid rgba(52,211,153,0.25);">
+                        <i class="fas fa-check-circle"></i> Đang cập nhật điểm lên Bảng Xếp Hạng...
+                    </div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+                        <button class="game-btn" onclick="startCyberDefenderMatch()"><i class="fas fa-redo"></i> CHIẾN LẠI</button>
+                        <button class="game-btn-secondary" onclick="scrollToLeaderboard()"><i class="fas fa-trophy"></i> XEM BẢNG XẾP HẠNG</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTTOM WEAPON & SKILL DOCK -->
+            <div class="defense-bottom-bar">
+                <div class="weapon-dock">
+                    <div class="weapon-slot active" id="wep-slot-1" onclick="selectWeapon(1)" title="Phím 1: Tường lửa Laser cơ bản">
+                        <span class="slot-key">[PHÍM 1]</span>
+                        <span class="slot-name" style="color:#67e8f9;"><i class="fas fa-bolt"></i> Laser Tường Lửa</span>
+                    </div>
+                    <div class="weapon-slot" id="wep-slot-2" onclick="selectWeapon(2)" title="Phím 2: Tia đóng băng SSL (Chậm kẻ địch 60%)">
+                        <span class="slot-key">[PHÍM 2]</span>
+                        <span class="slot-name" style="color:#c084fc;"><i class="fas fa-snowflake"></i> Tia Mã Hóa SSL</span>
+                    </div>
+                    <div class="weapon-slot" id="wep-slot-3" onclick="triggerEmpNuke()" title="Phím 3: Sóng xung kích EMP quét sạch toàn màn hình!">
+                        <span class="slot-key">[PHÍM 3]</span>
+                        <span class="slot-name" style="color:#f472b6;"><i class="fas fa-radiation"></i> Xung Kích EMP (<span id="emp-ready-text">SẴN SÀNG</span>)</span>
+                    </div>
+                    <div class="weapon-slot" id="wep-slot-space" onclick="triggerAiShield()" title="Phím SPACE: Khiên năng lượng bảo vệ 5 giây">
+                        <span class="slot-key">[SPACE]</span>
+                        <span class="slot-name" style="color:#fde68a;"><i class="fas fa-shield"></i> Khiên AI (<span id="shield-ready-text">SẴN SÀNG</span>)</span>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn-primary" onclick="openShopInGame()" style="padding:8px 18px;font-size:0.84rem;border-radius:10px;">
+                        <i class="fas fa-cart-shopping"></i> NÂNG CẤP SHOP
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTER-CLASS LEADERBOARD SECTION -->
+        <div class="leaderboard-section" id="inter-class-leaderboard">
+            <div class="leaderboard-header">
+                <div>
+                    <h3 style="font-family:'Orbitron';font-size:1.15rem;color:#fde68a;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
+                        <span>🏆</span> ĐUA TOP AN NINH MẠNG LIÊN LỚP
+                    </h3>
+                    <p style="color:#94a3b8;font-size:0.82rem;margin:0;">Bảng vàng vinh danh các tập thể lớp và cá nhân xuất sắc nhất toàn trường</p>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <div class="leaderboard-tabs">
+                        <button class="lb-tab active" id="tab-btn-class" onclick="switchLeaderboardTab('class')">🏛️ Bảng Xếp Hạng Lớp</button>
+                        <button class="lb-tab" id="tab-btn-student" onclick="switchLeaderboardTab('student')">⭐ Top Cá Nhân</button>
+                    </div>
+                    <button class="game-btn-secondary" onclick="fetchGameLeaderboard()" style="padding:6px 12px;font-size:0.8rem;" title="Làm mới bảng điểm">
+                        <i class="fas fa-sync-alt" id="lb-refresh-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CLASS LEADERBOARD TABLE -->
+            <div id="lb-class-view" style="display:block;overflow-x:auto;">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="width:60px;">HẠNG</th>
+                            <th>LỚP</th>
+                            <th>TỔNG ĐIỂM</th>
+                            <th>ĐIỂM TRUNG BÌNH</th>
+                            <th>KỶ LỤC ĐỢT</th>
+                            <th>LƯỢT THI ĐẤU</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lb-class-tbody">
+                        <tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">Đang tải dữ liệu xếp hạng...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- STUDENT LEADERBOARD TABLE -->
+            <div id="lb-student-view" style="display:none;overflow-x:auto;">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="width:60px;">HẠNG</th>
+                            <th>HỌ VÀ TÊN</th>
+                            <th>LỚP</th>
+                            <th>ĐIỂM SỐ</th>
+                            <th>ĐỢT SỐNG SÓT</th>
+                            <th>THỜI GIAN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lb-student-tbody">
+                        <tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">Đang tải dữ liệu cá nhân...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME 0: MẬT KHẨU CHIẾN BINH -->
+    <div class="game-area-wrap" id="game-0">
+        <h3 style="font-family:'Orbitron';font-size:1.2rem;margin-bottom:8px;">🔐 Mật Khẩu Chiến Binh</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:22px;">Hãy chọn mật khẩu MẠNH hơn trong mỗi cặp! 10 vòng — ai đạt điểm cao nhất?</p>
+        <div class="game-hud">
+            <div class="hud-item hud-score">🏆 Điểm: <span id="pb-score">0</span></div>
+            <div class="hud-item hud-level">Vòng: <span id="pb-round">1</span>/10</div>
+            <div class="hud-item" style="color:#67e8f9;">Chọn mật khẩu mạnh hơn!</div>
+        </div>
+        <div class="pw-battle-arena" id="pb-arena">
+            <div class="pw-option" id="pb-a" onclick="pickPW(0)">
+                <div class="pw-option-label">Mật khẩu A</div>
+                <div class="pw-option-text" id="pb-pw-a">---</div>
+            </div>
+            <div class="pw-vs">VS</div>
+            <div class="pw-option" id="pb-b" onclick="pickPW(1)">
+                <div class="pw-option-label">Mật khẩu B</div>
+                <div class="pw-option-text" id="pb-pw-b">---</div>
+            </div>
+        </div>
+        <div class="pw-feedback" id="pb-feedback"></div>
+        <div style="text-align:center;margin-top:18px;">
+            <button class="game-btn" id="pb-next" onclick="nextPWRound()" style="display:none;">Vòng tiếp →</button>
+        </div>
+        <div class="game-result" id="pb-result" style="display:none;"></div>
+    </div>
+
+    <!-- GAME 1: THÁM TỬ EMAIL -->
+    <div class="game-area-wrap" id="game-1">
+        <h3 style="font-family:'Orbitron';font-size:1.2rem;margin-bottom:8px;">📧 Thám Tử Email</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:22px;">8 email xuất hiện, 15 giây mỗi email. Hãy phán đoán: <strong style="color:#6ee7b7;">An toàn</strong> hay <strong style="color:#fca5a5;">Lừa đảo</strong>?</p>
+        <div class="game-hud">
+            <div class="hud-item hud-score">🏆 Điểm: <span id="em-score">0</span></div>
+            <div class="hud-item hud-timer">⏱ <span id="em-timer">15</span>s</div>
+            <div class="hud-item hud-level">Email: <span id="em-num">1</span>/8</div>
+        </div>
+        <div class="timer-bar-bg"><div class="timer-bar" id="em-tbar" style="width:100%;"></div></div>
+        <div id="em-email-area"></div>
+        <div class="game-result" id="em-result" style="display:none;"></div>
+    </div>
+
+    <!-- GAME 2: TIÊU DIỆT VIRUS -->
+    <div class="game-area-wrap" id="game-2">
+        <h3 style="font-family:'Orbitron';font-size:1.2rem;margin-bottom:8px;">🧫 Tiêu Diệt Virus</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;">Click vào các <strong style="color:#f87171;">🧫 Virus</strong> để tiêu diệt! Đừng click vào <strong style="color:#6ee7b7;">📄 File an toàn</strong>. 30 giây!</p>
+        <div class="game-hud">
+            <div class="hud-item hud-score">🏆 Điểm: <span id="vb-score">0</span></div>
+            <div class="hud-item hud-timer">⏱ <span id="vb-timer">30</span>s</div>
+            <div class="hud-item hud-hp">❤️ Máu: <div class="hp-bar-bg" style="display:inline-block;width:100px;vertical-align:middle;"><div class="hp-bar" id="vb-hp" style="width:100%;"></div></div></div>
+        </div>
+        <canvas id="game-canvas" width="820" height="340"></canvas>
+        <div class="game-result" id="vb-result" style="display:none;"></div>
+    </div>
+
+    <!-- GAME 3: GIẢI MÃ BÍ ẨN -->
+    <div class="game-area-wrap" id="game-3">
+        <h3 style="font-family:'Orbitron';font-size:1.2rem;margin-bottom:8px;">🔡 Giải Mã Bí Ẩn (Caesar Cipher)</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:16px;">Mỉ mã Caesar dịch chuyển từng chữ trong bảng chữ cái. Hãy giải mã 3 tin nhắn bí ẩn!</p>
+        <div class="game-hud">
+            <div class="hud-item hud-score">🏆 Điểm: <span id="cp-score">0</span>/3</div>
+            <div class="hud-item hud-level">Tin nhắn: <span id="cp-num">1</span>/3</div>
+        </div>
+        <div style="padding:14px 18px;background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.25);border-radius:12px;margin-bottom:16px;font-size:.85rem;color:#67e8f9;">
+            💡 <strong>Hướng dẫn:</strong> Mã Caesar dịch chuyển mỗi chữ trong bảng chữ cái theo một số nhất định. Ví dụ: dịch +3 thì A→D, B→E, Z→C... Hãy thử các giá trị khác nhau và tìm đoạn nào có nghĩa!
+        </div>
+        <div class="cipher-display" id="cp-cipher">Loading...</div>
+        <div class="cipher-hint" id="cp-hint">Gợi ý: Dịch chuyển: <span id="cp-shift-hint" style="color:#a78bfa;">?</span></div>
+        <div class="cipher-input-row">
+            <input type="text" class="cipher-input" id="cp-answer" placeholder="Nhập câu trả lời đã giải mã...">
+            <button class="cipher-check-btn" onclick="checkCipher()">Kiểm tra ✓</button>
+        </div>
+        <div class="cipher-feedback" id="cp-feedback"></div>
+        <div style="text-align:center;margin-top:18px;">
+            <button class="game-btn-secondary" onclick="showCipherHint()" id="cp-hint-btn">💡 Xem gợi ý</button>
+        </div>
+        <div class="game-result" id="cp-result" style="display:none;"></div>
+    </div>
+
+    <!-- GAME 4: TỐC CHIẾN AN TOÀN -->
+    <div class="game-area-wrap" id="game-4">
+        <h3 style="font-family:'Orbitron';font-size:1.2rem;margin-bottom:8px;">⚡ Tốc Chiến An Toàn</h3>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:22px;">15 câu hỏi về an toàn mạng! 6 giây mỗi câu — chọn nhanh và chính xác để đạt điểm cao!</p>
+        <div class="game-hud">
+            <div class="hud-item hud-score">🏆 Điểm: <span id="sq-score">0</span></div>
+            <div class="hud-item hud-timer">⚡ <span id="sq-timer">6</span>s</div>
+            <div class="hud-item hud-level">Câu: <span id="sq-num">1</span>/15</div>
+        </div>
+        <div class="timer-bar-bg"><div class="timer-bar" id="sq-tbar" style="width:100%;"></div></div>
+        <div class="sprint-question" id="sq-question">Sẵn sàng chưa?</div>
+        <div class="sprint-options" id="sq-options"></div>
+        <div class="game-result" id="sq-result" style="display:none;"></div>
+    </div>
+</section>
+
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>🛡️ AN TOÀN MẠNG</h3><p>Trang web giáo dục miễn phí cho học sinh THCS Việt Nam.</p></div><div><h4>Nội dung học</h4><ul class="footer-links"><li><a href="cong-dan-so.html">🌐 Công dân số</a></li><li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li><li><a href="lua-dao-mang.html">⚠️ Lừa đảo mạng</a></li><li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li></ul></div><div><h4>Thực hành</h4><ul class="footer-links"><li><a href="simulation.html">🎮 Phòng Giả Lập</a></li><li><a href="games.html">🎯 Trò Chơi</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 An Toàn Mạng 🇻🇳</p></div></footer>
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+<script src="js/shared.js"></script>
+<script>
+// === GAME LOADER ===
+let activeGame = -1;
+function loadGame(id) {
+    if (activeGame === id) return;
+    activeGame = id;
+    document.querySelectorAll('.game-area-wrap').forEach(g => g.classList.remove('active'));
+    document.querySelectorAll('.game-select-card').forEach(c => c.classList.remove('active'));
+    
+    const targetGame = document.getElementById('game-' + id);
+    const targetCard = document.getElementById('gs-' + id);
+    if (targetGame) targetGame.classList.add('active');
+    if (targetCard) targetCard.classList.add('active');
+    
+    // Stop Cyber Defender if switching away
+    if (id !== 'mega' && typeof stopCyberDefender === 'function') {
+        stopCyberDefender();
+    }
+    
+    if (targetGame) {
+        targetGame.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    
+    if (id === 'mega') {
+        initCyberDefender();
+    } else {
+        const inits = [initPW, initEM, initVB, initCP, initSQ];
+        if (typeof id === 'number' && inits[id]) {
+            inits[id]();
+        }
+    }
+}
+
+// =========================================================================
+// === GAME MEGA: CHIẾN DỊCH TƯỜNG LỬA (CYBER DEFENDER: ENDLESS SURVIVOR) ===
+// =========================================================================
+let cdCanvas, cdCtx;
+let cdRunning = false;
+let cdAnimId = null;
+let cdWave = 1;
+let cdScore = 0;
+let cdCoins = 0;
+let cdCoreHp = 100;
+let cdMaxCoreHp = 100;
+let cdCombo = 0;
+let cdComboTimer = 0;
+let cdWeapon = 1; // 1: Plasma Laser, 2: Cryo Freeze Beam
+let cdEmpCooldown = 0; // ms remaining
+let cdEmpMaxCooldown = 25000;
+let cdShieldActive = false;
+let cdShieldTimer = 0;
+let cdShieldCooldown = 0;
+let cdShieldMaxCooldown = 20000;
+let cdLastShotTime = 0;
+let cdIsMouseDown = false;
+let cdMousePos = { x: 435, y: 150 };
+let cdScreenShake = 0;
+let cdAudioMuted = false;
+let cdAudioCtx = null;
+
+// Endless & Vampire Survivors Stats
+let cdSurvivalSeconds = 0;
+let cdSurvivalTimerInterval = null;
+let cdKills = 0;
+let cdLevel = 1;
+let cdExp = 0;
+let cdExpNext = 25;
+let cdIsLevelingUp = false;
+let cdIsPaused = false;
+let cdIsGameOver = false;
+let cdScoreSubmitted = false;
+let cdIsSubmittingScore = false;
+
+// Vampire Survivors Perks / Buffs (22 Unique Perks)
+let cdBuffs = {
+    chain_lightning: 0,
+    orbit_bits: 0,
+    cluster_mines: 0,
+    piercing_railgun: 0,
+    crit_overclock: 0,
+    nano_repair: 0,
+    data_magnet: 0,
+    frost_nova: 0,
+    quad_turret: 0,
+    berserk_core: 0,
+    spike_armor: 0,
+    crypto_miner: 0,
+    // 10 New Advanced Upgrades
+    firewall_flame: 0,
+    plasma_splash: 0,
+    homing_missiles: 0,
+    chrono_warp: 0,
+    corpse_explosion: 0,
+    super_capacitor: 0,
+    aegis_overcharge: 0,
+    laser_mirror: 0,
+    data_vortex: 0,
+    zero_day_oracle: 0
+};
+
+// Player Upgrades from Cyber Shop
+let cdUpgrades = {
+    firerate: 0,
+    dual: false,
+    repairCount: 0,
+    drone: false
+};
+let cdDroneAngle = 0;
+let cdDroneLastShot = 0;
+
+// Game Entities
+let cdProjectiles = [];
+let cdEnemies = [];
+let cdParticles = [];
+let cdFloatingTexts = [];
+let cdExpOrbs = [];
+let cdMines = [];
+let cdFireTrails = [];
+let cdHomingMissiles = [];
+let cdVortexes = [];
+let cdOrbitAngle = 0;
+let cdBoss = null;
+let cdSpawnQueue = [];
+let cdSpawnTimer = 0;
+let cdWaveActive = false;
+let cdLastNanoRepair = 0;
+let cdLastMineDrop = 0;
+let cdLastFrostNova = 0;
+let cdLastHomingShot = 0;
+let cdLastVortexSpawn = 0;
+let playerFrozenTimer = 0;
+let cdFallenEnemies = [];
+let cdUltimates = {};
+let cdLastUltSupernova = 0;
+let cdLastUltThunder = 0;
+let cdLastUltArmada = 0;
+
+// Student Profile / Login
+let cyberPlayer = {
+    name: '',
+    class: ''
+};
+
+function initPlayerProfile() {
+    const savedName = localStorage.getItem('cyber_player_name') || localStorage.getItem('survey_student_name') || '';
+    const savedClass = localStorage.getItem('cyber_player_class') || localStorage.getItem('survey_student_class') || '';
+    if (savedName && savedClass) {
+        cyberPlayer.name = savedName;
+        cyberPlayer.class = savedClass.toUpperCase();
+        updatePlayerProfileUI();
+    }
+}
+
+function updatePlayerProfileUI() {
+    const nameEl = document.getElementById('player-display-name');
+    const classEl = document.getElementById('player-display-class');
+    if (nameEl && classEl) {
+        if (cyberPlayer.name) {
+            nameEl.textContent = cyberPlayer.name;
+            classEl.textContent = `Lớp ${cyberPlayer.class}`;
+        } else {
+            nameEl.textContent = 'Chưa đăng nhập';
+            classEl.textContent = 'Lớp --';
+        }
+    }
+}
+
+function openCyberLoginModal() {
+    const modal = document.getElementById('cyber-login-modal');
+    const inputName = document.getElementById('input-player-name');
+    const inputClass = document.getElementById('input-player-class');
+    if (inputName) inputName.value = cyberPlayer.name || '';
+    if (inputClass) inputClass.value = cyberPlayer.class || '';
+    if (modal) modal.style.display = 'flex';
+}
+
+function savePlayerLoginAndStart() {
+    const inputName = document.getElementById('input-player-name');
+    const inputClass = document.getElementById('input-player-class');
+    const name = inputName ? inputName.value.trim() : '';
+    const cls = inputClass ? inputClass.value.trim().toUpperCase() : '';
+    
+    if (!name || !cls) {
+        alert('Vui lòng nhập đầy đủ Họ tên và Lớp học để tham gia đua top!');
+        return;
+    }
+    
+    cyberPlayer.name = name;
+    cyberPlayer.class = cls;
+    localStorage.setItem('cyber_player_name', name);
+    localStorage.setItem('cyber_player_class', cls);
+    updatePlayerProfileUI();
+    
+    document.getElementById('cyber-login-modal').style.display = 'none';
+    startCyberDefenderMatch();
+}
+
+function checkLoginBeforeStart() {
+    if (!cyberPlayer.name || !cyberPlayer.class) {
+        openCyberLoginModal();
+    } else {
+        startCyberDefenderMatch();
+    }
+}
+
+// Audio Synthesizer (Web Audio API)
+function initCdAudio() {
+    if (!cdAudioCtx) {
+        try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) cdAudioCtx = new AudioContext();
+        } catch(e) {}
+    }
+    if (cdAudioCtx && cdAudioCtx.state === 'suspended') {
+        cdAudioCtx.resume();
+    }
+}
+
+function playCdSound(type) {
+    if (cdAudioMuted || !cdAudioCtx) return;
+    try {
+        const now = cdAudioCtx.currentTime;
+        if (type === 'laser') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(180, now + 0.08);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.08);
+        } else if (type === 'freeze') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.linearRampToValueAtTime(1200, now + 0.12);
+            gain.gain.setValueAtTime(0.14, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.12);
+        } else if (type === 'boom') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(160, now);
+            osc.frequency.exponentialRampToValueAtTime(30, now + 0.25);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.25);
+        } else if (type === 'levelup') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+            osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+            osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.45);
+        } else if (type === 'emp') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, now);
+            osc.frequency.exponentialRampToValueAtTime(1600, now + 0.3);
+            osc.frequency.exponentialRampToValueAtTime(60, now + 0.7);
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.7);
+        } else if (type === 'coin') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(987, now);
+            osc.frequency.setValueAtTime(1318, now + 0.06);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        } else if (type === 'shield') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, now);
+            osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+            gain.gain.setValueAtTime(0.2, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.25);
+        } else if (type === 'alarm') {
+            const osc = cdAudioCtx.createOscillator();
+            const gain = cdAudioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(520, now);
+            osc.frequency.setValueAtTime(320, now + 0.1);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+            osc.connect(gain);
+            gain.connect(cdAudioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.2);
+        }
+    } catch(e) {}
+}
+
+function toggleDefenseAudio() {
+    initCdAudio();
+    cdAudioMuted = !cdAudioMuted;
+    const btn = document.getElementById('defense-sound-btn');
+    if (btn) {
+        if (cdAudioMuted) {
+            btn.innerHTML = '<i class="fas fa-volume-xmark" id="defense-sound-icon"></i> Âm thanh: TẮT';
+            btn.style.color = '#f87171';
+        } else {
+            btn.innerHTML = '<i class="fas fa-volume-high" id="defense-sound-icon"></i> Âm thanh: BẬT';
+            btn.style.color = '#34d399';
+            playCdSound('coin');
+        }
+    }
+}
+
+// =========================================================================
+// === VAMPIRE SURVIVORS ROGUELIKE BUFFS POOL (12+ UNIQUE PERKS) ===
+// =========================================================================
+const VAMPIRE_BUFFS_POOL = [
+    {
+        id: 'chain_lightning',
+        name: 'Sét Lan Truyền (Chain Lightning)',
+        type: 'weapon',
+        typeName: 'Vũ khí phụ',
+        icon: '⚡',
+        desc: 'Mỗi phát bắn laser phóng ra tia sét nảy qua 3-5 mục tiêu kế cận, gây 60% sát thương diện rộng.'
+    },
+    {
+        id: 'orbit_bits',
+        name: 'Vệ Tinh Lượng Tử (Quantum Shield)',
+        type: 'weapon',
+        typeName: 'Phòng thủ chủ động',
+        icon: '🪐',
+        desc: 'Triệu hồi 2-4 quả cầu hạt lượng tử bay xoay vòng quanh máy chủ, nghiền nát mọi mã độc dám áp sát.'
+    },
+    {
+        id: 'cluster_mines',
+        name: 'Mìn Tường Lửa (Cluster Mines)',
+        type: 'weapon',
+        typeName: 'Bẫy nổ diện rộng',
+        icon: '💣',
+        desc: 'Tự động rải 2 quả mìn nổ lan trên màn hình mỗi 4 giây. Quái chạm vào kích nổ gây sát thương diện rộng.'
+    },
+    {
+        id: 'piercing_railgun',
+        name: 'Pháo Xuyên Phá (Piercing Railgun)',
+        type: 'weapon',
+        typeName: 'Cường hóa đạn',
+        icon: '💥',
+        desc: 'Tia laser xuyên qua tối đa 3 tầng mã độc thay vì biến mất ở mục tiêu đầu tiên, quét sạch hàng dọc.'
+    },
+    {
+        id: 'crit_overclock',
+        name: 'Ép Xung Chí Mạng (Critical Overclock)',
+        type: 'passive',
+        typeName: 'Nội tại',
+        icon: '🎯',
+        desc: 'Tăng 30% tỉ lệ nổ bạo kích (Critical Hit) gây 250% sát thương cực đại lên bất kỳ mã độc nào.'
+    },
+    {
+        id: 'nano_repair',
+        name: 'Tự Sửa Chữa Nano (Nano Healing)',
+        type: 'passive',
+        typeName: 'Nội tại',
+        icon: '🩺',
+        desc: 'Công nghệ Nano tự động khôi phục +3 HP cho Máy Chủ mỗi 3 giây, giúp bạn sinh tồn bền bỉ hơn.'
+    },
+    {
+        id: 'data_magnet',
+        name: 'Nam Châm Dữ Liệu (Data Magnet)',
+        type: 'passive',
+        typeName: 'Hỗ trợ',
+        icon: '🧲',
+        desc: 'Tự động hút toàn bộ hạt EXP và Cyber Coins rơi trên màn hình về máy chủ mà không cần chờ đợi.'
+    },
+    {
+        id: 'frost_nova',
+        name: 'Bão Tuyết Nova (Cryo Frost Nova)',
+        type: 'special',
+        typeName: 'Tuyệt chiêu',
+        icon: '❄️',
+        desc: 'Phát nổ một luồng sóng lạnh âm độ làm đông cứng và giảm 70% tốc độ toàn bộ quái trên màn hình mỗi 10 giây.'
+    },
+    {
+        id: 'quad_turret',
+        name: 'Đại Bác 4 Nòng (Quad Gatling)',
+        type: 'weapon',
+        typeName: 'Hỏa lực tối đa',
+        icon: '🔥',
+        desc: 'Nâng cấp tháp phòng thủ bắn cùng lúc 4 tia đạn song song, tạo thành bức tường hỏa lực càn quét.'
+    },
+    {
+        id: 'berserk_core',
+        name: 'Cuồng Nộ Overdrive (Berserk Core)',
+        type: 'passive',
+        typeName: 'Nội tại',
+        icon: '⚡',
+        desc: 'Khi máu máy chủ giảm xuống dưới 50%, tốc độ bắn và tốc độ bay của đạn tăng vọt thêm 60%!'
+    },
+    {
+        id: 'spike_armor',
+        name: 'Lưới Điện Phản Đòn (Spike Armor)',
+        type: 'passive',
+        typeName: 'Phòng thủ',
+        icon: '🛡️',
+        desc: 'Khi quái vật va chạm vào máy chủ, chúng sẽ lập tức bị phản lại 80% sát thương điện giật.'
+    },
+    {
+        id: 'crypto_miner',
+        name: 'Khai Thác Dữ Liệu (Crypto Miner)',
+        type: 'passive',
+        typeName: 'Tài chính',
+        icon: '🪙',
+        desc: 'Gấp đôi lượng Cyber Coins và nhận thêm +35% EXP kinh nghiệm từ mỗi mã độc bị tiêu diệt.'
+    },
+    {
+        id: 'firewall_flame',
+        name: 'Lửa Thiêu Đốt (Firewall Incinerator)',
+        type: 'weapon',
+        typeName: 'Vùng sát thương',
+        icon: '🔥',
+        desc: 'Mỗi phát bắn để lại vệt lửa plasma nóng rực trên đường bay thiêu đốt mọi quái đi qua trong 2.5 giây.'
+    },
+    {
+        id: 'plasma_splash',
+        name: 'Đạn Nổ Diện Rộng (Plasma Splash)',
+        type: 'weapon',
+        typeName: 'Sát thương chùm',
+        icon: '💥',
+        desc: 'Đạn laser nổ tung trong bán kính 45px khi trúng đích, gây 60% sát thương lan cho toàn bộ quái vật xung quanh.'
+    },
+    {
+        id: 'homing_missiles',
+        name: 'Tên Lửa Tầm Nhiệt (Cyber Missiles)',
+        type: 'weapon',
+        typeName: 'Tự động khóa mục tiêu',
+        icon: '🚀',
+        desc: 'Tháp tự động phóng 2 quả tên lửa tầm nhiệt bám đuổi và tiêu diệt mục tiêu nguy hiểm nhất mỗi 2.5 giây.'
+    },
+    {
+        id: 'chrono_warp',
+        name: 'Giãn Nở Thời Gian (Chrono Field)',
+        type: 'passive',
+        typeName: 'Khống chế diện rộng',
+        icon: '⏱️',
+        desc: 'Làm chậm vĩnh viễn 35% tốc độ bay của đạn địch và bước tiến của quái vật trên sàn đấu.'
+    },
+    {
+        id: 'corpse_explosion',
+        name: 'Mã Độc Tự Hủy (Corpse Explosion)',
+        type: 'passive',
+        typeName: 'Phản ứng dây chuyền',
+        icon: '☣️',
+        desc: 'Khi một quái vật chết, xác của nó lập tức phát nổ lây nhiễm, gây sát thương cực mạnh lên quái xung quanh.'
+    },
+    {
+        id: 'super_capacitor',
+        name: 'Siêu Tụ Điện EMP (Super Capacitor)',
+        type: 'special',
+        typeName: 'Tối ưu hồi chiêu',
+        icon: '🔋',
+        desc: 'Giảm 40% thời gian hồi chiêu của Sóng Xung Kích EMP [Phím 3], cho phép xả xung kích liên tục hơn.'
+    },
+    {
+        id: 'aegis_overcharge',
+        name: 'Siêu Khiên Bất Tử (Aegis Overcharge)',
+        type: 'special',
+        typeName: 'Phòng ngự tối thượng',
+        icon: '💎',
+        desc: 'Tăng thời gian bảo vệ của Khiên AI [SPACE] từ 5s lên 8s và giảm 35% thời gian hồi chiêu.'
+    },
+    {
+        id: 'laser_mirror',
+        name: 'Gương Phản Xạ Laser (Mirror Reflex)',
+        type: 'passive',
+        typeName: 'Phản đòn',
+        icon: '🪞',
+        desc: 'Khi máy chủ hoặc khiên bị tấn công, lập tức phản xạ lại 3 tia laser cực mạnh nhắm thẳng vào kẻ địch.'
+    },
+    {
+        id: 'data_vortex',
+        name: 'Lốc Xoáy Dữ Liệu (Cyber Vortex)',
+        type: 'weapon',
+        typeName: 'Càn quét sàn đấu',
+        icon: '🌪️',
+        desc: 'Triệu hồi một cơn lốc xoáy năng lượng di chuyển càn quét từ dưới lên trên màn hình mỗi 7 giây.'
+    },
+    {
+        id: 'zero_day_oracle',
+        name: 'Radar Điểm Yếu Zero-Day (Oracle Scanner)',
+        type: 'passive',
+        typeName: 'Cường hóa toàn diện',
+        icon: '🔮',
+        desc: 'Tăng +40% toàn bộ sát thương của tất cả vũ khí và làm suy yếu điểm phòng thủ của các Siêu Boss.'
+    }
+];
+
+const ULTIMATE_BUFFS = [
+    {
+        id: 'ult_supernova',
+        name: 'Thiên Kiếp Lượng Tử (Cosmic Supernova)',
+        icon: '💥',
+        badge: '👑 SIÊU TÂN TINH HỦY DIỆT',
+        desc: 'Mỗi 6 giây kích nổ một Siêu Tân Tinh lượng tử cực đại: Quét sạch 100% quái thường trên toàn màn hình và giáng 2500 sát thương cực mạnh lên Siêu Boss!'
+    },
+    {
+        id: 'ult_thunder_god',
+        name: 'Lôi Đình Thần Giới (God of Thunder)',
+        icon: '🌩️',
+        badge: '👑 BÃO SẤM SÉT VĨNH CỬU',
+        desc: 'Triệu hồi sấm sét thần thánh từ tầng bình lưu: Giật sét liên tục x350% sát thương lên toàn bộ quái vật trên sàn đấu, đánh tê liệt đối thủ!'
+    },
+    {
+        id: 'ult_divine_aegis',
+        name: 'Vạn Cổ Bất Hoại (Divine Aegis Matrix)',
+        icon: '👑',
+        badge: '👑 HÀO QUANG THÁNH THẦN',
+        desc: 'Bảo bọc máy chủ bằng ma trận thần thánh: Vĩnh viễn giảm 60% mọi sát thương nhận vào, tự động kích hoạt Siêu Khiên miễn nhiễm khi máy chủ nguy cấp!'
+    },
+    {
+        id: 'ult_drone_armada',
+        name: 'Hạm Đội Drone Thần Thánh (Celestial Armada)',
+        icon: '🛸',
+        badge: '👑 HẠM ĐỘI PHẢN VẬT CHẤT',
+        desc: 'Triệu hồi một hạm đội gồm 4 Siêu Drone Lượng Tử bay tuần tra, xả đạn phản vật chất laser hạt nhân xé toạc mọi làn sóng quái vật!'
+    },
+    {
+        id: 'ult_chrono_singularity',
+        name: 'Ngưng Đọng Thời Không (Absolute Singularity)',
+        icon: '❄️',
+        badge: '👑 HỐ ĐEN ĐÓNG BĂNG',
+        desc: 'Tạo vùng dị thường không-thời gian: Làm chậm 75% tốc độ của toàn bộ quái và đạn địch, đồng thời đạn của bạn có 30% tỷ lệ kết liễu quái tức thì (Instant Kill)!'
+    },
+    {
+        id: 'ult_hyper_core',
+        name: 'Kho Báu Siêu Chiều (Hyperdimension Treasury)',
+        icon: '💰',
+        badge: '👑 TÀI NGUYÊN VÔ TẬN',
+        desc: 'Nhận ngay lập tức +300 Cyber Coins, khôi phục đầy 100% Máu Máy Chủ và nhân x3 toàn bộ điểm số ghi được từ thời điểm này!'
+    }
+];
+
+const BUFF_LEVEL_TEXTS = {
+    chain_lightning: [
+        'Mỗi phát laser phóng tia sét nảy qua 3 mục tiêu (60% dmg).',
+        'Cấp 2: Nảy qua 4 mục tiêu (75% dmg).',
+        'Cấp 3: Nảy qua 5 mục tiêu (90% dmg) + tầm nảy xa hơn.',
+        'Cấp 4: Nảy qua 6 mục tiêu (115% dmg).',
+        'Cấp MAX: Bão Sét Siêu Dẫn: Nảy 8 mục tiêu (160% dmg) & giật tê liệt toàn bộ quái!'
+    ],
+    orbit_bits: [
+        'Triệu hồi 2 quả cầu lượng tử bay xoay vòng quanh bảo vệ máy chủ.',
+        'Cấp 2: Tăng lên 3 quả cầu lượng tử (+35% dmg).',
+        'Cấp 3: Tăng lên 4 quả cầu lượng tử (+70% dmg).',
+        'Cấp 4: Tăng lên 5 quả cầu lượng tử (+100% dmg) xoay nhanh hơn.',
+        'Cấp MAX: Khiên Hạt Lượng Tử: 6 quả cầu quay tốc độ cực đại, nghiền nát mọi quái áp sát!'
+    ],
+    cluster_mines: [
+        'Tự động rải 2 quả mìn nổ lan trên sàn mỗi 4 giây.',
+        'Cấp 2: Rải 3 quả mìn mỗi 3.5s (+30% bán kính nổ).',
+        'Cấp 3: Rải 4 quả mìn mỗi 3.2s (+60% dmg).',
+        'Cấp 4: Rải 5 quả mìn mỗi 2.8s (+90% dmg).',
+        'Cấp MAX: Địa Lôi Nguyên Tử: 6 quả mìn nổ liên hoàn siêu uy lực quét sạch sàn đấu!'
+    ],
+    piercing_railgun: [
+        'Tia laser xuyên qua 2 lớp quái vật trên đường bay.',
+        'Cấp 2: Xuyên qua 3 lớp quái vật (+20% dmg).',
+        'Cấp 3: Xuyên qua 4 lớp quái vật (+40% dmg).',
+        'Cấp 4: Xuyên qua 5 lớp quái vật (+70% dmg).',
+        'Cấp MAX: Pháo Lượng Tử Siêu Xuyên: Xuyên thủng toàn bộ hàng dọc (+120% dmg)!'
+    ],
+    crit_overclock: [
+        'Tăng 25% tỉ lệ bạo kích (Critical Hit) gây 250% sát thương cực đại.',
+        'Cấp 2: Tăng 40% tỉ lệ bạo kích gây 280% dmg.',
+        'Cấp 3: Tăng 55% tỉ lệ bạo kích gây 320% dmg.',
+        'Cấp 4: Tăng 70% tỉ lệ bạo kích gây 360% dmg.',
+        'Cấp MAX: Bạo Kích Thần Tốc: 85% đòn đánh phát nổ chí mạng 420% sát thương!'
+    ],
+    nano_repair: [
+        'Công nghệ Nano tự động khôi phục +3 HP cho máy chủ mỗi 3 giây.',
+        'Cấp 2: Tự động khôi phục +5 HP mỗi 2.8 giây.',
+        'Cấp 3: Tự động khôi phục +7 HP mỗi 2.5 giây.',
+        'Cấp 4: Tự động khôi phục +9 HP mỗi 2.2 giây.',
+        'Cấp MAX: Tái Tạo Vĩnh Cửu: Hồi +12 HP mỗi 2s, Server gần như bất tử!'
+    ],
+    data_magnet: [
+        'Tự động hút toàn bộ EXP và Cyber Coins trên màn hình về máy chủ.',
+        'Cấp 2: Tăng tốc độ hút hạt nhanh gấp đôi và tăng thêm 15% Coins.',
+        'Cấp 3: Tăng thêm 30% Coins và 20% EXP nhận được.',
+        'Cấp 4: Tăng thêm 50% Coins và 35% EXP nhận được.',
+        'Cấp MAX: Hố Đen Dữ Liệu: Tức thì thu nạp mọi tài nguyên toàn sàn đấu +100% Coins!'
+    ],
+    frost_nova: [
+        'Phát nổ sóng lạnh làm đông cứng quái trên màn hình mỗi 10 giây.',
+        'Cấp 2: Kích hoạt mỗi 8.5 giây, đóng băng trong 3.8s (+40% dmg).',
+        'Cấp 3: Kích hoạt mỗi 7.2 giây, đóng băng trong 4.2s (+80% dmg).',
+        'Cấp 4: Kích hoạt mỗi 6.2 giây, đóng băng trong 4.8s (+120% dmg).',
+        'Cấp MAX: Tuyệt Độ Không Tuyệt Đối: Nổ băng mỗi 5 giây, đóng băng toàn sàn & nổ 200% dmg!'
+    ],
+    quad_turret: [
+        'Nâng cấp tháp phòng thủ bắn cùng lúc 2 tia đạn song song.',
+        'Cấp 2: Bắn cùng lúc 3 tia đạn hình quạt góc rộng.',
+        'Cấp 3: Bắn 4 tia đạn Gatling đại bác song song uy lực.',
+        'Cấp 4: 4 nòng đạn bắn với tốc độ tăng thêm 30%.',
+        'Cấp MAX: Đại Bác Tối Thượng: 4 nòng laser xả liên hồi với +60% tốc độ và đạn to gấp đôi!'
+    ],
+    berserk_core: [
+        'Khi máu máy chủ < 50%, tốc độ bắn tăng thêm 60%.',
+        'Cấp 2: Kích hoạt khi máu < 60%, tốc độ bắn tăng 80%.',
+        'Cấp 3: Kích hoạt khi máu < 70%, tốc độ bắn tăng 100%.',
+        'Cấp 4: Kích hoạt khi máu < 80%, tốc độ bắn tăng 120% (+30% dmg).',
+        'Cấp MAX: Cuồng Nộ Bất Diệt: Luôn duy trì +120% tốc độ bắn & +50% sát thương cực hạn!'
+    ],
+    spike_armor: [
+        'Khi quái va chạm vào máy chủ, phản lại 80% sát thương điện giật.',
+        'Cấp 2: Phản lại 140% sát thương điện giật.',
+        'Cấp 3: Phản lại 200% sát thương điện giật.',
+        'Cấp 4: Phản lại 260% sát thương điện giật.',
+        'Cấp MAX: Giáp Phản Kích Thần Sấm: Phản 350% sát thương và gây giật nổ tê liệt quái!'
+    ],
+    crypto_miner: [
+        'Gấp đôi lượng Cyber Coins và nhận thêm +45% EXP từ mỗi quái diệt.',
+        'Cấp 2: x2.5 Coins và nhận thêm +70% EXP.',
+        'Cấp 3: x3 Coins và nhận thêm +100% EXP.',
+        'Cấp 4: x3.5 Coins và nhận thêm +135% EXP.',
+        'Cấp MAX: Mỏ Khai Thác Vũ Trụ: x5 Cyber Coins và nhận thêm +180% EXP cực đại!'
+    ],
+    firewall_flame: [
+        'Mỗi phát bắn để lại vệt lửa plasma thiêu đốt quái đi qua trong 2.2 giây.',
+        'Cấp 2: Vệt lửa to hơn, cháy 2.8s (+40% dmg).',
+        'Cấp 3: Vệt lửa cháy 3.2s (+80% dmg).',
+        'Cấp 4: Vệt lửa bao phủ rộng (+120% dmg).',
+        'Cấp MAX: Biển Lửa Địa Ngục: Quái chạm vào bị thiêu rụi ngay lập tức!'
+    ],
+    plasma_splash: [
+        'Đạn laser nổ tung bán kính 55px khi trúng đích (65% dmg lan).',
+        'Cấp 2: Nổ lan bán kính 70px (80% dmg).',
+        'Cấp 3: Nổ lan bán kính 85px (100% dmg).',
+        'Cấp 4: Nổ lan bán kính 100px (125% dmg).',
+        'Cấp MAX: Vụ Nổ Hạt Nhân Plasma: Bán kính 125px (160% dmg) xóa sổ mọi quái xung quanh!'
+    ],
+    homing_missiles: [
+        'Tháp phóng 1 quả tên lửa tầm nhiệt tự đuổi mục tiêu mỗi 2.6 giây.',
+        'Cấp 2: Phóng 2 quả tên lửa tầm nhiệt mỗi 2.4 giây (+30% dmg).',
+        'Cấp 3: Phóng 3 quả tên lửa tầm nhiệt mỗi 2.2 giây (+60% dmg).',
+        'Cấp 4: Phóng 4 quả tên lửa tầm nhiệt mỗi 2.0 giây (+100% dmg).',
+        'Cấp MAX: Tên Lửa Hạt Nhân Hàng Loạt: Phóng 5 quả tên lửa mỗi 1.6s, bán kính nổ cực đại!'
+    ],
+    chrono_warp: [
+        'Làm chậm vĩnh viễn 15% tốc độ bay của đạn địch và bước tiến của quái.',
+        'Cấp 2: Làm chậm vĩnh viễn 25% tốc độ quái và đạn.',
+        'Cấp 3: Làm chậm vĩnh viễn 35% tốc độ quái và đạn.',
+        'Cấp 4: Làm chậm vĩnh viễn 45% tốc độ quái và đạn.',
+        'Cấp MAX: Đóng Băng Dòng Thời Gian: Làm chậm 55% toàn bộ mã độc, dễ dàng ngắm bắn!'
+    ],
+    corpse_explosion: [
+        'Khi một quái chết, xác nó nổ lây nhiễm bán kính 65px.',
+        'Cấp 2: Bán kính nổ 80px (+40% dmg).',
+        'Cấp 3: Bán kính nổ 95px (+80% dmg).',
+        'Cấp 4: Bán kính nổ 110px (+120% dmg).',
+        'Cấp MAX: Phản Ứng Dây Chuyền Nguyên Tử: Nổ liên hoàn xóa sạch toàn bộ quái trên sàn!'
+    ],
+    super_capacitor: [
+        'Giảm 35% thời gian hồi chiêu của Sóng Xung Kích EMP [Phím 3].',
+        'Cấp 2: Giảm 45% hồi chiêu EMP (+25% dmg lên Boss).',
+        'Cấp 3: Giảm 55% hồi chiêu EMP (+50% dmg lên Boss).',
+        'Cấp 4: Giảm 65% hồi chiêu EMP (+80% dmg lên Boss).',
+        'Cấp MAX: Siêu Tụ Lượng Tử: EMP chỉ 5s hồi chiêu, quét sạch quái liên tục không ngừng nghỉ!'
+    ],
+    aegis_overcharge: [
+        'Tăng thời gian bảo vệ của Khiên AI [SPACE] từ 5s lên 8s (giảm 30% cooldown).',
+        'Cấp 2: Khiên tồn tại 9s, giảm 40% cooldown.',
+        'Cấp 3: Khiên tồn tại 10s, giảm 50% cooldown.',
+        'Cấp 4: Khiên tồn tại 11s, giảm 60% cooldown.',
+        'Cấp MAX: Thánh Khiên Bất Hoại: Khiên tồn tại 12s, hồi chiêu cực nhanh, chặn mọi sát thương!'
+    ],
+    laser_mirror: [
+        'Khi máy chủ hoặc khiên bị tấn công, phản xạ lại 3 tia laser cực mạnh.',
+        'Cấp 2: Phản xạ 4 tia laser (+35% dmg).',
+        'Cấp 3: Phản xạ 5 tia laser (+70% dmg).',
+        'Cấp 4: Phản xạ 6 tia laser (+100% dmg).',
+        'Cấp MAX: Gương Thần Đa Chiều: Phản xạ 8 tia laser chùm càn quét mọi kẻ địch trên sàn!'
+    ],
+    data_vortex: [
+        'Triệu hồi 1 cơn lốc xoáy năng lượng càn quét từ dưới lên mỗi 7.5 giây.',
+        'Cấp 2: Lốc xoáy lớn hơn, di chuyển mỗi 6.8s (+40% dmg).',
+        'Cấp 3: Lốc xoáy hút mạnh hơn, di chuyển mỗi 6.0s (+80% dmg).',
+        'Cấp 4: Lốc xoáy siêu to mỗi 5.2s (+120% dmg).',
+        'Cấp MAX: Siêu Lốc Xoáy Vũ Trụ: Hút phăng và nghiền nát toàn bộ quái vật trên đường đi!'
+    ],
+    zero_day_oracle: [
+        'Tăng +40% toàn bộ sát thương tất cả vũ khí và làm suy yếu Boss.',
+        'Cấp 2: Tăng +70% toàn bộ sát thương vũ khí.',
+        'Cấp 3: Tăng +100% toàn bộ sát thương vũ khí.',
+        'Cấp 4: Tăng +135% toàn bộ sát thương vũ khí.',
+        'Cấp MAX: Tiên Tri Zero-Day: +180% sát thương cực hạn, Boss suy giảm 50% máu tối đa!'
+    ]
+};
+
+function triggerLevelUp() {
+    cdLevel = (Number(cdLevel) || 1) + 1;
+    cdExpNext = Number(cdExpNext) || 40;
+    cdExp = Math.max(0, (Number(cdExp) || 0) - cdExpNext);
+    
+    if (cdLevel === 2) {
+        cdExpNext = 40;
+    } else if (cdLevel === 3) {
+        cdExpNext = 65;
+    } else if (cdLevel === 4) {
+        cdExpNext = 95;
+    } else {
+        cdExpNext = Math.round(cdExpNext * 1.28 + 25);
+    }
+    if (isNaN(cdExpNext) || cdExpNext <= 0) cdExpNext = 120;
+    
+    playCdSound('levelup');
+    cdIsLevelingUp = true;
+    
+    // Count active skills already picked (level > 0)
+    const activeSkills = VAMPIRE_BUFFS_POOL.filter(b => (cdBuffs[b.id] || 0) > 0);
+    let availablePool = [];
+    
+    // RULE: At most 4 skills allowed. Once 4 skills are chosen, ONLY upgrades for those 4 skills appear!
+    if (activeSkills.length >= 4) {
+        availablePool = activeSkills.filter(b => (cdBuffs[b.id] || 0) < 5);
+    } else {
+        availablePool = VAMPIRE_BUFFS_POOL.filter(b => (cdBuffs[b.id] || 0) < 5);
+    }
+    
+    const grid = document.getElementById('vampire-cards-grid');
+    const modalIcon = document.getElementById('vampire-modal-icon');
+    const modalTitle = document.getElementById('vampire-modal-title');
+    const modalSub = document.getElementById('vampire-modal-sub');
+    if (!grid) return;
+    
+    // RULE: When all skills have reached level 5 (MAX), player enters the ULTIMATE SKILLS realm!
+    if (availablePool.length === 0) {
+        playCdSound('shield');
+        if (modalIcon) modalIcon.textContent = '👑';
+        if (modalTitle) modalTitle.innerHTML = '<span style="background:linear-gradient(135deg,#f59e0b,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">KỸ NĂNG TỐI THƯỢNG (ULTIMATE EVOLUTION)</span>';
+        if (modalSub) modalSub.innerHTML = '🔥 <strong style="color:#fde68a;">CHÚC MỪNG!</strong> Bạn đã đạt Cấp Tối Đa cho toàn bộ 4 kỹ năng! Hãy chọn một <strong>Kỹ Năng Tối Thượng</strong> để thức tỉnh sức mạnh thần thánh:';
+        
+        const shuffledUlts = [...ULTIMATE_BUFFS].sort(() => 0.5 - Math.random());
+        const choices = shuffledUlts.slice(0, 3);
+        
+        grid.innerHTML = choices.map(u => {
+            const curLvl = cdUltimates[u.id] || 0;
+            const nextLvl = curLvl + 1;
+            const lvlBadge = (curLvl === 0) 
+                ? '<span class="buff-level-badge" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-weight:900;box-shadow:0 0 12px rgba(245,158,11,0.5);">MỚI: TỐI THƯỢNG</span>'
+                : `<span class="buff-level-badge" style="background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;font-weight:900;">NÂNG CẤP CẤP ${nextLvl} 🔥</span>`;
+            
+            return `
+                <div class="vampire-card ultimate-card" onclick="selectUltimateBuff('${u.id}')" style="border:2px solid #f59e0b;background:linear-gradient(180deg,rgba(30,27,75,0.96),rgba(67,20,7,0.9));box-shadow:0 0 25px rgba(245,158,11,0.4);">
+                    <div class="vampire-card-icon" style="font-size:2.8rem;filter:drop-shadow(0 0 10px #f59e0b);">${u.icon}</div>
+                    <div class="vampire-card-name" style="color:#fde68a;font-size:1.05rem;font-weight:900;">${u.name}</div>
+                    ${lvlBadge}
+                    <div class="vampire-card-type" style="background:rgba(245,158,11,0.25);color:#fde68a;border:1px solid rgba(245,158,11,0.4);margin-top:6px;">${u.badge}</div>
+                    <div class="vampire-card-desc" style="margin-top:8px;color:#e2e8f0;font-size:0.84rem;line-height:1.5;">${u.desc}</div>
+                    <div style="margin-top:14px;font-size:0.85rem;color:#fde68a;font-weight:900;">THỨC TỈNH TỐI THƯỢNG ➔</div>
+                </div>
+            `;
+        }).join('');
+    } else {
+        if (modalIcon) modalIcon.textContent = '⚡';
+        if (modalTitle) modalTitle.innerHTML = 'HỆ THỐNG NÂNG CẤP ĐỘT PHÁ!';
+        if (modalSub) {
+            if (activeSkills.length >= 4) {
+                modalSub.innerHTML = '🔒 <strong style="color:#fde68a;">ĐÃ CHỌN ĐỦ 4 KỸ NĂNG TỐI ĐA</strong> — Nâng cấp các kỹ năng này lên <strong>CẤP MAX</strong> để thức tỉnh <strong>Kỹ Năng Tối Thượng</strong>!';
+            } else {
+                modalSub.innerHTML = `Chọn 1 trong 3 công nghệ an ninh (Bạn đang có <strong style="color:#34d399;">${activeSkills.length}/4</strong> kỹ năng):`;
+            }
+        }
+        
+        const shuffled = [...availablePool].sort(() => 0.5 - Math.random());
+        const choices = shuffled.slice(0, 3);
+        
+        grid.innerHTML = choices.map(c => {
+            const curLvl = cdBuffs[c.id] || 0;
+            const nextLvl = curLvl + 1;
+            const isMax = nextLvl >= 5;
+            
+            const badgeHtml = (curLvl === 0)
+                ? '<span class="buff-level-badge new">MỚI: CẤP 1 / 5</span>'
+                : (isMax
+                    ? '<span class="buff-level-badge max">CẤP TỐI ĐA: LEVEL MAX 🔥</span>'
+                    : `<span class="buff-level-badge upgrade">NÂNG CẤP: CẤP ${nextLvl} / 5</span>`);
+            
+            const dotsHtml = '<div class="buff-progress-dots">' +
+                Array(5).fill(0).map((_, i) => `<span class="buff-dot ${i < nextLvl ? (isMax ? 'max' : 'active') : ''}"></span>`).join('') +
+                '</div>';
+                
+            const texts = BUFF_LEVEL_TEXTS[c.id];
+            const desc = (texts && texts[curLvl]) ? texts[curLvl] : c.desc;
+            const btnText = (curLvl === 0) ? 'MỞ KHÓA LEVEL 1 ➔' : (isMax ? 'LÊN LEVEL MAX 🔥 ➔' : `LÊN LEVEL ${nextLvl} ➔`);
+            
+            return `
+                <div class="vampire-card" onclick="selectVampireBuff('${c.id}')">
+                    <div class="vampire-card-icon">${c.icon}</div>
+                    <div class="vampire-card-name">${c.name}</div>
+                    ${badgeHtml}
+                    ${dotsHtml}
+                    <div class="vampire-card-type type-${c.type}">${c.typeName}</div>
+                    <div class="vampire-card-desc" style="margin-top:6px;">${desc}</div>
+                    <div style="margin-top:12px;font-size:0.8rem;color:#fde68a;font-weight:800;">${btnText}</div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    const modal = document.getElementById('vampire-upgrade-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function selectUltimateBuff(ultId) {
+    cdUltimates[ultId] = (cdUltimates[ultId] || 0) + 1;
+    const uCfg = ULTIMATE_BUFFS.find(u => u.id === ultId);
+    playCdSound('shield');
+    createExplosion(cdCanvas.width / 2, 415, '#f59e0b', 40);
+    cdScreenShake = 16;
+    
+    if (ultId === 'ult_hyper_core') {
+        cdCoins = (Number(cdCoins) || 0) + 300;
+        cdCoreHp = cdMaxCoreHp;
+        cdScore = (Number(cdScore) || 0) * 1.5;
+    }
+    
+    addFloatingText(cdCanvas.width / 2, 220, `👑 KÍCH HOẠT TỐI THƯỢNG: ${uCfg ? uCfg.name : ultId}!`, '#fde68a', 2.0);
+    document.getElementById('vampire-upgrade-modal').style.display = 'none';
+    cdIsLevelingUp = false;
+    updateDefenseHud();
+    updateActiveSkillsTray();
+}
+
+function selectVampireBuff(buffId) {
+    cdBuffs[buffId] = Math.min(5, (Number(cdBuffs[buffId]) || 0) + 1);
+    const newLvl = cdBuffs[buffId];
+    playCdSound('coin');
+    
+    if (buffId === 'data_magnet') {
+        cdExpOrbs.forEach(orb => orb.magnet = true);
+    }
+    
+    const lvlText = newLvl >= 5 ? 'CẤP MAX 🔥' : `CẤP ${newLvl}`;
+    addFloatingText(cdCanvas.width / 2, 220, `⭐ ĐÃ NÂNG CẤP: ${buffId.toUpperCase()} [${lvlText}]!`, '#fde68a', 1.3);
+    
+    document.getElementById('vampire-upgrade-modal').style.display = 'none';
+    cdIsLevelingUp = false;
+    updateDefenseHud();
+    updateActiveSkillsTray();
+}
+
+// =========================================================================
+// === GAME INITIALIZATION & LOOP ===
+// =========================================================================
+function initCyberDefender() {
+    cdCanvas = document.getElementById('defense-canvas');
+    if (!cdCanvas) return;
+    cdCtx = cdCanvas.getContext('2d');
+    
+    cdCanvas.width = 870;
+    cdCanvas.height = 460;
+    
+    initPlayerProfile();
+    bindCyberDefenderEvents();
+    fetchGameLeaderboard();
+    updateDefenseHud();
+    
+    document.getElementById('defense-start-modal').style.display = 'flex';
+    document.getElementById('defense-shop-modal').style.display = 'none';
+    document.getElementById('defense-end-modal').style.display = 'none';
+    document.getElementById('vampire-upgrade-modal').style.display = 'none';
+    document.getElementById('boss-hud-bar').style.display = 'none';
+    
+    if (!cdRunning) {
+        cdRunning = true;
+        lastFrameTime = performance.now();
+        requestAnimationFrame(cyberDefenderLoop);
+    }
+}
+
+function stopCyberDefender() {
+    cdRunning = false;
+    if (cdAnimId) cancelAnimationFrame(cdAnimId);
+    if (cdSurvivalTimerInterval) clearInterval(cdSurvivalTimerInterval);
+    cdIsMouseDown = false;
+}
+
+let lastFrameTime = performance.now();
+function cyberDefenderLoop(now) {
+    if (!cdRunning) return;
+    const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
+    lastFrameTime = now;
+    
+    if (!cdIsLevelingUp && !cdIsPaused && !cdIsGameOver) {
+        updateCyberDefender(dt);
+    }
+    drawCyberDefender();
+    
+    cdAnimId = requestAnimationFrame(cyberDefenderLoop);
+}
+
+function bindCyberDefenderEvents() {
+    if (cdCanvas._eventsBound) return;
+    cdCanvas._eventsBound = true;
+    
+    const updateMouse = (e) => {
+        const rect = cdCanvas.getBoundingClientRect();
+        const scaleX = cdCanvas.width / rect.width;
+        const scaleY = cdCanvas.height / rect.height;
+        cdMousePos.x = (e.clientX - rect.left) * scaleX;
+        cdMousePos.y = (e.clientY - rect.top) * scaleY;
+    };
+    
+    cdCanvas.addEventListener('mousemove', updateMouse);
+    cdCanvas.addEventListener('mousedown', (e) => {
+        initCdAudio();
+        updateMouse(e);
+        cdIsMouseDown = true;
+        firePlayerWeapon();
+    });
+    window.addEventListener('mouseup', () => { cdIsMouseDown = false; });
+    
+    // Touch support
+    cdCanvas.addEventListener('touchstart', (e) => {
+        initCdAudio();
+        if (e.touches.length > 0) {
+            const rect = cdCanvas.getBoundingClientRect();
+            cdMousePos.x = (e.touches[0].clientX - rect.left) * (cdCanvas.width / rect.width);
+            cdMousePos.y = (e.touches[0].clientY - rect.top) * (cdCanvas.height / rect.height);
+            cdIsMouseDown = true;
+            firePlayerWeapon();
+        }
+        e.preventDefault();
+    }, { passive: false });
+    
+    cdCanvas.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+            const rect = cdCanvas.getBoundingClientRect();
+            cdMousePos.x = (e.touches[0].clientX - rect.left) * (cdCanvas.width / rect.width);
+            cdMousePos.y = (e.touches[0].clientY - rect.top) * (cdCanvas.height / rect.height);
+        }
+        e.preventDefault();
+    }, { passive: false });
+    
+    cdCanvas.addEventListener('touchend', () => { cdIsMouseDown = false; });
+    
+    window.addEventListener('keydown', (e) => {
+        if (activeGame !== 'mega') return;
+        if (e.key === '1') selectWeapon(1);
+        else if (e.key === '2') selectWeapon(2);
+        else if (e.key === '3') triggerEmpNuke();
+        else if (e.code === 'Space') {
+            e.preventDefault();
+            triggerAiShield();
+        }
+        else if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+            if (cdRunning && !cdIsLevelingUp) {
+                if (cdIsPaused) closeShopAndResume();
+                else openShopInGame();
+            }
+        }
+    });
+}
+
+function selectWeapon(num) {
+    cdWeapon = num;
+    document.querySelectorAll('.weapon-slot').forEach(s => s.classList.remove('active'));
+    const slot = document.getElementById('wep-slot-' + num);
+    if (slot) slot.classList.add('active');
+    playCdSound(num === 1 ? 'laser' : 'freeze');
+}
+
+function triggerEmpNuke() {
+    initCdAudio();
+    if (cdEmpCooldown > 0 || !cdWaveActive) return;
+    const cooldown = cdBuffs.super_capacitor > 0 ? 14000 : cdEmpMaxCooldown;
+    cdEmpCooldown = cooldown;
+    playCdSound('emp');
+    cdScreenShake = 20;
+    
+    for (let i = 0; i < 70; i++) {
+        const ang = (Math.PI * 2 * i) / 70;
+        const spd = 6 + Math.random() * 9;
+        cdParticles.push({
+            x: cdCanvas.width / 2,
+            y: cdCanvas.height / 2,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd,
+            color: '#f472b6',
+            size: 4 + Math.random() * 4,
+            alpha: 1,
+            decay: 0.02
+        });
+    }
+    
+    let killedCount = 0;
+    cdEnemies.forEach(en => {
+        if (!en.isBoss) {
+            en.hp = 0;
+            killedCount++;
+            createExplosion(en.x, en.y, en.color, 16);
+        } else {
+            en.hp -= 500;
+            createExplosion(en.x, en.y, '#f472b6', 28);
+        }
+    });
+    
+    addFloatingText(cdCanvas.width / 2, 200, "💥 EMP QUÉT SẠCH MÃ ĐỘC TOÀN SÀN!", "#f472b6", 1.4);
+    cdScore += killedCount * 50;
+    cdCoins += killedCount * 2;
+    cdKills += killedCount;
+    updateDefenseHud();
+}
+
+function triggerAiShield() {
+    initCdAudio();
+    if (cdShieldCooldown > 0 || cdShieldActive || !cdWaveActive) return;
+    cdShieldActive = true;
+    cdShieldTimer = cdBuffs.aegis_overcharge > 0 ? 8.0 : 5.0;
+    const cooldown = cdBuffs.aegis_overcharge > 0 ? 12000 : cdShieldMaxCooldown;
+    cdShieldCooldown = cooldown;
+    playCdSound('shield');
+    addFloatingText(cdCanvas.width / 2, 380, cdBuffs.aegis_overcharge > 0 ? "🛡️ SIÊU KHIÊN BẤT TỬ (8 GIÂY)!" : "🛡️ KHIÊN AI: BẢO VỆ TUYỆT ĐỐI!", "#fde68a", 1.3);
+}
+
+// =========================================================================
+// === ENDLESS MATCH START & WAVE GENERATION ===
+// =========================================================================
+function startCyberDefenderMatch() {
+    initCdAudio();
+    cdIsGameOver = false;
+    cdScoreSubmitted = false;
+    cdIsSubmittingScore = false;
+    cdWave = 1;
+    cdScore = 0;
+    cdCoins = 0;
+    cdCoreHp = 100;
+    cdMaxCoreHp = 100;
+    cdCombo = 0;
+    cdComboTimer = 0;
+    cdWeapon = 1;
+    cdEmpCooldown = 0;
+    cdShieldCooldown = 0;
+    cdShieldActive = false;
+    cdSurvivalSeconds = 0;
+    cdKills = 0;
+    cdLevel = 1;
+    cdExp = 0;
+    cdExpNext = 25;
+    cdIsLevelingUp = false;
+    cdIsPaused = false;
+    
+    // Reset buffs
+    Object.keys(cdBuffs).forEach(k => cdBuffs[k] = 0);
+    cdUpgrades = { firerate: 0, dual: false, repairCount: 0, drone: false };
+    cdExpOrbs = [];
+    cdMines = [];
+    cdFireTrails = [];
+    cdHomingMissiles = [];
+    cdVortexes = [];
+    playerFrozenTimer = 0;
+    cdFallenEnemies = [];
+    cdUltimates = {};
+    cdLastUltSupernova = 0;
+    cdLastUltThunder = 0;
+    cdLastUltArmada = 0;
+    
+    document.getElementById('defense-start-modal').style.display = 'none';
+    document.getElementById('defense-shop-modal').style.display = 'none';
+    document.getElementById('defense-end-modal').style.display = 'none';
+    document.getElementById('vampire-upgrade-modal').style.display = 'none';
+    document.getElementById('boss-hud-bar').style.display = 'none';
+    
+    if (cdSurvivalTimerInterval) clearInterval(cdSurvivalTimerInterval);
+    cdSurvivalTimerInterval = setInterval(() => {
+        if (cdWaveActive && !cdIsLevelingUp && !cdIsPaused) {
+            cdSurvivalSeconds++;
+            const mins = String(Math.floor(cdSurvivalSeconds / 60)).padStart(2, '0');
+            const secs = String(cdSurvivalSeconds % 60).padStart(2, '0');
+            const timeEl = document.getElementById('defense-survival-time');
+            if (timeEl) timeEl.textContent = `${mins}:${secs}`;
+        }
+    }, 1000);
+    
+    selectWeapon(1);
+    startDefenseWave(1);
+}
+
+// Super Boss Definitions
+const BOSS_CONFIGS = {
+    3: {
+        id: 'botnet_motherboard',
+        name: 'BOSS 1: BOTNET MOTHERBOARD (MÁY CHỦ MA)',
+        hp: 850,
+        size: 42,
+        color: '#38bdf8',
+        icon: '🖥️',
+        laserInterval: 2.8,
+        ability: 'syn_flood'
+    },
+    6: {
+        id: 'wannacry_overlord',
+        name: 'BOSS 2: WANNA-CRY 3.0 RANSOMWARE OVERLORD',
+        hp: 1900,
+        size: 48,
+        color: '#ef4444',
+        icon: '☠️',
+        laserInterval: 2.4,
+        ability: 'ransom_sweep'
+    },
+    9: {
+        id: 'apt41_shadow',
+        name: 'BOSS 3: APT-41 SHADOW PHANTOM (HẮC THỦ TÀNG HÌNH)',
+        hp: 3200,
+        size: 44,
+        color: '#c084fc',
+        icon: '👤',
+        laserInterval: 2.0,
+        ability: 'teleport'
+    },
+    12: {
+        id: 'deepfake_nemesis',
+        name: 'BOSS 4: AI DEEPFAKE NEMESIS (SIÊU TRÍ TUỆ ĐEN)',
+        hp: 4600,
+        size: 50,
+        color: '#f59e0b',
+        icon: '🤖',
+        laserInterval: 1.8,
+        ability: 'clone'
+    },
+    15: {
+        id: 'zero_day_god',
+        name: 'FINAL BOSS: ZERO-DAY COSMIC DESTROYER',
+        hp: 6500,
+        size: 54,
+        color: '#ec4899',
+        icon: '🌌',
+        laserInterval: 1.5,
+        ability: 'vortex'
+    }
+};
+
+function startDefenseWave(waveNum) {
+    cdWave = waveNum;
+    cdWaveActive = true;
+    cdProjectiles = [];
+    cdEnemies = [];
+    cdParticles = [];
+    cdFloatingTexts = [];
+    cdBoss = null;
+    cdSpawnQueue = [];
+    cdSpawnTimer = 0;
+    
+    updateDefenseHud();
+    
+    // Check total skills unlocked
+    const totalSkills = Object.values(cdBuffs).reduce((a, b) => a + b, 0);
+    const isEarly = (totalSkills < 3 || waveNum <= 2);
+    
+    // Check if this wave has a Super Boss!
+    // Milestone waves: 3, 6, 9, 12, 15, and every 3 waves after 15
+    const isBossWave = (waveNum % 3 === 0);
+    const bossKey = waveNum <= 15 ? waveNum : 15;
+    
+    if (isBossWave) {
+        const bossCfg = BOSS_CONFIGS[bossKey] || BOSS_CONFIGS[15];
+        let scaledHp = bossCfg.hp + Math.max(0, waveNum - 15) * 1200;
+        let laserInterval = bossCfg.laserInterval;
+        
+        // Gentle boss for early wave if player has < 3 skills
+        if (waveNum === 3 && totalSkills < 3) {
+            scaledHp = Math.round(bossCfg.hp * 0.52); // ~440 HP
+            laserInterval = 3.8; // Slower attack
+        }
+        
+        const titleEl = document.getElementById('boss-title-tag');
+        if (titleEl) titleEl.textContent = `⚠️ ${bossCfg.name}`;
+        document.getElementById('boss-hud-bar').style.display = 'flex';
+        
+        cdBoss = {
+            isBoss: true,
+            id: bossCfg.id,
+            name: bossCfg.name,
+            x: cdCanvas.width / 2,
+            y: 85,
+            vx: 1.8 + Math.min(1.2, waveNum * 0.1),
+            hp: scaledHp,
+            maxHp: scaledHp,
+            size: bossCfg.size,
+            color: bossCfg.color,
+            icon: bossCfg.icon,
+            phase: 1,
+            laserTimer: laserInterval,
+            summonTimer: 2.8,
+            abilityTimer: 4.5,
+            ability: bossCfg.ability,
+            shielded: false
+        };
+        cdEnemies.push(cdBoss);
+        playCdSound('alarm');
+    }
+    
+    // Enemy Generation formula with early game balance:
+    // If player has < 3 skills or wave <= 2, keep count small, spawn interval long, and speed gentle!
+    if (isEarly) {
+        let count = 8;
+        let spawnInterval = 1350;
+        let hpMult = 0.8;
+        let spdMult = 0.58;
+        
+        if (waveNum === 2) {
+            count = 10;
+            spawnInterval = 1100;
+            hpMult = 0.9;
+            spdMult = 0.65;
+        } else if (waveNum >= 3) {
+            count = 12;
+            spawnInterval = 900;
+            hpMult = 1.0;
+            spdMult = 0.72;
+        }
+        
+        for (let i = 0; i < count; i++) {
+            let type = 'ddos';
+            if (waveNum === 2 && i >= 7) type = 'trojan';
+            else if (waveNum >= 3 && i >= 6) type = (i % 2 === 0 ? 'trojan' : 'phishing');
+            
+            cdSpawnQueue.push({
+                type,
+                hpMult,
+                spdMult,
+                delay: 600 + i * spawnInterval
+            });
+        }
+    } else {
+        // Player has >= 3 skills: Full Endless Survivor intensity!
+        const count = 16 + waveNum * 4;
+        // Trọng số tăng máu chỉ áp dụng từ màn 4 trở đi (Màn 1-3 giữ nguyên chỉ số gốc/cân bằng)
+        const hpMult = waveNum >= 4 
+            ? (1 + (waveNum - 3) * 0.22 + Math.max(0, waveNum - 8) * 0.18) 
+            : 1.0;
+        const spdMult = waveNum >= 4 
+            ? (1 + Math.min(1.4, (waveNum - 3) * 0.04)) 
+            : 1.0;
+        
+        for (let i = 0; i < count; i++) {
+            let type = 'ddos';
+            const r = Math.random();
+            
+            // Progressive distribution with 4 new elite archetypes:
+            // rusher (lao tới cận chiến), time_freeze (đóng băng thời gian),
+            // necromancer (hồi sinh quái đã chết), summoner (triệu hồi bầy bot)
+            if (waveNum >= 2 && r > 0.65) type = 'trojan';
+            if (waveNum >= 3 && r > 0.75) type = 'phishing';
+            if (waveNum >= 4 && r > 0.82) type = 'rusher'; // Melee Dashers!
+            if (waveNum >= 5 && r > 0.86) {
+                type = (r > 0.93 ? 'time_freeze' : 'ransomware'); // Time Freeze & Ransomware
+            }
+            if (waveNum >= 6 && r > 0.84) {
+                if (r > 0.94) type = 'necromancer'; // Resurrection!
+                else if (r > 0.89) type = 'summoner'; // Swarm Summoner!
+                else if (r > 0.85) type = 'time_freeze';
+            }
+            if (waveNum >= 8 && r > 0.78) {
+                // High waves: intense elite encounters!
+                const eliteTypes = ['rusher', 'time_freeze', 'necromancer', 'summoner', 'ransomware'];
+                type = eliteTypes[Math.floor(Math.random() * eliteTypes.length)];
+            }
+            
+            cdSpawnQueue.push({
+                type,
+                hpMult,
+                spdMult,
+                delay: 350 + i * Math.max(190, 650 - waveNum * 25)
+            });
+        }
+    }
+    
+    addFloatingText(cdCanvas.width / 2, 220, `--- ĐỢT ${waveNum}: SINH TỒN VÔ TẬN ---`, "#34d399", 1.5);
+}
+
+function spawnEnemy(type, x, y, hpMult = 1, spdMult = 1) {
+    const startX = (x !== undefined) ? x : 40 + Math.random() * (cdCanvas.width - 80);
+    const startY = (y !== undefined) ? y : -25;
+    
+    if (type === 'ddos') {
+        cdEnemies.push({
+            type: 'ddos',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 1.5 * spdMult,
+            vy: (1.8 + Math.random() * 0.8) * spdMult,
+            hp: Math.max(1, Math.round(1 * hpMult)),
+            maxHp: Math.max(1, Math.round(1 * hpMult)),
+            size: 14,
+            points: 50,
+            coins: 1,
+            color: '#38bdf8',
+            name: 'DDoS Botnet'
+        });
+    } else if (type === 'trojan') {
+        cdEnemies.push({
+            type: 'trojan',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 1.2 * spdMult,
+            vy: (1.2 + Math.random() * 0.5) * spdMult,
+            hp: Math.max(2, Math.round(3 * hpMult)),
+            maxHp: Math.max(2, Math.round(3 * hpMult)),
+            size: 20,
+            points: 120,
+            coins: 3,
+            color: '#c084fc',
+            name: 'Trojan Worm'
+        });
+    } else if (type === 'trojan_spore') {
+        cdEnemies.push({
+            type: 'trojan_spore',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 2.5 * spdMult,
+            vy: (2.0 + Math.random() * 0.8) * spdMult,
+            hp: 1,
+            maxHp: 1,
+            size: 11,
+            points: 40,
+            coins: 1,
+            color: '#e879f9',
+            name: 'Trojan Spore'
+        });
+    } else if (type === 'phishing') {
+        cdEnemies.push({
+            type: 'phishing',
+            x: startX,
+            y: startY,
+            vx: 0,
+            vy: 1.7 * spdMult,
+            hp: Math.max(2, Math.round(2 * hpMult)),
+            maxHp: Math.max(2, Math.round(2 * hpMult)),
+            size: 16,
+            points: 150,
+            coins: 3,
+            color: '#fbbf24',
+            name: 'Phishing Dart',
+            waveOffset: Math.random() * Math.PI * 2
+        });
+    } else if (type === 'ransomware') {
+        cdEnemies.push({
+            type: 'ransomware',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 0.6 * spdMult,
+            vy: 0.75 * spdMult,
+            hp: Math.max(6, Math.round(9 * hpMult)),
+            maxHp: Math.max(6, Math.round(9 * hpMult)),
+            size: 26,
+            points: 300,
+            coins: 6,
+            color: '#f43f5e',
+            name: 'Ransomware Titan'
+        });
+    } else if (type === 'time_freeze') {
+        cdEnemies.push({
+            type: 'time_freeze',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 0.8 * spdMult,
+            vy: (0.85 + Math.random() * 0.3) * spdMult,
+            hp: Math.max(7, Math.round(14 * hpMult)),
+            maxHp: Math.max(7, Math.round(14 * hpMult)),
+            size: 23,
+            points: 280,
+            coins: 5,
+            color: '#38bdf8',
+            name: 'Chrono Specter',
+            freezeSkillTimer: 3.5 + Math.random() * 2.0,
+            freezeChannelTimer: 0
+        });
+    } else if (type === 'rusher') {
+        cdEnemies.push({
+            type: 'rusher',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 1.1 * spdMult,
+            vy: (1.2 + Math.random() * 0.4) * spdMult,
+            hp: Math.max(4, Math.round(8 * hpMult)),
+            maxHp: Math.max(4, Math.round(8 * hpMult)),
+            size: 19,
+            points: 220,
+            coins: 4,
+            color: '#f97316',
+            name: 'Shadow Rusher',
+            dashState: 'idle',
+            dashTimer: 1.2 + Math.random() * 1.2,
+            chargeTimer: 0
+        });
+    } else if (type === 'necromancer') {
+        cdEnemies.push({
+            type: 'necromancer',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 0.7 * spdMult,
+            vy: 0.65 * spdMult,
+            hp: Math.max(9, Math.round(18 * hpMult)),
+            maxHp: Math.max(9, Math.round(18 * hpMult)),
+            size: 25,
+            points: 350,
+            coins: 6,
+            color: '#10b981',
+            name: 'Necro Daemon',
+            resurrectTimer: 4.5 + Math.random() * 1.5
+        });
+    } else if (type === 'summoner') {
+        cdEnemies.push({
+            type: 'summoner',
+            x: startX,
+            y: startY,
+            vx: (Math.random() - 0.5) * 0.6 * spdMult,
+            vy: 0.6 * spdMult,
+            hp: Math.max(8, Math.round(16 * hpMult)),
+            maxHp: Math.max(8, Math.round(16 * hpMult)),
+            size: 25,
+            points: 320,
+            coins: 6,
+            color: '#eab308',
+            name: 'Botnet Hivemind',
+            summonSwarmTimer: 4.0 + Math.random() * 1.0
+        });
+    }
+}
+
+// =========================================================================
+// === WEAPON FIRING & PASSIVE ATTACKS ===
+// =========================================================================
+function firePlayerWeapon() {
+    if (!cdWaveActive || cdCoreHp <= 0 || cdIsLevelingUp) return;
+    if (playerFrozenTimer > 0) {
+        const now = performance.now();
+        if (!window._lastFreezeNotify || now - window._lastFreezeNotify > 600) {
+            window._lastFreezeNotify = now;
+            addFloatingText(cdCanvas.width / 2, 380, `❄️ ĐANG BỊ ĐÓNG BĂNG (${playerFrozenTimer.toFixed(1)}s)!`, "#38bdf8", 0.8);
+            playCdSound('freeze');
+        }
+        return;
+    }
+    const now = performance.now();
+    let fireInterval = 220;
+    if (cdUpgrades.firerate === 1) fireInterval = 150;
+    if (cdUpgrades.firerate === 2) fireInterval = 100;
+    
+    // Berserk core perk: +60% fire rate when core HP < 50%
+    if (cdBuffs.berserk_core > 0 && cdCoreHp < cdMaxCoreHp * 0.5) {
+        fireInterval = Math.round(fireInterval * 0.62);
+    }
+    
+    if (now - cdLastShotTime < fireInterval) return;
+    cdLastShotTime = now;
+    
+    const turretX = cdCanvas.width / 2;
+    const turretY = 415;
+    const angle = Math.atan2(cdMousePos.y - turretY, cdMousePos.x - turretX);
+    const speed = 14;
+    const isCryo = (cdWeapon === 2);
+    
+    // Critical hit calculation
+    let isCrit = false;
+    let dmgMult = 1.0;
+    if (cdBuffs.crit_overclock > 0) {
+        if (Math.random() < 0.3 * cdBuffs.crit_overclock) {
+            isCrit = true;
+            dmgMult = 2.5;
+        }
+    }
+    if (cdBuffs.zero_day_oracle > 0) {
+        dmgMult *= (1 + 0.4 * cdBuffs.zero_day_oracle);
+    }
+    
+    if (isCryo) playCdSound('freeze');
+    else playCdSound('laser');
+    
+    // Pierce level
+    const pierceCount = cdBuffs.piercing_railgun > 0 ? (cdBuffs.piercing_railgun * 2) : 1;
+    
+    // Quad Turret vs Dual vs Single
+    let barrelAngles = [0];
+    if (cdBuffs.quad_turret > 0) {
+        barrelAngles = [-0.15, -0.05, 0.05, 0.15];
+    } else if (cdUpgrades.dual) {
+        barrelAngles = [-0.08, 0.08];
+    }
+    
+    barrelAngles.forEach(offsetAngle => {
+        const shotAngle = angle + offsetAngle;
+        cdProjectiles.push({
+            x: turretX,
+            y: turretY,
+            vx: Math.cos(shotAngle) * speed,
+            vy: Math.sin(shotAngle) * speed,
+            type: isCryo ? 'cryo' : 'plasma',
+            damage: (isCryo ? 1 : 1.2) * dmgMult,
+            freeze: isCryo,
+            isCrit: isCrit,
+            pierce: pierceCount,
+            size: isCryo ? 6 : (cdBuffs.quad_turret > 0 ? 3.5 : 4),
+            color: isCrit ? '#fde68a' : (isCryo ? '#38bdf8' : '#34d399')
+        });
+    });
+}
+
+// =========================================================================
+// === GAME UPDATE ENGINE ===
+// =========================================================================
+function updateCyberDefender(dt) {
+    if (cdScreenShake > 0) cdScreenShake = Math.max(0, cdScreenShake - dt * 25);
+    
+    // Player Frozen Timer
+    if (playerFrozenTimer > 0) {
+        playerFrozenTimer = Math.max(0, playerFrozenTimer - dt);
+    }
+    
+    // Cooldown timers
+    if (cdEmpCooldown > 0) {
+        cdEmpCooldown = Math.max(0, cdEmpCooldown - dt * 1000);
+        const empText = document.getElementById('emp-ready-text');
+        if (empText) {
+            empText.textContent = (cdEmpCooldown <= 0) ? 'SẴN SÀNG' : Math.ceil(cdEmpCooldown / 1000) + 's';
+            empText.style.color = (cdEmpCooldown <= 0) ? '#34d399' : '#f472b6';
+        }
+    }
+    
+    if (cdShieldActive) {
+        cdShieldTimer -= dt;
+        if (cdShieldTimer <= 0) cdShieldActive = false;
+    }
+    if (cdShieldCooldown > 0) {
+        cdShieldCooldown = Math.max(0, cdShieldCooldown - dt * 1000);
+        const shieldText = document.getElementById('shield-ready-text');
+        if (shieldText) {
+            shieldText.textContent = (cdShieldCooldown <= 0) ? 'SẴN SÀNG' : Math.ceil(cdShieldCooldown / 1000) + 's';
+            shieldText.style.color = (cdShieldCooldown <= 0) ? '#34d399' : '#fde68a';
+        }
+    }
+    
+    if (cdIsMouseDown && cdWaveActive) {
+        firePlayerWeapon();
+    }
+    
+    // Continuous Passive Perks Logic
+    const now = performance.now();
+    
+    // 1. Nano Healing
+    if (cdBuffs.nano_repair > 0 && now - cdLastNanoRepair > 3000) {
+        cdLastNanoRepair = now;
+        if (cdCoreHp < cdMaxCoreHp) {
+            cdCoreHp = Math.min(cdMaxCoreHp, cdCoreHp + 3 * cdBuffs.nano_repair);
+            updateDefenseHud();
+            addFloatingText(cdCanvas.width / 2, 410, `+${3 * cdBuffs.nano_repair} HP (Nano) 🩺`, '#34d399', 0.9);
+        }
+    }
+    
+    // 2. Cluster Mines
+    if (cdBuffs.cluster_mines > 0 && now - cdLastMineDrop > 4000) {
+        cdLastMineDrop = now;
+        for (let m = 0; m < 2; m++) {
+            cdMines.push({
+                x: 80 + Math.random() * (cdCanvas.width - 160),
+                y: 120 + Math.random() * 240,
+                radius: 12,
+                blastRadius: 75,
+                timer: 15.0
+            });
+        }
+    }
+    
+    // 3. Frost Nova
+    if (cdBuffs.frost_nova > 0 && now - cdLastFrostNova > 10000) {
+        cdLastFrostNova = now;
+        playCdSound('freeze');
+        cdScreenShake = 8;
+        addFloatingText(cdCanvas.width / 2, 180, "❄️ BÃO TUYẾT NOVA: ĐÓNG BĂNG TOÀN DIỆN!", "#38bdf8", 1.4);
+        cdEnemies.forEach(en => {
+            en.frozenTimer = 3.5;
+            en.hp -= 2;
+            if (en.hp <= 0 && !en.isBoss) {
+                createExplosion(en.x, en.y, '#38bdf8', 12);
+            }
+        });
+    }
+    
+    // 4. Orbiting Shield Bits rotation
+    if (cdBuffs.orbit_bits > 0) {
+        cdOrbitAngle += dt * 3.5;
+        const orbitCount = 2 + (cdBuffs.orbit_bits - 1) * 2;
+        const orbitRadius = 85;
+        const coreX = cdCanvas.width / 2;
+        const coreY = 415;
+        
+        for (let ob = 0; ob < orbitCount; ob++) {
+            const ang = cdOrbitAngle + (Math.PI * 2 * ob) / orbitCount;
+            const bitX = coreX + Math.cos(ang) * orbitRadius;
+            const bitY = coreY + Math.sin(ang) * (orbitRadius * 0.45);
+            
+            // Check collision with enemies
+            cdEnemies.forEach(en => {
+                if (Math.hypot(en.x - bitX, en.y - bitY) < en.size + 10) {
+                    en.hp -= 1.5;
+                    createExplosion(bitX, bitY, '#c084fc', 3);
+                }
+            });
+        }
+    }
+    
+    // AI Drone companion logic
+    if (cdUpgrades.drone && cdWaveActive) {
+        cdDroneAngle += dt * 3;
+        if (now - cdDroneLastShot > 380 && cdEnemies.length > 0) {
+            cdDroneLastShot = now;
+            const droneX = (cdCanvas.width / 2) + Math.cos(cdDroneAngle) * 65;
+            const droneY = 415 + Math.sin(cdDroneAngle) * 25;
+            let closest = null, minDist = 9999;
+            cdEnemies.forEach(en => {
+                const dist = Math.hypot(en.x - droneX, en.y - droneY);
+                if (dist < minDist) { minDist = dist; closest = en; }
+            });
+            if (closest) {
+                const ang = Math.atan2(closest.y - droneY, closest.x - droneX);
+                cdProjectiles.push({
+                    x: droneX,
+                    y: droneY,
+                    vx: Math.cos(ang) * 12,
+                    vy: Math.sin(ang) * 12,
+                    type: 'drone_laser',
+                    damage: 1,
+                    freeze: false,
+                    pierce: 1,
+                    size: 3.5,
+                    color: '#a78bfa'
+                });
+                playCdSound('laser');
+            }
+        }
+    }
+    
+    // 5. Homing Missiles Perk
+    if (cdBuffs.homing_missiles > 0 && cdWaveActive && cdEnemies.length > 0) {
+        if (now - cdLastHomingShot > 2500) {
+            cdLastHomingShot = now;
+            const count = 1 + cdBuffs.homing_missiles;
+            for (let m = 0; m < count; m++) {
+                cdHomingMissiles.push({
+                    x: (cdCanvas.width / 2) + (m - (count - 1) / 2) * 32,
+                    y: 410,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: -6,
+                    life: 4.5,
+                    damage: 3.5 * cdBuffs.homing_missiles
+                });
+            }
+            playCdSound('laser');
+        }
+    }
+    
+    // 6. Data Vortex Perk
+    if (cdBuffs.data_vortex > 0 && cdWaveActive) {
+        if (now - cdLastVortexSpawn > 7500) {
+            cdLastVortexSpawn = now;
+            cdVortexes.push({
+                x: 100 + Math.random() * (cdCanvas.width - 200),
+                y: 430,
+                vy: -1.8,
+                radius: 55,
+                angle: 0,
+                life: 6.5,
+                damage: 2.0 * cdBuffs.data_vortex
+            });
+            addFloatingText(cdCanvas.width / 2, 360, "🌪️ LỐC XOÁY DỮ LIỆU CÀN QUÉT!", "#06b6d4", 1.2);
+        }
+    }
+    
+    // === ULTIMATE EVOLUTION SKILLS EXECUTION ===
+    if (Object.keys(cdUltimates).length > 0 && cdWaveActive) {
+        // 1. Cosmic Supernova (Thiên Kiếp Lượng Tử)
+        if (cdUltimates.ult_supernova && now - cdLastUltSupernova > 6000) {
+            cdLastUltSupernova = now;
+            playCdSound('boom');
+            cdScreenShake = 16;
+            createExplosion(cdCanvas.width / 2, 220, '#ec4899', 45);
+            createExplosion(cdCanvas.width / 2, 220, '#38bdf8', 45);
+            addFloatingText(cdCanvas.width / 2, 190, "🌟 SIÊU TÂN TINH LƯỢNG TỬ: DIỆT TOÀN SÀN! 💥", "#fde68a", 2.0);
+            
+            for (let eIdx = cdEnemies.length - 1; eIdx >= 0; eIdx--) {
+                const en = cdEnemies[eIdx];
+                if (!en.isBoss) {
+                    en.hp = 0;
+                    killEnemy(en, eIdx);
+                } else {
+                    en.hp -= 2500 * cdUltimates.ult_supernova;
+                    createExplosion(en.x, en.y, '#f59e0b', 30);
+                    addFloatingText(en.x, en.y - 25, `-${2500 * cdUltimates.ult_supernova} HP SIÊU BOSS! ⚡`, "#fde68a", 1.5);
+                }
+            }
+        }
+        
+        // 2. God of Thunder (Lôi Đình Thần Giới)
+        if (cdUltimates.ult_thunder_god && now - cdLastUltThunder > 1800) {
+            cdLastUltThunder = now;
+            playCdSound('laser');
+            const targetCount = 4 + cdUltimates.ult_thunder_god * 2;
+            let struck = 0;
+            cdEnemies.forEach((en, eIdx) => {
+                if (struck < targetCount && en.hp > 0) {
+                    struck++;
+                    en.hp -= 6.0 * cdUltimates.ult_thunder_god;
+                    createExplosion(en.x, en.y, '#fde68a', 12);
+                    for (let ly = 0; ly < en.y; ly += 28) {
+                        cdParticles.push({
+                            x: en.x + (Math.random() - 0.5) * 8,
+                            y: ly,
+                            vx: (Math.random() - 0.5) * 1.5,
+                            vy: 2.5,
+                            color: '#fde68a',
+                            size: 3.5,
+                            alpha: 1,
+                            decay: 0.08
+                        });
+                    }
+                    if (en.hp <= 0) killEnemy(en, eIdx);
+                }
+            });
+            if (struck > 0) {
+                addFloatingText(cdCanvas.width / 2, 330, "⚡ LÔI ĐÌNH THẦN PHẠT! 🌩️", "#fde68a", 1.0);
+            }
+        }
+        
+        // 3. Celestial Drone Armada (Hạm Đội Drone Thần Thánh)
+        if (cdUltimates.ult_drone_armada && now - cdLastUltArmada > 360) {
+            cdLastUltArmada = now;
+            const droneCount = 4;
+            for (let d = 0; d < droneCount; d++) {
+                const ang = (cdDroneAngle || 0) + (Math.PI * 2 * d) / droneCount;
+                const dx = (cdCanvas.width / 2) + Math.cos(ang) * 95;
+                const dy = 415 + Math.sin(ang) * 35;
+                let closest = null, minDist = 9999;
+                cdEnemies.forEach(en => {
+                    const dist = Math.hypot(en.x - dx, en.y - dy);
+                    if (dist < minDist) { minDist = dist; closest = en; }
+                });
+                const shotAng = closest ? Math.atan2(closest.y - dy, closest.x - dx) : -Math.PI / 2;
+                cdProjectiles.push({
+                    x: dx, y: dy,
+                    vx: Math.cos(shotAng) * 16,
+                    vy: Math.sin(shotAng) * 16,
+                    type: 'plasma',
+                    damage: 3.5 * cdUltimates.ult_drone_armada,
+                    freeze: false,
+                    pierce: 3,
+                    size: 5,
+                    color: '#f59e0b'
+                });
+            }
+        }
+    }
+    
+    // Update Flame Trails
+    for (let f = cdFireTrails.length - 1; f >= 0; f--) {
+        const flame = cdFireTrails[f];
+        flame.life -= dt;
+        if (flame.life <= 0) {
+            cdFireTrails.splice(f, 1);
+            continue;
+        }
+        cdEnemies.forEach((en, eIdx) => {
+            if (Math.hypot(en.x - flame.x, en.y - flame.y) < en.size + flame.radius) {
+                en.hp -= flame.damage * dt * 3.5;
+                if (en.hp <= 0) killEnemy(en, eIdx);
+            }
+        });
+    }
+    
+    // Update Homing Missiles
+    for (let hm = cdHomingMissiles.length - 1; hm >= 0; hm--) {
+        const mis = cdHomingMissiles[hm];
+        mis.life -= dt;
+        let closest = null, minDist = 9999;
+        cdEnemies.forEach(en => {
+            const d = Math.hypot(en.x - mis.x, en.y - mis.y);
+            if (d < minDist) { minDist = d; closest = en; }
+        });
+        if (closest) {
+            const targetAngle = Math.atan2(closest.y - mis.y, closest.x - mis.x);
+            const curAngle = Math.atan2(mis.vy, mis.vx);
+            let diff = targetAngle - curAngle;
+            while (diff < -Math.PI) diff += Math.PI * 2;
+            while (diff > Math.PI) diff -= Math.PI * 2;
+            const newAngle = curAngle + diff * 0.14;
+            const speed = 7.5;
+            mis.vx = Math.cos(newAngle) * speed;
+            mis.vy = Math.sin(newAngle) * speed;
+        }
+        mis.x += mis.vx;
+        mis.y += mis.vy;
+        
+        if (Math.random() < 0.6) {
+            cdParticles.push({
+                x: mis.x, y: mis.y,
+                vx: (Math.random() - 0.5) * 0.8, vy: (Math.random() - 0.5) * 0.8,
+                color: '#f97316', size: 2.5, alpha: 0.8, decay: 0.05
+            });
+        }
+        
+        let hit = false;
+        for (let eIdx = cdEnemies.length - 1; eIdx >= 0; eIdx--) {
+            const en = cdEnemies[eIdx];
+            if (Math.hypot(en.x - mis.x, en.y - mis.y) < en.size + 8) {
+                en.hp -= mis.damage;
+                createExplosion(mis.x, mis.y, '#f97316', 16);
+                playCdSound('boom');
+                cdScreenShake = 4;
+                hit = true;
+                if (en.hp <= 0) killEnemy(en, eIdx);
+                break;
+            }
+        }
+        if (hit || mis.life <= 0) {
+            cdHomingMissiles.splice(hm, 1);
+        }
+    }
+    
+    // Update Vortexes
+    for (let v = cdVortexes.length - 1; v >= 0; v--) {
+        const vor = cdVortexes[v];
+        vor.y += vor.vy;
+        vor.angle += dt * 8;
+        vor.life -= dt;
+        if (vor.life <= 0 || vor.y < -50) {
+            cdVortexes.splice(v, 1);
+            continue;
+        }
+        cdEnemies.forEach((en, eIdx) => {
+            const d = Math.hypot(en.x - vor.x, en.y - vor.y);
+            if (d < vor.radius + en.size) {
+                const ang = Math.atan2(vor.y - en.y, vor.x - en.x);
+                en.x += Math.cos(ang) * 1.5;
+                en.y += Math.sin(ang) * 1.5;
+                en.hp -= vor.damage * dt * 4;
+                if (en.hp <= 0) killEnemy(en, eIdx);
+            }
+        });
+    }
+    
+    // Process Spawn Queue
+    if (cdSpawnQueue.length > 0) {
+        cdSpawnTimer += dt * 1000;
+        while (cdSpawnQueue.length > 0 && cdSpawnTimer >= cdSpawnQueue[0].delay) {
+            const next = cdSpawnQueue.shift();
+            spawnEnemy(next.type, undefined, undefined, next.hpMult, next.spdMult);
+        }
+    }
+    
+    // Update Mines
+    for (let m = cdMines.length - 1; m >= 0; m--) {
+        const mine = cdMines[m];
+        mine.timer -= dt;
+        let exploded = false;
+        
+        for (let j = 0; j < cdEnemies.length; j++) {
+            const en = cdEnemies[j];
+            if (Math.hypot(en.x - mine.x, en.y - mine.y) < en.size + mine.radius) {
+                exploded = true;
+                break;
+            }
+        }
+        
+        if (exploded || mine.timer <= 0) {
+            createExplosion(mine.x, mine.y, '#f59e0b', 24);
+            playCdSound('boom');
+            cdScreenShake = 10;
+            // Damage area
+            cdEnemies.forEach(en => {
+                const dist = Math.hypot(en.x - mine.x, en.y - mine.y);
+                if (dist < mine.blastRadius) {
+                    en.hp -= 4;
+                    createExplosion(en.x, en.y, '#f59e0b', 5);
+                }
+            });
+            cdMines.splice(m, 1);
+        }
+    }
+    
+    // Update Projectiles
+    for (let i = cdProjectiles.length - 1; i >= 0; i--) {
+        const p = cdProjectiles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        // Firewall flame trail
+        if (cdBuffs.firewall_flame > 0 && Math.random() < 0.28) {
+            cdFireTrails.push({
+                x: p.x,
+                y: p.y,
+                radius: 16,
+                life: 2.2,
+                damage: 0.8 * cdBuffs.firewall_flame
+            });
+        }
+        
+        if (p.x < -20 || p.x > cdCanvas.width + 20 || p.y < -20 || p.y > cdCanvas.height + 20) {
+            cdProjectiles.splice(i, 1);
+            continue;
+        }
+        
+        for (let j = cdEnemies.length - 1; j >= 0; j--) {
+            const en = cdEnemies[j];
+            const dist = Math.hypot(p.x - en.x, p.y - en.y);
+            if (dist < en.size + p.size) {
+                en.hp -= p.damage;
+                if (p.freeze) en.frozenTimer = 2.5;
+                
+                // Chain lightning perk
+                if (cdBuffs.chain_lightning > 0 && !p.chained) {
+                    p.chained = true;
+                    let chained = 0;
+                    cdEnemies.forEach(other => {
+                        if (other !== en && chained < 3 + cdBuffs.chain_lightning) {
+                            const d = Math.hypot(other.x - en.x, other.y - en.y);
+                            if (d < 140) {
+                                other.hp -= p.damage * 0.6;
+                                chained++;
+                                cdParticles.push({
+                                    x: other.x, y: other.y, vx: 0, vy: 0,
+                                    color: '#fde68a', size: 3, alpha: 1, decay: 0.05
+                                });
+                            }
+                        }
+                    });
+                }
+                
+                // Plasma splash perk
+                if (cdBuffs.plasma_splash > 0 && !p.splashed) {
+                    p.splashed = true;
+                    const splashRadius = 55 * cdBuffs.plasma_splash;
+                    createExplosion(p.x, p.y, '#f59e0b', 8);
+                    cdEnemies.forEach((other, oIdx) => {
+                        if (other !== en) {
+                            const d = Math.hypot(other.x - p.x, other.y - p.y);
+                            if (d < splashRadius) {
+                                other.hp -= p.damage * 0.65;
+                                if (other.hp <= 0) {
+                                    killEnemy(other, oIdx);
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                createExplosion(p.x, p.y, p.color, 4);
+                
+                if (en.hp <= 0) {
+                    killEnemy(en, j);
+                }
+                
+                p.pierce = (p.pierce || 1) - 1;
+                if (p.pierce <= 0) {
+                    cdProjectiles.splice(i, 1);
+                }
+                break;
+            }
+        }
+    }
+    
+    // Update EXP Orbs
+    const coreX = cdCanvas.width / 2;
+    const coreY = 415;
+    for (let i = cdExpOrbs.length - 1; i >= 0; i--) {
+        const orb = cdExpOrbs[i];
+        orb.y += orb.vy;
+        
+        // Magnet check
+        const dist = Math.hypot(coreX - orb.x, coreY - orb.y);
+        if (orb.magnet || cdBuffs.data_magnet > 0 || dist < 120) {
+            const ang = Math.atan2(coreY - orb.y, coreX - orb.x);
+            orb.x += Math.cos(ang) * 9;
+            orb.y += Math.sin(ang) * 9;
+        }
+        
+        // Collect
+        if (dist < 30 || orb.y >= 415) {
+            cdExp += orb.value;
+            playCdSound('coin');
+            cdExpOrbs.splice(i, 1);
+            
+            // Check level up!
+            if (cdExp >= cdExpNext) {
+                triggerLevelUp();
+            }
+            updateDefenseHud();
+        }
+    }
+    
+    // Update Enemies & Super Bosses
+    for (let i = cdEnemies.length - 1; i >= 0; i--) {
+        const en = cdEnemies[i];
+        if (!en || (en.hp <= 0 && !en.isBoss)) {
+            cdEnemies.splice(i, 1);
+            continue;
+        }
+        
+        // Despawn stray boss orbs so they never linger off-screen
+        if (en.type === 'boss_orb' && (en.y < -30 || en.y > 450 || en.x < -30 || en.x > cdCanvas.width + 30)) {
+            cdEnemies.splice(i, 1);
+            continue;
+        }
+        
+        let speedMult = 1.0;
+        if (en.frozenTimer && en.frozenTimer > 0) {
+            en.frozenTimer -= dt;
+            speedMult = 0.35;
+        }
+        if (cdBuffs.chrono_warp > 0) {
+            speedMult *= (1 - 0.15 * Math.min(3, cdBuffs.chrono_warp));
+        }
+        // Ultimate: Ngưng Đọng Thời Không (-75% enemy speed)
+        if (cdUltimates && cdUltimates.ult_chrono_singularity) {
+            speedMult *= 0.25;
+        }
+        
+        if (!en.isBoss) {
+            // === SPECIAL ELITE ENEMY SKILLS ===
+            // 1. Time Freeze (Chrono Specter)
+            if (en.type === 'time_freeze') {
+                if (en.freezeChannelTimer > 0) {
+                    en.freezeChannelTimer -= dt;
+                    if (Math.random() < 0.4) {
+                        cdParticles.push({
+                            x: en.x + (Math.random() - 0.5) * 35,
+                            y: en.y + (Math.random() - 0.5) * 35,
+                            vx: (Math.random() - 0.5) * 1.5,
+                            vy: (Math.random() - 0.5) * 1.5,
+                            color: '#38bdf8',
+                            size: 3,
+                            alpha: 0.9,
+                            decay: 0.05
+                        });
+                    }
+                    if (en.freezeChannelTimer <= 0) {
+                        playerFrozenTimer = 1.8;
+                        playCdSound('freeze');
+                        createExplosion(en.x, en.y, '#38bdf8', 25);
+                        addFloatingText(cdCanvas.width / 2, 380, "❄️ ĐÓNG BĂNG HỆ THỐNG PHÒNG THỦ! (1.8s)", "#38bdf8", 1.8);
+                        cdScreenShake = 8;
+                    }
+                } else if (en.freezeSkillTimer !== undefined) {
+                    en.freezeSkillTimer -= dt;
+                    if (en.freezeSkillTimer <= 0 && en.y >= 50 && en.y <= 340) {
+                        en.freezeSkillTimer = 5.5 + Math.random() * 1.5;
+                        en.freezeChannelTimer = 0.8;
+                        addFloatingText(en.x, en.y - 18, "⏱️ TÍCH TỤ BĂNG GIÁ...", "#38bdf8", 1.0);
+                        playCdSound('freeze');
+                    }
+                }
+            }
+            
+            // 2. Hyper Dash / Rusher (Shadow Rusher)
+            if (en.type === 'rusher') {
+                if (en.dashState === 'idle') {
+                    en.dashTimer -= dt;
+                    if (en.dashTimer <= 0 && en.y >= 65 && en.y <= 240) {
+                        en.dashState = 'charging';
+                        en.chargeTimer = 0.8;
+                        en.savedVx = en.vx;
+                        en.vx = 0;
+                        en.vy = 0.2;
+                        addFloatingText(en.x, en.y - 20, "⚠️ ĐANG NHẮM LAO TỚI! ⚡", "#f97316", 1.1);
+                        playCdSound('laser');
+                    }
+                } else if (en.dashState === 'charging') {
+                    en.chargeTimer -= dt;
+                    cdParticles.push({
+                        x: en.x + (Math.random() - 0.5) * 16,
+                        y: en.y + (Math.random() - 0.5) * 16,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2,
+                        color: '#ef4444',
+                        size: 3.5,
+                        alpha: 0.9,
+                        decay: 0.06
+                    });
+                    if (en.chargeTimer <= 0) {
+                        en.dashState = 'dashing';
+                        en.vx = 0;
+                        en.vy = 9.8 * speedMult;
+                        playCdSound('alarm');
+                        addFloatingText(en.x, en.y - 15, "⚡ ĐỘT KÍCH SIÊU TỐC!", "#ef4444", 1.3);
+                    }
+                } else if (en.dashState === 'dashing') {
+                    cdParticles.push({
+                        x: en.x + (Math.random() - 0.5) * 10,
+                        y: en.y - 12,
+                        vx: 0,
+                        vy: -2,
+                        color: '#f97316',
+                        size: 4.5,
+                        alpha: 0.8,
+                        decay: 0.08
+                    });
+                }
+            }
+            
+            // 3. Necromancer Daemon (Resurrection)
+            if (en.type === 'necromancer') {
+                if (en.resurrectTimer !== undefined) {
+                    en.resurrectTimer -= dt;
+                    if (en.resurrectTimer <= 0 && en.y >= 50 && en.y <= 330) {
+                        en.resurrectTimer = 5.2 + Math.random() * 1.5;
+                        playCdSound('freeze');
+                        createExplosion(en.x, en.y, '#10b981', 25);
+                        addFloatingText(en.x, en.y - 20, "💀 HỒI SINH QUÁI VẬT! 👻", "#10b981", 1.4);
+                        
+                        const reviveCount = 2;
+                        const hpMultNow = cdWave >= 4 ? (1 + (cdWave - 3) * 0.22) : 1.0;
+                        for (let rc = 0; rc < reviveCount; rc++) {
+                            const fallen = cdFallenEnemies.pop();
+                            const revivedType = fallen ? fallen.type : (Math.random() > 0.5 ? 'trojan' : 'phishing');
+                            const rx = Math.max(45, Math.min(cdCanvas.width - 45, en.x + (rc === 0 ? -45 : 45)));
+                            const ry = Math.max(40, en.y + 15);
+                            spawnEnemy(revivedType, rx, ry, hpMultNow * 0.85, speedMult * 0.95);
+                            createExplosion(rx, ry, '#34d399', 15);
+                            addFloatingText(rx, ry - 10, "👻 TRỖI DẬY!", "#34d399", 1.0);
+                        }
+                    }
+                }
+            }
+            
+            // 4. Botnet Hivemind (Summoner)
+            if (en.type === 'summoner') {
+                if (en.summonSwarmTimer !== undefined) {
+                    en.summonSwarmTimer -= dt;
+                    if (en.summonSwarmTimer <= 0 && en.y >= 40 && en.y <= 320) {
+                        en.summonSwarmTimer = 4.5 + Math.random() * 1.2;
+                        playCdSound('laser');
+                        createExplosion(en.x, en.y, '#eab308', 25);
+                        addFloatingText(en.x, en.y - 20, "📡 TRIỆU HỒI BOTNET SWARM!", "#eab308", 1.4);
+                        
+                        const hpMultNow = cdWave >= 4 ? (1 + (cdWave - 3) * 0.22) : 1.0;
+                        const vOffsets = [
+                            { dx: -45, dy: 15 },
+                            { dx: -20, dy: 30 },
+                            { dx: 20, dy: 30 },
+                            { dx: 45, dy: 15 }
+                        ];
+                        vOffsets.forEach(pos => {
+                            const bx = Math.max(30, Math.min(cdCanvas.width - 30, en.x + pos.dx));
+                            const by = en.y + pos.dy;
+                            spawnEnemy('ddos', bx, by, hpMultNow, speedMult * 1.15);
+                            createExplosion(bx, by, '#38bdf8', 10);
+                        });
+                    }
+                }
+            }
+
+            if (en.type === 'phishing') {
+                en.waveOffset += dt * 3.5;
+                en.x += Math.sin(en.waveOffset) * 2.2 * speedMult;
+                en.y += en.vy * speedMult;
+            } else {
+                en.x += en.vx * speedMult;
+                en.y += en.vy * speedMult;
+            }
+            
+            if (en.x < en.size || en.x > cdCanvas.width - en.size) {
+                en.vx = -en.vx;
+            }
+            
+            // Check breach of core (y >= 415)
+            if (en.y >= 415) {
+                if (cdBuffs.laser_mirror > 0) {
+                    playCdSound('laser');
+                    for (let lm = 0; lm < 3; lm++) {
+                        const ang = -Math.PI / 2 + (lm - 1) * 0.28;
+                        cdProjectiles.push({
+                            x: cdCanvas.width / 2,
+                            y: 405,
+                            vx: Math.cos(ang) * 14,
+                            vy: Math.sin(ang) * 14,
+                            type: 'plasma',
+                            damage: 2.5 * cdBuffs.laser_mirror,
+                            freeze: false,
+                            pierce: 2,
+                            size: 4,
+                            color: '#c084fc'
+                        });
+                    }
+                    addFloatingText(cdCanvas.width / 2, 380, "🪞 GƯƠNG PHẢN XẠ LASER! ⚡", "#c084fc", 1.0);
+                }
+                
+                if (cdShieldActive) {
+                    playCdSound('shield');
+                    createExplosion(en.x, 415, '#fde68a', 14);
+                    addFloatingText(en.x, 390, "CHẶN THÀNH CÔNG! 🛡️", "#fde68a", 1.0);
+                    cdEnemies.splice(i, 1);
+                } else {
+                    // Càng về sau càng nâng sát thương của quái lên!
+                    let baseDmg = 8;
+                    if (en.type === 'ddos') baseDmg = 8;
+                    else if (en.type === 'trojan' || en.type === 'trojan_spore') baseDmg = 12;
+                    else if (en.type === 'phishing') baseDmg = 14;
+                    else if (en.type === 'rusher') baseDmg = 26; // Rusher hits extremely hard!
+                    else if (en.type === 'time_freeze') baseDmg = 20;
+                    else if (en.type === 'summoner') baseDmg = 22;
+                    else if (en.type === 'necromancer') baseDmg = 24;
+                    else if (en.type === 'ransomware') baseDmg = 35;
+                    else if (en.type === 'boss_orb') baseDmg = 12;
+                    
+                    // Trọng số tăng sát thương chỉ áp dụng từ màn 4 trở đi (Màn 1-3 giữ nguyên sát thương cơ bản)
+                    const waveDmgMult = cdWave >= 4 ? (1 + (cdWave - 3) * 0.14) : 1.0;
+                    let dmg = Math.round(baseDmg * waveDmgMult);
+                    
+                    // Ultimate: Vạn Cổ Bất Hoại (Aegis Divinity Matrix: -60% breach dmg & emergency shield)
+                    if (cdUltimates && cdUltimates.ult_divine_aegis) {
+                        dmg = Math.max(1, Math.round(dmg * 0.4));
+                        if (cdCoreHp < cdMaxCoreHp * 0.45 && cdShieldCooldown <= 0 && !cdShieldActive) {
+                            triggerAiShield();
+                            addFloatingText(cdCanvas.width / 2, 380, "👑 VẠN CỔ BẤT HOẠI: KÍCH HOẠT HÀO QUANG KHIÊN!", "#fde68a", 1.5);
+                        }
+                    }
+                    
+                    cdCoreHp = Math.max(0, cdCoreHp - dmg);
+                    cdScreenShake = 12;
+                    playCdSound('alarm');
+                    createExplosion(en.x, 415, '#ef4444', 20);
+                    addFloatingText(en.x, 390, `-${dmg} HP! 💥`, "#ef4444", 1.2);
+                    
+                    // Spike armor perk: reflect 80% damage to enemy
+                    if (cdBuffs.spike_armor > 0) {
+                        en.hp -= dmg * 0.8 * cdBuffs.spike_armor;
+                        addFloatingText(en.x, 370, "PHẢN ĐÒN ĐIỆN GIẬT! ⚡", "#c084fc", 0.9);
+                    }
+                    
+                    cdCombo = 0;
+                    updateDefenseHud();
+                    cdEnemies.splice(i, 1);
+                    
+                    if (cdCoreHp <= 0) {
+                        cdCoreHp = 0;
+                        updateDefenseHud();
+                        if (!cdIsGameOver) {
+                            endDefenseGame(false);
+                        }
+                        return;
+                    }
+                }
+            }
+        } else {
+            // === SUPER BOSS BEHAVIOR & AI SKILLS ===
+            en.x += en.vx * speedMult;
+            if (en.x < 100 || en.x > cdCanvas.width - 100) en.vx = -en.vx;
+            
+            // Phase 2 Enrage
+            if (en.hp < en.maxHp * 0.5 && en.phase === 1) {
+                en.phase = 2;
+                en.color = '#dc2626';
+                en.vx = (en.vx > 0 ? 3.0 : -3.0);
+                addFloatingText(en.x, en.y - 30, `⚠️ ${en.name}: CUỒNG NỘ ENRAGE!`, "#ef4444", 1.4);
+                playCdSound('alarm');
+            }
+            
+            // Skill timers
+            en.laserTimer -= dt;
+            if (en.laserTimer <= 0) {
+                en.laserTimer = (en.phase === 2) ? 1.6 : 2.5;
+                
+                if (en.ability === 'syn_flood') {
+                    // Downward-biased 8-orb fan burst
+                    for (let k = 0; k < 8; k++) {
+                        const ang = (Math.PI * (k + 0.5)) / 8;
+                        cdEnemies.push({
+                            type: 'boss_orb',
+                            x: en.x, y: en.y + 20,
+                            vx: Math.cos(ang) * 2.8, 
+                            vy: Math.abs(Math.sin(ang)) * 2.2 + 0.8,
+                            hp: 1, size: 8, color: '#38bdf8',
+                            points: 15, coins: 0
+                        });
+                    }
+                } else if (en.ability === 'teleport') {
+                    // Teleport jump + shadow shockwave
+                    en.x = 120 + Math.random() * (cdCanvas.width - 240);
+                    createExplosion(en.x, en.y, '#c084fc', 25);
+                    addFloatingText(en.x, en.y - 20, "DỊCH CHUYỂN ZERO-DAY! 👤", "#c084fc", 1.2);
+                    for (let k = 0; k < 4; k++) {
+                        const ang = Math.PI / 2 + (k - 1.5) * 0.3;
+                        cdEnemies.push({
+                            type: 'boss_orb',
+                            x: en.x, y: en.y + 20,
+                            vx: Math.cos(ang) * 3.2, 
+                            vy: Math.abs(Math.sin(ang)) * 2.8 + 0.8,
+                            hp: 1, size: 9, color: '#e879f9',
+                            points: 15, coins: 0
+                        });
+                    }
+                } else {
+                    // Default fan barrage
+                    const count = (en.phase === 2) ? 5 : 3;
+                    for (let k = 0; k < count; k++) {
+                        const ang = Math.PI / 2 + (k - (count - 1) / 2) * 0.28;
+                        cdEnemies.push({
+                            type: 'boss_orb',
+                            x: en.x, y: en.y + 30,
+                            vx: Math.cos(ang) * 2.8, 
+                            vy: Math.abs(Math.sin(ang)) * 2.5 + 0.8,
+                            hp: 1, size: 9, color: '#ff2e93',
+                            points: 15, coins: 0
+                        });
+                    }
+                }
+                playCdSound('laser');
+            }
+            
+            // Summon Minions
+            en.summonTimer -= dt;
+            if (en.summonTimer <= 0) {
+                en.summonTimer = 3.2;
+                spawnEnemy(Math.random() > 0.4 ? 'ddos' : 'trojan', en.x + (Math.random() - 0.5) * 60, en.y + 40);
+            }
+            
+            // Update Boss HP bar
+            const bossBar = document.getElementById('boss-hp-inner');
+            if (bossBar) {
+                const pct = Math.max(0, (en.hp / en.maxHp) * 100);
+                bossBar.style.width = pct + '%';
+            }
+        }
+    }
+    
+    // Update Particles
+    for (let i = cdParticles.length - 1; i >= 0; i--) {
+        const pt = cdParticles[i];
+        pt.x += pt.vx; pt.y += pt.vy;
+        pt.alpha -= pt.decay;
+        if (pt.alpha <= 0) cdParticles.splice(i, 1);
+    }
+    
+    // Update Floating Combat Texts
+    for (let i = cdFloatingTexts.length - 1; i >= 0; i--) {
+        const ft = cdFloatingTexts[i];
+        ft.y += ft.vy;
+        ft.alpha -= ft.decay;
+        if (ft.alpha <= 0) cdFloatingTexts.splice(i, 1);
+    }
+    
+    // Wave Clear Check - Seamless Automatic Transition to next wave!
+    // Safely check for any living enemies
+    const livingEnemies = cdEnemies.filter(e => e && e.hp > 0 && e.y >= -40 && e.y <= 450);
+    if (cdWaveActive && cdSpawnQueue.length === 0 && livingEnemies.length === 0) {
+        cdEnemies = []; // Purge any stray/dead entities
+        cdWaveActive = false;
+        playCdSound('coin');
+        const clearBonus = 150 + cdWave * 50;
+        const coinBonus = 5 + Math.min(20, cdWave * 2);
+        cdScore = (Number(cdScore) || 0) + clearBonus;
+        cdCoins = (Number(cdCoins) || 0) + coinBonus;
+        addFloatingText(cdCanvas.width / 2, 200, `✨ ĐÃ DỌN SẠCH ĐỢT ${cdWave}! (+${coinBonus}🪙)`, "#34d399", 1.5);
+        addFloatingText(cdCanvas.width / 2, 235, `⚡ ĐỢT ${cdWave + 1} TIẾP THEO BẮT ĐẦU NGAY...`, "#fde68a", 1.2);
+        updateDefenseHud();
+        
+        setTimeout(() => {
+            if (cdRunning && cdCoreHp > 0 && !cdWaveActive) {
+                startDefenseWave(cdWave + 1);
+            }
+        }, 1600);
+    }
+    
+    // Auto-recovery Watchdog: If spawn queue is exhausted and no enemies visible on screen for > 2.0s, force advance!
+    if (cdWaveActive && cdSpawnQueue.length === 0) {
+        const onScreen = cdEnemies.filter(e => e && e.hp > 0 && e.y >= 0 && e.y <= 420);
+        if (onScreen.length === 0) {
+            if (!window._cdEmptyFieldTimer) window._cdEmptyFieldTimer = performance.now();
+            else if (performance.now() - window._cdEmptyFieldTimer > 2000) {
+                window._cdEmptyFieldTimer = null;
+                cdEnemies = [];
+                cdWaveActive = false;
+                startDefenseWave(cdWave + 1);
+            }
+        } else {
+            window._cdEmptyFieldTimer = null;
+        }
+    }
+}
+
+function killEnemy(en, index) {
+    createExplosion(en.x, en.y, en.color, en.isBoss ? 45 : 14);
+    playCdSound('boom');
+    cdKills++;
+    
+    // Immediate EXP Award (no waiting for orbs to fall)
+    const baseExp = en.isBoss ? 120 : (
+        en.type === 'ransomware' ? 24 :
+        en.type === 'necromancer' ? 28 :
+        en.type === 'summoner' ? 22 :
+        en.type === 'time_freeze' ? 20 :
+        en.type === 'rusher' ? 18 :
+        (en.type === 'trojan' ? 14 : (en.type === 'boss_orb' ? 2 : 7))
+    );
+    const expGain = (cdBuffs.crypto_miner > 0) ? Math.round(baseExp * 1.45) : baseExp;
+    
+    // Store fallen enemy for Necromancer resurrection pool
+    if (!en.isBoss && en.type !== 'boss_orb' && en.type !== 'trojan_spore') {
+        cdFallenEnemies.push({
+            type: en.type,
+            points: en.points,
+            coins: en.coins,
+            color: en.color
+        });
+        if (cdFallenEnemies.length > 15) cdFallenEnemies.shift();
+    }
+    
+    // SAFE NUMERIC ADDITION: Prevents NaN corruption
+    cdExp = (Number(cdExp) || 0) + (Number(expGain) || 7);
+    
+    // Visual indicators: floating text + upward spark particles
+    addFloatingText(en.x, en.y - 12, `+${expGain} EXP ✨`, '#a78bfa', 1.05);
+    for (let p = 0; p < 4; p++) {
+        cdParticles.push({
+            x: en.x + (Math.random() - 0.5) * 16,
+            y: en.y + (Math.random() - 0.5) * 16,
+            vx: (Math.random() - 0.5) * 3,
+            vy: -3.5 - Math.random() * 3.5,
+            color: '#c084fc',
+            size: 3 + Math.random() * 2,
+            alpha: 1,
+            decay: 0.04
+        });
+    }
+    
+    // Corpse explosion perk
+    if (cdBuffs.corpse_explosion > 0) {
+        const radius = 65 * cdBuffs.corpse_explosion;
+        createExplosion(en.x, en.y, '#10b981', 18);
+        addFloatingText(en.x, en.y, "MÃ ĐỘC TỰ HỦY! ☣️", "#10b981", 1.1);
+        cdEnemies.forEach(other => {
+            if (other !== en && !other.isBoss) {
+                const dist = Math.hypot(other.x - en.x, other.y - en.y);
+                if (dist < radius) {
+                    other.hp -= 2 * cdBuffs.corpse_explosion;
+                }
+            }
+        });
+    }
+    
+    if (en.isBoss) {
+        cdBoss = null;
+        cdScore = (Number(cdScore) || 0) + 6000;
+        cdCoins = (Number(cdCoins) || 0) + 60;
+        addFloatingText(en.x, en.y, "+6000 ĐIỂM! TIÊU DIỆT SIÊU BOSS!", "#fde68a", 1.8);
+        const bossHud = document.getElementById('boss-hud-bar');
+        if (bossHud) bossHud.style.display = 'none';
+        
+        // Immediately eliminate all residual boss orbs so the wave clears smoothly
+        for (let b = cdEnemies.length - 1; b >= 0; b--) {
+            if (cdEnemies[b].type === 'boss_orb') {
+                createExplosion(cdEnemies[b].x, cdEnemies[b].y, '#38bdf8', 6);
+                cdEnemies.splice(b, 1);
+            }
+        }
+    } else {
+        cdCombo++;
+        const comboBonus = Math.min(cdCombo * 10, 100);
+        const rawPoints = Number(en.points) || (en.type === 'boss_orb' ? 10 : 50);
+        const rawCoins = Number(en.coins) || (en.type === 'boss_orb' ? 0 : 1);
+        const coinGain = (cdBuffs.crypto_miner > 0) ? (rawCoins * 2) : rawCoins;
+        
+        cdScore = (Number(cdScore) || 0) + rawPoints + comboBonus;
+        cdCoins = (Number(cdCoins) || 0) + coinGain;
+        addFloatingText(en.x, en.y, `+${rawPoints} (+${coinGain}🪙)`, en.color || '#38bdf8', 1.0);
+        
+        if (en.type === 'trojan') {
+            spawnEnemy('trojan_spore', en.x - 15, en.y);
+            spawnEnemy('trojan_spore', en.x + 15, en.y);
+            addFloatingText(en.x, en.y - 15, "PHÂN MẢNH MÃ ĐỘC! 🪱", "#e879f9", 0.9);
+        }
+    }
+    
+    // Safely remove the killed enemy by reference
+    const actualIdx = cdEnemies.indexOf(en);
+    if (actualIdx !== -1) {
+        cdEnemies.splice(actualIdx, 1);
+    }
+    updateDefenseHud();
+    
+    // Trigger Level-Up immediately if threshold reached
+    if ((Number(cdExp) || 0) >= (Number(cdExpNext) || 40) && !cdIsLevelingUp) {
+        triggerLevelUp();
+    }
+}
+
+function createExplosion(x, y, color, count) {
+    for (let i = 0; i < count; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 1 + Math.random() * 5;
+        cdParticles.push({
+            x: x, y: y,
+            vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
+            color: color || '#38bdf8',
+            size: 2 + Math.random() * 3,
+            alpha: 1, decay: 0.03 + Math.random() * 0.03
+        });
+    }
+}
+
+function addFloatingText(x, y, text, color, scale) {
+    cdFloatingTexts.push({
+        x: x, y: y, text: text,
+        color: color || '#fff', scale: scale || 1.0,
+        alpha: 1.0, vy: -1.2, decay: 0.02
+    });
+}
+
+function updateDefenseHud() {
+    // Sanitize any potential NaN
+    cdCoreHp = Math.max(0, Number(cdCoreHp) || 0);
+    cdMaxCoreHp = Math.max(1, Number(cdMaxCoreHp) || 100);
+    cdExp = Math.max(0, Number(cdExp) || 0);
+    cdExpNext = Math.max(1, Number(cdExpNext) || 40);
+    cdCoins = Math.max(0, Number(cdCoins) || 0);
+    cdScore = Math.max(0, Number(cdScore) || 0);
+    cdLevel = Math.max(1, Number(cdLevel) || 1);
+    
+    const hpBar = document.getElementById('core-hp-bar');
+    const hpText = document.getElementById('core-hp-text');
+    const waveText = document.getElementById('defense-wave-num');
+    const coinsText = document.getElementById('defense-coins');
+    const scoreText = document.getElementById('defense-score');
+    const comboBadge = document.getElementById('defense-combo-badge');
+    const lvlText = document.getElementById('defense-level');
+    const expFill = document.getElementById('exp-bar-fill');
+    
+    if (hpBar) {
+        const pct = Math.max(0, Math.min(100, (cdCoreHp / cdMaxCoreHp) * 100));
+        hpBar.style.width = pct + '%';
+        if (pct < 30) hpBar.style.background = 'linear-gradient(90deg,#ef4444,#f97316)';
+        else if (pct < 60) hpBar.style.background = 'linear-gradient(90deg,#f59e0b,#fbbf24)';
+        else hpBar.style.background = 'linear-gradient(90deg,#10b981,#06b6d4)';
+    }
+    if (hpText) hpText.textContent = `${cdCoreHp}/${cdMaxCoreHp}`;
+    if (waveText) waveText.textContent = cdWave;
+    if (coinsText) coinsText.textContent = cdCoins.toLocaleString();
+    if (scoreText) scoreText.textContent = cdScore.toLocaleString();
+    if (lvlText) lvlText.textContent = cdLevel;
+    if (comboBadge) comboBadge.textContent = cdCombo > 2 ? `x${cdCombo} COMBO!` : '';
+    
+    if (expFill) {
+        const expPct = Math.min(100, Math.max(0, (cdExp / cdExpNext) * 100));
+        expFill.style.width = expPct + '%';
+    }
+    
+    updateActiveSkillsTray();
+}
+
+function updateActiveSkillsTray() {
+    const tray = document.getElementById('active-skills-list');
+    if (!tray) return;
+    const activeSkills = VAMPIRE_BUFFS_POOL.filter(b => (cdBuffs[b.id] || 0) > 0);
+    const activeUlts = Object.keys(cdUltimates).filter(k => cdUltimates[k] > 0);
+    
+    if (activeSkills.length === 0 && activeUlts.length === 0) {
+        tray.innerHTML = '<span style="font-size:0.75rem;color:#94a3b8;font-style:italic;">(Chưa có kỹ năng nào - Lên cấp để mở khóa tối đa 4 kỹ năng)</span>';
+        return;
+    }
+    
+    let html = '';
+    
+    // Header tag showing 4-skill slots status
+    const slotBadge = activeSkills.length >= 4 
+        ? '<span style="font-size:0.7rem;background:rgba(239,68,68,0.25);border:1px solid #ef4444;color:#fca5a5;padding:2px 8px;border-radius:12px;font-weight:800;margin-right:4px;">🔒 ĐỦ 4/4 SKILLS</span>'
+        : `<span style="font-size:0.7rem;background:rgba(52,211,153,0.15);border:1px solid #34d399;color:#6ee7b7;padding:2px 8px;border-radius:12px;font-weight:700;margin-right:4px;">${activeSkills.length}/4 SKILLS</span>`;
+        
+    html += slotBadge;
+    
+    html += activeSkills.map(b => {
+        const lvl = cdBuffs[b.id];
+        const isMax = lvl >= 5;
+        return `
+            <div class="active-skill-chip ${isMax ? 'is-max' : ''}" title="${b.name}: Cấp ${lvl}/5">
+                <span class="chip-icon">${b.icon}</span>
+                <span class="chip-name">${b.name.split(' (')[0]}</span>
+                <span class="chip-lvl ${isMax ? 'lvl-max' : ''}">${isMax ? 'MAX' : 'Lv.' + lvl}</span>
+            </div>
+        `;
+    }).join('');
+    
+    // Render Ultimate Skills if unlocked
+    if (activeUlts.length > 0) {
+        html += '<span style="font-size:0.7rem;background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff;padding:2px 8px;border-radius:12px;font-weight:900;margin-left:6px;box-shadow:0 0 10px rgba(245,158,11,0.5);">👑 TỐI THƯỢNG:</span>';
+        html += activeUlts.map(uId => {
+            const uCfg = ULTIMATE_BUFFS.find(u => u.id === uId);
+            const lvl = cdUltimates[uId];
+            return `
+                <div class="active-skill-chip is-max" style="border:1.5px solid #f59e0b;background:linear-gradient(135deg,rgba(245,158,11,0.3),rgba(236,72,153,0.3));box-shadow:0 0 12px rgba(245,158,11,0.4);" title="${uCfg ? uCfg.name : uId}: Cấp ${lvl}">
+                    <span class="chip-icon">${uCfg ? uCfg.icon : '👑'}</span>
+                    <span class="chip-name" style="color:#fde68a;">${uCfg ? uCfg.name.split(' (')[0] : uId}</span>
+                    <span class="chip-lvl" style="background:#f59e0b;color:#000;font-weight:900;">★${lvl}</span>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    tray.innerHTML = html;
+}
+
+function openShopInGame() {
+    initCdAudio();
+    cdIsPaused = true;
+    const shopModal = document.getElementById('defense-shop-modal');
+    const shopTitle = document.getElementById('shop-wave-title');
+    const shopTip = document.getElementById('shop-cyber-tip');
+    const shopBalance = document.getElementById('shop-coin-balance');
+    
+    if (shopTitle) shopTitle.innerHTML = '🛒 CỬA HÀNG VŨ KHÍ &amp; GIA CỐ SERVER <span style="font-size:0.8rem;color:#fde68a;">(GAME ĐANG TẠM DỪNG ⏸️)</span>';
+    if (shopTip) shopTip.innerHTML = '💡 <em>Game đang tạm dừng an toàn! Hãy dùng Cyber Coins để nâng cấp tốc độ bắn, đạn kép, hồi máu và Drone AI, sau đó bấm TIẾP TỤC để tiếp tục càn quét!</em>';
+    if (shopBalance) shopBalance.textContent = (Number(cdCoins) || 0).toLocaleString();
+    updateShopButtons();
+    if (shopModal) shopModal.style.display = 'flex';
+}
+
+function closeShopAndResume() {
+    initCdAudio();
+    cdIsPaused = false;
+    const shopModal = document.getElementById('defense-shop-modal');
+    if (shopModal) shopModal.style.display = 'none';
+    playCdSound('laser');
+}
+
+function updateShopButtons() {
+    const upFire = document.getElementById('shop-up-firerate');
+    const costFire = document.getElementById('cost-firerate');
+    if (cdUpgrades.firerate >= 2) {
+        costFire.textContent = "MAX CẤP";
+        upFire.classList.add('disabled');
+    } else {
+        const cost = cdUpgrades.firerate === 0 ? 30 : 50;
+        costFire.textContent = `${cost} Coins`;
+        if (cdCoins < cost) upFire.classList.add('disabled');
+        else upFire.classList.remove('disabled');
+    }
+    
+    const upDual = document.getElementById('shop-up-dual');
+    const costDual = document.getElementById('cost-dual');
+    if (cdUpgrades.dual) {
+        costDual.textContent = "ĐÃ MỞ KHÓA";
+        upDual.classList.add('disabled');
+    } else {
+        costDual.textContent = "50 Coins";
+        if (cdCoins < 50) upDual.classList.add('disabled');
+        else upDual.classList.remove('disabled');
+    }
+    
+    const upRepair = document.getElementById('shop-up-repair');
+    const costRepair = document.getElementById('cost-repair');
+    costRepair.textContent = "35 Coins";
+    if (cdCoins < 35 || cdCoreHp >= cdMaxCoreHp) upRepair.classList.add('disabled');
+    else upRepair.classList.remove('disabled');
+    
+    const upDrone = document.getElementById('shop-up-drone');
+    const costDrone = document.getElementById('cost-drone');
+    if (cdUpgrades.drone) {
+        costDrone.textContent = "ĐÃ KÍCH HOẠT";
+        upDrone.classList.add('disabled');
+    } else {
+        costDrone.textContent = "65 Coins";
+        if (cdCoins < 65) upDrone.classList.add('disabled');
+        else upDrone.classList.remove('disabled');
+    }
+}
+
+function buyDefenseUpgrade(type) {
+    initCdAudio();
+    if (type === 'firerate') {
+        const cost = cdUpgrades.firerate === 0 ? 30 : 50;
+        if (cdCoins >= cost && cdUpgrades.firerate < 2) {
+            cdCoins -= cost;
+            cdUpgrades.firerate++;
+            playCdSound('coin');
+            addFloatingText(cdCanvas.width / 2, 250, "ĐÃ NÂNG CẤP TỐC ĐỘ BẮN! ⚡", "#38bdf8", 1.2);
+        }
+    } else if (type === 'dual') {
+        if (cdCoins >= 50 && !cdUpgrades.dual) {
+            cdCoins -= 50;
+            cdUpgrades.dual = true;
+            playCdSound('coin');
+            addFloatingText(cdCanvas.width / 2, 250, "ĐÃ MỞ KHÓA TIA LASER KÉP! 💥", "#34d399", 1.2);
+        }
+    } else if (type === 'repair') {
+        if (cdCoins >= 35 && cdCoreHp < cdMaxCoreHp) {
+            cdCoins -= 35;
+            cdMaxCoreHp += 20;
+            cdCoreHp = Math.min(cdMaxCoreHp, cdCoreHp + 45);
+            playCdSound('coin');
+            addFloatingText(cdCanvas.width / 2, 250, "SERVER ĐÃ ĐƯỢC GIA CỐ (+45 HP)! 🛡️", "#34d399", 1.2);
+        }
+    } else if (type === 'drone') {
+        if (cdCoins >= 65 && !cdUpgrades.drone) {
+            cdCoins -= 65;
+            cdUpgrades.drone = true;
+            playCdSound('coin');
+            addFloatingText(cdCanvas.width / 2, 250, "VỆ BINH AI DRONE ĐÃ SẴN SÀNG! 🤖", "#a78bfa", 1.2);
+        }
+    }
+    
+    document.getElementById('shop-coin-balance').textContent = cdCoins;
+    updateDefenseHud();
+    updateShopButtons();
+}
+
+function startNextWave() {
+    document.getElementById('defense-shop-modal').style.display = 'none';
+    startDefenseWave(cdWave + 1);
+}
+
+// =========================================================================
+// === GAME OVER & LEADERBOARD SUBMISSION ===
+// =========================================================================
+function endDefenseGame(isVictory) {
+    if (cdIsGameOver) return;
+    cdIsGameOver = true;
+    cdWaveActive = false;
+    if (cdSurvivalTimerInterval) clearInterval(cdSurvivalTimerInterval);
+    
+    const endModal = document.getElementById('defense-end-modal');
+    const endScore = document.getElementById('end-modal-score');
+    const endWave = document.getElementById('end-stat-wave');
+    const endTime = document.getElementById('end-stat-time');
+    const endKills = document.getElementById('end-stat-kills');
+    const statusText = document.getElementById('end-modal-submission-status');
+    
+    const mins = String(Math.floor(cdSurvivalSeconds / 60)).padStart(2, '0');
+    const secs = String(cdSurvivalSeconds % 60).padStart(2, '0');
+    
+    if (endScore) endScore.textContent = `${cdScore.toLocaleString()} ĐIỂM`;
+    if (endWave) endWave.textContent = cdWave;
+    if (endTime) endTime.textContent = `${mins}:${secs}`;
+    if (endKills) endKills.textContent = cdKills;
+    
+    playCdSound('alarm');
+    if (endModal) endModal.style.display = 'flex';
+    
+    // Automatically submit score to server (single submission guard)
+    if (cyberPlayer.name && cyberPlayer.class) {
+        if (!cdScoreSubmitted) {
+            cdScoreSubmitted = true;
+            submitGameScore(statusText);
+        }
+    } else {
+        if (statusText) statusText.innerHTML = '⚠️ Chưa đăng nhập để lưu điểm đua top!';
+    }
+}
+
+async function submitGameScore(statusEl) {
+    if (cdIsSubmittingScore) return;
+    cdIsSubmittingScore = true;
+    try {
+        if (statusEl) statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi điểm lên máy chủ liên lớp...';
+        const res = await fetch('/api/game/submit-score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                studentName: cyberPlayer.name,
+                studentClass: cyberPlayer.class,
+                score: cdScore,
+                waveReached: cdWave,
+                survivalTime: cdSurvivalSeconds,
+                kills: cdKills
+            })
+        });
+        const data = await res.json();
+        if (data.success) {
+            if (statusEl) {
+                const recordNote = data.saved && data.saved.isNewRecord === false 
+                    ? ` (Đã giữ kỷ lục cao nhất trước đó: ${Number(data.saved.score).toLocaleString()} điểm)`
+                    : ` 🎉 KỶ LỤC MỚI!`;
+                statusEl.innerHTML = `✅ Đã lưu điểm cho <strong>${cyberPlayer.name} (${cyberPlayer.class})</strong>!${recordNote}`;
+            }
+            renderLeaderboardTables(data);
+        } else {
+            if (statusEl) statusEl.textContent = 'Lỗi lưu điểm: ' + data.message;
+        }
+    } catch (e) {
+        if (statusEl) statusEl.textContent = 'Không thể kết nối máy chủ để lưu điểm';
+    } finally {
+        cdIsSubmittingScore = false;
+    }
+}
+
+// =========================================================================
+// === INTER-CLASS LEADERBOARD FETCHER & UI ===
+// =========================================================================
+let currentLeaderboardTab = 'class';
+
+function switchLeaderboardTab(tab) {
+    currentLeaderboardTab = tab;
+    const btnClass = document.getElementById('tab-btn-class');
+    const btnStudent = document.getElementById('tab-btn-student');
+    const viewClass = document.getElementById('lb-class-view');
+    const viewStudent = document.getElementById('lb-student-view');
+    
+    if (tab === 'class') {
+        if (btnClass) btnClass.classList.add('active');
+        if (btnStudent) btnStudent.classList.remove('active');
+        if (viewClass) viewClass.style.display = 'block';
+        if (viewStudent) viewStudent.style.display = 'none';
+    } else {
+        if (btnClass) btnClass.classList.remove('active');
+        if (btnStudent) btnStudent.classList.add('active');
+        if (viewClass) viewClass.style.display = 'none';
+        if (viewStudent) viewStudent.style.display = 'block';
+    }
+}
+
+async function fetchGameLeaderboard() {
+    const icon = document.getElementById('lb-refresh-icon');
+    if (icon) icon.classList.add('fa-spin');
+    try {
+        const res = await fetch('/api/game/leaderboard');
+        const data = await res.json();
+        if (data.success) {
+            renderLeaderboardTables(data);
+        }
+    } catch (e) {
+        console.error('Leaderboard error:', e);
+    } finally {
+        if (icon) icon.classList.remove('fa-spin');
+    }
+}
+
+function renderLeaderboardTables(data) {
+    const classTbody = document.getElementById('lb-class-tbody');
+    const studentTbody = document.getElementById('lb-student-tbody');
+    
+    // 1. Render Inter-Class Table
+    if (classTbody && data.classLeaderboard) {
+        if (data.classLeaderboard.length === 0) {
+            classTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">Chưa có dữ liệu lớp nào!</td></tr>`;
+        } else {
+            classTbody.innerHTML = data.classLeaderboard.map((item, idx) => {
+                const rankBadge = idx === 0 ? '<span class="rank-badge rank-badge-1">1</span>' :
+                                 (idx === 1 ? '<span class="rank-badge rank-badge-2">2</span>' :
+                                 (idx === 2 ? '<span class="rank-badge rank-badge-3">3</span>' :
+                                 `<span class="rank-badge rank-badge-other">${idx + 1}</span>`));
+                return `
+                    <tr>
+                        <td>${rankBadge}</td>
+                        <td><span class="class-pill">LỚP ${item.student_class}</span></td>
+                        <td style="font-weight:800;color:#fde68a;">${Number(item.total_score).toLocaleString()} pts</td>
+                        <td style="color:#67e8f9;">${Number(item.avg_score).toLocaleString()} pts</td>
+                        <td style="color:#34d399;font-weight:700;">Đợt ${item.max_wave}</td>
+                        <td style="color:#cbd5e1;">${item.play_count} lượt</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+    
+    // 2. Render Student Top Table
+    if (studentTbody && data.topStudents) {
+        if (data.topStudents.length === 0) {
+            studentTbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">Chưa có kỷ lục nào!</td></tr>`;
+        } else {
+            studentTbody.innerHTML = data.topStudents.map((item, idx) => {
+                const rankBadge = idx === 0 ? '<span class="rank-badge rank-badge-1">1</span>' :
+                                 (idx === 1 ? '<span class="rank-badge rank-badge-2">2</span>' :
+                                 (idx === 2 ? '<span class="rank-badge rank-badge-3">3</span>' :
+                                 `<span class="rank-badge rank-badge-other">${idx + 1}</span>`));
+                const mins = String(Math.floor(item.survivalTime / 60)).padStart(2, '0');
+                const secs = String(item.survivalTime % 60).padStart(2, '0');
+                return `
+                    <tr>
+                        <td>${rankBadge}</td>
+                        <td style="font-weight:700;color:#fff;">${item.studentName}</td>
+                        <td><span class="class-pill">${item.studentClass}</span></td>
+                        <td style="font-weight:800;color:#fde68a;">${Number(item.score).toLocaleString()}</td>
+                        <td style="color:#34d399;font-weight:700;">Đợt ${item.waveReached}</td>
+                        <td style="color:#cbd5e1;">${mins}:${secs}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+}
+
+function scrollToLeaderboard() {
+    const el = document.getElementById('inter-class-leaderboard');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// =========================================================================
+// === CANVAS RENDERING ENGINE ===
+// =========================================================================
+function drawCyberDefender() {
+    if (!cdCtx) return;
+    cdCtx.save();
+    
+    if (cdScreenShake > 0) {
+        cdCtx.translate((Math.random() - 0.5) * cdScreenShake, (Math.random() - 0.5) * cdScreenShake);
+    }
+    
+    // Background Dark Grid
+    cdCtx.fillStyle = '#060a17';
+    cdCtx.fillRect(0, 0, cdCanvas.width, cdCanvas.height);
+    
+    // Cyber Grid lines
+    cdCtx.strokeStyle = 'rgba(6,182,212,0.06)';
+    cdCtx.lineWidth = 1;
+    for (let x = 0; x < cdCanvas.width; x += 40) {
+        cdCtx.beginPath(); cdCtx.moveTo(x, 0); cdCtx.lineTo(x, cdCanvas.height); cdCtx.stroke();
+    }
+    for (let y = 0; y < cdCanvas.height; y += 40) {
+        cdCtx.beginPath(); cdCtx.moveTo(0, y); cdCtx.lineTo(cdCanvas.width, y); cdCtx.stroke();
+    }
+    
+    // Perimeter Line
+    cdCtx.strokeStyle = cdShieldActive ? 'rgba(253,230,138,0.5)' : 'rgba(56,189,248,0.2)';
+    cdCtx.lineWidth = cdShieldActive ? 4 : 2;
+    cdCtx.setLineDash(cdShieldActive ? [] : [6, 6]);
+    cdCtx.beginPath(); cdCtx.moveTo(0, 415); cdCtx.lineTo(cdCanvas.width, 415); cdCtx.stroke();
+    cdCtx.setLineDash([]);
+    
+    // Active AI Shield
+    if (cdShieldActive) {
+        cdCtx.fillStyle = 'rgba(253,230,138,0.12)';
+        cdCtx.fillRect(0, 400, cdCanvas.width, 25);
+        cdCtx.strokeStyle = '#fde68a';
+        cdCtx.shadowColor = '#fde68a';
+        cdCtx.shadowBlur = 15;
+        cdCtx.strokeRect(0, 405, cdCanvas.width, 15);
+        cdCtx.shadowBlur = 0;
+    }
+    
+    // Draw Mines
+    cdMines.forEach(m => {
+        cdCtx.save();
+        cdCtx.fillStyle = '#f59e0b';
+        cdCtx.shadowColor = '#f59e0b';
+        cdCtx.shadowBlur = 8;
+        cdCtx.beginPath();
+        cdCtx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.font = '10px serif';
+        cdCtx.textAlign = 'center';
+        cdCtx.textBaseline = 'middle';
+        cdCtx.fillText('💣', m.x, m.y);
+        cdCtx.restore();
+    });
+    
+    // Draw EXP Orbs (Vampire Survivors)
+    cdExpOrbs.forEach(orb => {
+        cdCtx.save();
+        cdCtx.fillStyle = orb.color;
+        cdCtx.shadowColor = orb.color;
+        cdCtx.shadowBlur = 8;
+        cdCtx.beginPath();
+        cdCtx.arc(orb.x, orb.y, 5, 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.restore();
+    });
+    
+    // Draw Firewall Flame Trails
+    cdFireTrails.forEach(f => {
+        cdCtx.save();
+        cdCtx.fillStyle = 'rgba(239, 68, 68, 0.45)';
+        cdCtx.shadowColor = '#f97316';
+        cdCtx.shadowBlur = 10;
+        cdCtx.beginPath();
+        cdCtx.arc(f.x, f.y, f.radius * (0.6 + (f.life / 2.2) * 0.4), 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.fillStyle = '#fde68a';
+        cdCtx.beginPath();
+        cdCtx.arc(f.x, f.y, f.radius * 0.35, 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.restore();
+    });
+    
+    // Draw Cyber Data Vortexes
+    cdVortexes.forEach(v => {
+        cdCtx.save();
+        cdCtx.translate(v.x, v.y);
+        cdCtx.rotate(v.angle);
+        cdCtx.strokeStyle = '#06b6d4';
+        cdCtx.shadowColor = '#06b6d4';
+        cdCtx.shadowBlur = 16;
+        cdCtx.lineWidth = 2.5;
+        for (let arm = 0; arm < 3; arm++) {
+            cdCtx.beginPath();
+            const aOffset = (Math.PI * 2 * arm) / 3;
+            for (let r = 5; r <= v.radius; r += 6) {
+                const theta = aOffset + (r / v.radius) * 3;
+                const px = Math.cos(theta) * r;
+                const py = Math.sin(theta) * (r * 0.6);
+                if (r === 5) cdCtx.moveTo(px, py);
+                else cdCtx.lineTo(px, py);
+            }
+            cdCtx.stroke();
+        }
+        cdCtx.font = '22px serif';
+        cdCtx.textAlign = 'center';
+        cdCtx.textBaseline = 'middle';
+        cdCtx.fillText('🌪️', 0, 0);
+        cdCtx.restore();
+    });
+    
+    // Draw Server Core Base
+    const coreX = cdCanvas.width / 2;
+    const coreY = 435;
+    
+    cdCtx.fillStyle = 'rgba(15,23,42,0.95)';
+    cdCtx.strokeStyle = 'rgba(56,189,248,0.5)';
+    cdCtx.lineWidth = 2;
+    cdCtx.beginPath();
+    cdCtx.roundRect(coreX - 70, coreY - 18, 140, 36, 8);
+    cdCtx.fill();
+    cdCtx.stroke();
+    
+    const timeSec = performance.now() / 300;
+    for (let i = 0; i < 4; i++) {
+        cdCtx.fillStyle = (Math.sin(timeSec + i) > 0) ? '#34d399' : '#0284c7';
+        cdCtx.beginPath();
+        cdCtx.arc(coreX - 50 + i * 14, coreY + 6, 3, 0, Math.PI * 2);
+        cdCtx.fill();
+    }
+    cdCtx.font = '700 10px Orbitron, sans-serif';
+    cdCtx.fillStyle = '#67e8f9';
+    cdCtx.textAlign = 'center';
+    cdCtx.fillText('SERVER CORE', coreX + 15, coreY + 8);
+    
+    // Turret Barrel (Rotates to Mouse)
+    const turretAngle = Math.atan2(cdMousePos.y - 415, cdMousePos.x - coreX);
+    cdCtx.save();
+    cdCtx.translate(coreX, 415);
+    cdCtx.rotate(turretAngle);
+    
+    cdCtx.fillStyle = cdWeapon === 1 ? '#34d399' : '#38bdf8';
+    cdCtx.shadowColor = cdWeapon === 1 ? '#34d399' : '#38bdf8';
+    cdCtx.shadowBlur = 10;
+    
+    if (cdBuffs.quad_turret > 0) {
+        cdCtx.fillRect(0, -9, 28, 4);
+        cdCtx.fillRect(0, -3, 28, 4);
+        cdCtx.fillRect(0, 3, 28, 4);
+        cdCtx.fillRect(0, 9, 28, 4);
+    } else if (cdUpgrades.dual) {
+        cdCtx.fillRect(0, -7, 26, 5);
+        cdCtx.fillRect(0, 2, 26, 5);
+    } else {
+        cdCtx.fillRect(0, -3.5, 26, 7);
+    }
+    cdCtx.shadowBlur = 0;
+    
+    cdCtx.fillStyle = '#0f172a';
+    cdCtx.strokeStyle = cdWeapon === 1 ? '#34d399' : '#38bdf8';
+    cdCtx.lineWidth = 2;
+    cdCtx.beginPath();
+    cdCtx.arc(0, 0, 12, 0, Math.PI * 2);
+    cdCtx.fill();
+    cdCtx.stroke();
+    cdCtx.restore();
+    
+    // Frost Ice Encasing when Player Turret is Frozen
+    if (playerFrozenTimer > 0) {
+        cdCtx.save();
+        cdCtx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+        cdCtx.strokeStyle = '#38bdf8';
+        cdCtx.lineWidth = 2.5;
+        cdCtx.shadowColor = '#38bdf8';
+        cdCtx.shadowBlur = 18;
+        
+        cdCtx.beginPath();
+        cdCtx.moveTo(coreX - 24, 392);
+        cdCtx.lineTo(coreX, 376);
+        cdCtx.lineTo(coreX + 24, 392);
+        cdCtx.lineTo(coreX + 28, 428);
+        cdCtx.lineTo(coreX - 28, 428);
+        cdCtx.closePath();
+        cdCtx.fill();
+        cdCtx.stroke();
+        
+        cdCtx.font = '700 11px Orbitron, sans-serif';
+        cdCtx.fillStyle = '#e0f2fe';
+        cdCtx.textAlign = 'center';
+        cdCtx.fillText(`❄️ BĂNG GIÁ: ${playerFrozenTimer.toFixed(1)}s`, coreX, 368);
+        cdCtx.restore();
+    }
+    
+    // Orbiting Shield Bits (Vampire Survivors Perk)
+    if (cdBuffs.orbit_bits > 0) {
+        const orbitCount = 2 + (cdBuffs.orbit_bits - 1) * 2;
+        const orbitRadius = 85;
+        for (let ob = 0; ob < orbitCount; ob++) {
+            const ang = cdOrbitAngle + (Math.PI * 2 * ob) / orbitCount;
+            const bitX = coreX + Math.cos(ang) * orbitRadius;
+            const bitY = 415 + Math.sin(ang) * (orbitRadius * 0.45);
+            
+            cdCtx.save();
+            cdCtx.fillStyle = '#c084fc';
+            cdCtx.shadowColor = '#c084fc';
+            cdCtx.shadowBlur = 12;
+            cdCtx.beginPath();
+            cdCtx.arc(bitX, bitY, 6, 0, Math.PI * 2);
+            cdCtx.fill();
+            cdCtx.restore();
+        }
+    }
+    
+    // AI Companion Drone
+    if (cdUpgrades.drone) {
+        const droneX = coreX + Math.cos(cdDroneAngle) * 65;
+        const droneY = 415 + Math.sin(cdDroneAngle) * 25;
+        cdCtx.save();
+        cdCtx.translate(droneX, droneY);
+        cdCtx.fillStyle = '#a78bfa';
+        cdCtx.shadowColor = '#a78bfa';
+        cdCtx.shadowBlur = 12;
+        cdCtx.beginPath();
+        cdCtx.arc(0, 0, 7, 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.strokeStyle = '#c084fc';
+        cdCtx.beginPath();
+        cdCtx.arc(0, 0, 11, 0, Math.PI * 2);
+        cdCtx.stroke();
+        cdCtx.shadowBlur = 0;
+        cdCtx.restore();
+    }
+    
+    // Crosshair at Mouse
+    cdCtx.strokeStyle = cdWeapon === 1 ? 'rgba(52,211,153,0.7)' : 'rgba(56,189,248,0.7)';
+    cdCtx.lineWidth = 1.5;
+    cdCtx.beginPath();
+    cdCtx.arc(cdMousePos.x, cdMousePos.y, 10, 0, Math.PI * 2);
+    cdCtx.stroke();
+    cdCtx.beginPath();
+    cdCtx.moveTo(cdMousePos.x - 14, cdMousePos.y);
+    cdCtx.lineTo(cdMousePos.x + 14, cdMousePos.y);
+    cdCtx.moveTo(cdMousePos.x, cdMousePos.y - 14);
+    cdCtx.lineTo(cdMousePos.x, cdMousePos.y + 14);
+    cdCtx.stroke();
+    
+    // Projectiles
+    cdProjectiles.forEach(p => {
+        cdCtx.fillStyle = p.color;
+        cdCtx.shadowColor = p.color;
+        cdCtx.shadowBlur = 8;
+        cdCtx.beginPath();
+        cdCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.shadowBlur = 0;
+    });
+    
+    // Draw Homing Missiles
+    cdHomingMissiles.forEach(m => {
+        cdCtx.save();
+        cdCtx.translate(m.x, m.y);
+        const ang = Math.atan2(m.vy, m.vx);
+        cdCtx.rotate(ang);
+        cdCtx.fillStyle = '#f97316';
+        cdCtx.shadowColor = '#f97316';
+        cdCtx.shadowBlur = 10;
+        cdCtx.fillRect(-8, -3, 16, 6);
+        cdCtx.fillStyle = '#fde68a';
+        cdCtx.beginPath();
+        cdCtx.moveTo(8, -4);
+        cdCtx.lineTo(14, 0);
+        cdCtx.lineTo(8, 4);
+        cdCtx.closePath();
+        cdCtx.fill();
+        cdCtx.shadowBlur = 0;
+        cdCtx.restore();
+    });
+    
+    // Enemies & Bosses
+    cdEnemies.forEach(en => {
+        cdCtx.save();
+        cdCtx.translate(en.x, en.y);
+        
+        if (en.frozenTimer && en.frozenTimer > 0) {
+            cdCtx.strokeStyle = '#67e8f9';
+            cdCtx.lineWidth = 2;
+            cdCtx.strokeRect(-en.size - 4, -en.size - 4, (en.size + 4) * 2, (en.size + 4) * 2);
+        }
+        
+        if (en.isBoss) {
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 25;
+            cdCtx.fillStyle = '#1e1b4b';
+            cdCtx.strokeStyle = en.color;
+            cdCtx.lineWidth = 3.5;
+            
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, en.size, 0, Math.PI * 2);
+            cdCtx.fill();
+            cdCtx.stroke();
+            
+            cdCtx.fillStyle = en.color;
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, 16 + Math.sin(performance.now() / 150) * 3, 0, Math.PI * 2);
+            cdCtx.fill();
+            
+            cdCtx.font = '24px serif';
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText(en.icon || '☠️', 0, 0);
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'ddos') {
+            cdCtx.fillStyle = en.color;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 8;
+            cdCtx.beginPath();
+            for (let a = 0; a < 6; a++) {
+                const ang = (Math.PI / 3) * a;
+                const hx = Math.cos(ang) * en.size;
+                const hy = Math.sin(ang) * en.size;
+                if (a === 0) cdCtx.moveTo(hx, hy);
+                else cdCtx.lineTo(hx, hy);
+            }
+            cdCtx.closePath();
+            cdCtx.fill();
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'trojan' || en.type === 'trojan_spore') {
+            cdCtx.fillStyle = en.color;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 10;
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, en.size, 0, Math.PI * 2);
+            cdCtx.fill();
+            cdCtx.font = `${Math.round(en.size * 1.3)}px serif`;
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText('👾', 0, 0);
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'phishing') {
+            cdCtx.fillStyle = en.color;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 10;
+            cdCtx.beginPath();
+            cdCtx.moveTo(0, en.size + 4);
+            cdCtx.lineTo(-en.size, -en.size);
+            cdCtx.lineTo(0, -en.size / 2);
+            cdCtx.lineTo(en.size, -en.size);
+            cdCtx.closePath();
+            cdCtx.fill();
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'ransomware') {
+            cdCtx.fillStyle = '#7f1d1d';
+            cdCtx.strokeStyle = en.color;
+            cdCtx.lineWidth = 3;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 14;
+            cdCtx.beginPath();
+            cdCtx.roundRect(-en.size, -en.size, en.size * 2, en.size * 2, 6);
+            cdCtx.fill();
+            cdCtx.stroke();
+            cdCtx.font = '18px serif';
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText('🔒', 0, 0);
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'boss_orb') {
+            cdCtx.fillStyle = en.color;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 10;
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, en.size, 0, Math.PI * 2);
+            cdCtx.fill();
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'time_freeze') {
+            cdCtx.fillStyle = '#082f49';
+            cdCtx.strokeStyle = en.color;
+            cdCtx.lineWidth = 2.5;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 14;
+            
+            // Octagonal frost crystal
+            cdCtx.beginPath();
+            for (let a = 0; a < 8; a++) {
+                const ang = (Math.PI / 4) * a;
+                const hx = Math.cos(ang) * en.size;
+                const hy = Math.sin(ang) * en.size;
+                if (a === 0) cdCtx.moveTo(hx, hy);
+                else cdCtx.lineTo(hx, hy);
+            }
+            cdCtx.closePath();
+            cdCtx.fill();
+            cdCtx.stroke();
+            
+            // Charging frost ring
+            if (en.freezeChannelTimer > 0) {
+                const pulseR = en.size + 14 * (1 - en.freezeChannelTimer / 0.8);
+                cdCtx.strokeStyle = 'rgba(56, 189, 248, 0.8)';
+                cdCtx.lineWidth = 2.5;
+                cdCtx.beginPath();
+                cdCtx.arc(0, 0, pulseR, 0, Math.PI * 2);
+                cdCtx.stroke();
+            }
+            
+            cdCtx.font = '16px serif';
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText('⏱️', 0, 0);
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'rusher') {
+            cdCtx.fillStyle = '#431407';
+            cdCtx.strokeStyle = en.color;
+            cdCtx.lineWidth = 2.5;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 15;
+            
+            // Sharp dart/blade polygon pointing down
+            cdCtx.beginPath();
+            cdCtx.moveTo(0, en.size + 6);
+            cdCtx.lineTo(-en.size, -en.size + 4);
+            cdCtx.lineTo(0, -en.size / 2);
+            cdCtx.lineTo(en.size, -en.size + 4);
+            cdCtx.closePath();
+            cdCtx.fill();
+            cdCtx.stroke();
+            
+            // Targeting laser line when charging
+            if (en.dashState === 'charging') {
+                cdCtx.restore();
+                cdCtx.save();
+                cdCtx.strokeStyle = 'rgba(239, 68, 68, 0.8)';
+                cdCtx.lineWidth = 2;
+                cdCtx.setLineDash([5, 5]);
+                cdCtx.beginPath();
+                cdCtx.moveTo(en.x, en.y);
+                cdCtx.lineTo(en.x, 415);
+                cdCtx.stroke();
+                cdCtx.setLineDash([]);
+                cdCtx.translate(en.x, en.y);
+            }
+            
+            cdCtx.font = '15px serif';
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText('⚡', 0, 0);
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'necromancer') {
+            cdCtx.fillStyle = '#064e3b';
+            cdCtx.strokeStyle = en.color;
+            cdCtx.lineWidth = 3;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 15;
+            
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, en.size, 0, Math.PI * 2);
+            cdCtx.fill();
+            cdCtx.stroke();
+            
+            // Glowing rune ring
+            cdCtx.strokeStyle = 'rgba(52, 211, 153, 0.55)';
+            cdCtx.lineWidth = 1.5;
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, en.size + 4 + Math.sin(performance.now() / 200) * 2, 0, Math.PI * 2);
+            cdCtx.stroke();
+            
+            cdCtx.font = '16px serif';
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText('💀', 0, 0);
+            cdCtx.shadowBlur = 0;
+        } else if (en.type === 'summoner') {
+            cdCtx.fillStyle = '#422006';
+            cdCtx.strokeStyle = en.color;
+            cdCtx.lineWidth = 3;
+            cdCtx.shadowColor = en.color;
+            cdCtx.shadowBlur = 15;
+            
+            // Hexagonal Hive
+            cdCtx.beginPath();
+            for (let a = 0; a < 6; a++) {
+                const ang = (Math.PI / 3) * a + Math.PI / 6;
+                const hx = Math.cos(ang) * en.size;
+                const hy = Math.sin(ang) * en.size;
+                if (a === 0) cdCtx.moveTo(hx, hy);
+                else cdCtx.lineTo(hx, hy);
+            }
+            cdCtx.closePath();
+            cdCtx.fill();
+            cdCtx.stroke();
+            
+            // Pulsating radar wave rings
+            const ringR = en.size + 3 + (performance.now() % 1200) / 1200 * 14;
+            cdCtx.strokeStyle = `rgba(234, 179, 8, ${Math.max(0, 1 - (ringR - en.size) / 17)})`;
+            cdCtx.lineWidth = 1.5;
+            cdCtx.beginPath();
+            cdCtx.arc(0, 0, ringR, 0, Math.PI * 2);
+            cdCtx.stroke();
+            
+            cdCtx.font = '16px serif';
+            cdCtx.textAlign = 'center';
+            cdCtx.textBaseline = 'middle';
+            cdCtx.fillText('📡', 0, 0);
+            cdCtx.shadowBlur = 0;
+        }
+        
+        if (en.maxHp > 1 && !en.isBoss) {
+            cdCtx.fillStyle = 'rgba(0,0,0,0.6)';
+            cdCtx.fillRect(-en.size, -en.size - 8, en.size * 2, 4);
+            cdCtx.fillStyle = '#10b981';
+            cdCtx.fillRect(-en.size, -en.size - 8, (en.size * 2) * (en.hp / en.maxHp), 4);
+        }
+        
+        cdCtx.restore();
+    });
+    
+    // Particles
+    cdParticles.forEach(pt => {
+        cdCtx.save();
+        cdCtx.globalAlpha = pt.alpha;
+        cdCtx.fillStyle = pt.color;
+        cdCtx.beginPath();
+        cdCtx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+        cdCtx.fill();
+        cdCtx.restore();
+    });
+    
+    // Floating texts
+    cdFloatingTexts.forEach(ft => {
+        cdCtx.save();
+        cdCtx.globalAlpha = ft.alpha;
+        cdCtx.font = `700 ${Math.round(14 * ft.scale)}px Orbitron, sans-serif`;
+        cdCtx.fillStyle = ft.color;
+        cdCtx.textAlign = 'center';
+        cdCtx.shadowColor = ft.color;
+        cdCtx.shadowBlur = 8;
+        cdCtx.fillText(ft.text, ft.x, ft.y);
+        cdCtx.restore();
+    });
+    
+    cdCtx.restore();
+}
+
+// === GAME 0: PASSWORD BATTLE ===
+const PW_PAIRS = [
+    {a:'123456', b:'P@ssw0rd!', winner:1, explain:'P@ssw0rd! có chữ hoa, số và ký tự đặc biệt. 123456 là mật khẩu bị hack phổ biến nhất thế giới!'},
+    {a:'Ng0cAnh2024!', b:'password', winner:0, explain:'Ng0cAnh2024! dài hơn, có chữ hoa, số và ký tự đặc biệt. "password" là mật khẩu tệ nhất!'},
+    {a:'abc123', b:'correct-horse-battery', winner:1, explain:'Mật khẩu dài (3 từ) mạnh hơn mật khẩu ngắn dù có ký tự đặc biệt!'},
+    {a:'Tr@n2024!', b:'dragon', winner:0, explain:'Tr@n2024! có nhiều loại ký tự khác nhau. "dragon" là từ trong từ điển, dễ bị brute-force.'},
+    {a:'qwerty', b:'M@y2026#School', winner:1, explain:'qwerty là dãy phím liên tiếp — rất yếu! M@y2026#School phức tạp hơn nhiều.'},
+    {a:'Admin@123', b:'Admin@123!XYZ', winner:1, explain:'Mật khẩu dài hơn luôn mạnh hơn khi cùng cấu trúc. Thêm ký tự tăng thời gian brute-force lên hàng nghìn lần!'},
+    {a:'monkey', b:'M0nk3y!@#', winner:1, explain:'M0nk3y!@# thay thế ký tự và thêm ký tự đặc biệt. "monkey" là trong top 10 mật khẩu yếu nhất!'},
+    {a:'12345678', b:'Abc!2345', winner:1, explain:'Abc!2345 có đa dạng ký tự hơn. 12345678 chỉ dùng số — chưa tới 1 giây để bẻ!'},
+    {a:'iloveyou', b:'!L0v3Y0u!2024', winner:1, explain:'Dùng số và ký tự đặc biệt thay chữ làm tăng độ phức tạp lên nhiều. "iloveyou" là top 3 mật khẩu yếu!'},
+    {a:'Su#m3r!2024$VN', b:'Summer2024', winner:0, explain:'Su#m3r!2024$VN có ký tự đặc biệt, số và dài hơn Summer2024 nhiều. Luôn tốt hơn khi phức tạp hơn!'}
+];
+let pbRound=0, pbScore=0, pbAnswered=false;
+function initPW(){
+    pbRound=0;pbScore=0;pbAnswered=false;
+    document.getElementById('pb-result').style.display='none';
+    document.getElementById('pb-arena').style.display='grid';
+    loadPWRound();
+}
+function loadPWRound(){
+    if(pbRound>=PW_PAIRS.length){showPWResult();return;}
+    const p=PW_PAIRS[pbRound];pbAnswered=false;
+    document.getElementById('pb-round').textContent=pbRound+1;
+    document.getElementById('pb-score').textContent=pbScore;
+    document.getElementById('pb-pw-a').textContent=p.a;
+    document.getElementById('pb-pw-b').textContent=p.b;
+    document.getElementById('pb-a').className='pw-option';
+    document.getElementById('pb-b').className='pw-option';
+    const fb=document.getElementById('pb-feedback');
+    fb.style.display='none';fb.className='pw-feedback';
+    document.getElementById('pb-next').style.display='none';
+}
+function pickPW(choice){
+    if(pbAnswered)return;pbAnswered=true;
+    const p=PW_PAIRS[pbRound];const correct=p.winner===choice;
+    if(correct)pbScore++;
+    document.getElementById('pb-'+(choice===0?'a':'b')).classList.add(correct?'winner':'loser');
+    document.getElementById('pb-'+(choice===0?'b':'a')).classList.add(correct?'loser':'winner');
+    const fb=document.getElementById('pb-feedback');
+    fb.className='pw-feedback '+(correct?'ok':'ng');
+    fb.innerHTML=`<strong>${correct?'✅ Chính xác!':'❌ Sai rồi!'}</strong> ${p.explain}`;
+    fb.style.display='block';
+    document.getElementById('pb-next').style.display='inline-flex';
+}
+function nextPWRound(){
+    pbRound++;
+    if(pbRound>=PW_PAIRS.length){showPWResult();}else{loadPWRound();}
+}
+function showPWResult(){
+    const pct=Math.round(pbScore/PW_PAIRS.length*100);
+    document.getElementById('pb-arena').style.display='none';
+    document.getElementById('pb-feedback').style.display='none';
+    document.getElementById('pb-next').style.display='none';
+    const r=document.getElementById('pb-result');
+    r.style.display='block';
+    r.innerHTML=`<div class="game-result-emoji">${pct>=80?'🏆':pct>=60?'⭐':'📚'}</div>
+        <div class="game-result-score">${pbScore}/${PW_PAIRS.length}</div>
+        <h3>${pct}% Chính xác</h3>
+        <p>${pct>=80?'Xuất sắc! Bạn rất giỏi nhận biết mật khẩu mạnh!':pct>=60?'Khá tốt! Tiếp tục ôn luyện nhé.':'Hãy đọc lại bài về mật khẩu mạnh!'}</p>
+        <button class="game-btn" onclick="initPW()">🔄 Chơi lại</button>`;
+}
+
+// === GAME 1: EMAIL DETECTIVE ===
+const EMAILS=[
+    {from:'thongbao@noreply-roblox-vn.tk',subject:'Tài khoản bị khóa! Xác minh ngay!',body:'Tài khoản Roblox của bạn đã bị vi phạm. Nhấp vào link bit.ly/xxx123 để xác minh trong 24h hoặc tài khoản bị xóa vĩnh viễn!',isScam:true,explain:'Tên miền .tk giả mạo, link bit.ly rút gọn đáng ngờ, và tạo áp lực thời gian — điển hình lừa đảo!'},
+    {from:'thay.minh.gvcn@gmail.com',subject:'Lịch kiểm tra tuần tới',body:'Các em ơi, tuần tới lớp mình có kiểm tra Toán và Tiếng Anh. Các em ôn bài nhé! Thầy Minh.',isScam:false,explain:'Email bình thường từ giáo viên. Không có link đáng ngờ, không yêu cầu thông tin, nội dung hợp lý.'},
+    {from:'noreply@vcb-securealert.com',subject:'Cảnh báo: Tài khoản ngân hàng bị xâm phạm',body:'Tài khoản của bạn vừa bị truy cập trái phép. Xác nhận OTP 847291 ngay để bảo vệ tài khoản!',isScam:true,explain:'Ngân hàng VCB không bao giờ gửi OTP qua email! Đây là chiếu lấy cắp OTP để rút tiền tài khoản bạn.'},
+    {from:'newsletter@thuvienkhoahoc.edu.vn',subject:'Bài viết mới: Khám phá Hệ Mặt Trời',body:'Xin chào! Bài viết mới của chúng tôi về Hệ Mặt Trời và các hành tinh đã được đăng tải. Nhấn vào để đọc thêm tại thuvienkhoahoc.edu.vn',isScam:false,explain:'Email newsletter từ website giáo dục hợp lệ. Domain .edu.vn đạng tin cậy, không yêu cầu thông tin nhạy cảm.'},
+    {from:'hotro.khachhang.tphcm@gmail.com',subject:'Bạn đã thắng iPhone 16 Pro!',body:'Chúc mừng! Bạn là người truy cập thứ 1.000.000! Nhập tên và địa chỉ giao hàng để nhận iPhone 16 Pro miễn phí trong 24h!',isScam:true,explain:'Không ai tự nhiên cho bạn iPhone! Gmail không phải email chính thức của tổ chức nào. Đây là lừa đảo cổ điển.'},
+    {from:'admin@school.edu.vn',subject:'Kết quả học bạ Học kỳ 1',body:'Trường gửi kết quả học bạ học kỳ 1 đến phụ huynh. Vui lòng đăng nhập phần mềm quản lý học sinh tại school.edu.vn/login để xem chi tiết.',isScam:false,explain:'Email chính thức từ trường học, domain .edu.vn tin cậy, link đưa về website chính thức.'},
+    {from:'cskh.momo.2024@gmail.com',subject:'Tài khoản MoMo của bạn bị hạn chế!',body:'Do hoạt động bất thường, tài khoản MoMo bị tạm khóa. Gửi CMND và selfie cho chúng tôi trong 2h để xác minh, nếu không tài khoản bị xóa!',isScam:true,explain:'MoMo KHÔNG BAO GIờ yêu cầu gửi CMND qua email! Email Gmail giả mạo, tạo áp lực thời gian — lừa đảo nguy hiểm!'},
+    {from:'bacsitamly@benhvien.com.vn',subject:'Lịch tái khám của bạn tuần sau',body:'Bạn có lịch tái khám vào thứ 3, 9h sáng. Vui lòng mang theo hồ sơ bệnh án. Liên hệ 0901234567 nếu cần đổi lịch.',isScam:false,explain:'Email nhắc lịch khám bầnh viện bình thường. Không yêu cầu OTP, mật khẩu hay chuyển tiền.'}
+];
+let emIdx=0,emScore=0,emTimer=15,emInterval=null;
+function initEM(){
+    emIdx=0;emScore=0;
+    document.getElementById('em-result').style.display='none';
+    document.getElementById('em-email-area').style.display='block';
+    loadEmail();
+}
+function loadEmail(){
+    if(emIdx>=EMAILS.length){clearInterval(emInterval);showEMResult();return;}
+    const e=EMAILS[emIdx];emTimer=15;
+    document.getElementById('em-num').textContent=emIdx+1;
+    document.getElementById('em-score').textContent=emScore;
+    const area=document.getElementById('em-email-area');
+    area.innerHTML=`
+        <div class="email-card">
+            <div class="email-header">
+                <div class="email-from">Từ: <span>${e.from}</span></div>
+                <div class="email-subject">${e.subject}</div>
+            </div>
+            <div class="email-body">${e.body}</div>
+            <div class="email-actions">
+                <button class="email-safe-btn" onclick="answerEmail(false)">✅ An toàn</button>
+                <button class="email-phish-btn" onclick="answerEmail(true)">🚨 Lừa đảo!</button>
+            </div>
+        </div>`;
+    clearInterval(emInterval);
+    emInterval=setInterval(()=>{
+        emTimer--;
+        document.getElementById('em-timer').textContent=emTimer;
+        document.getElementById('em-tbar').style.width=(emTimer/15*100)+'%';
+        if(emTimer<=0){clearInterval(emInterval);answerEmail(null);}
+    },1000);
+}
+function answerEmail(guessScam){
+    clearInterval(emInterval);
+    const e=EMAILS[emIdx];
+    const correct=guessScam===e.isScam;
+    if(correct)emScore++;
+    const area=document.getElementById('em-email-area');
+    const timeoutMsg=guessScam===null?'<strong>\u23f1 Hết giờ!</strong> ':'';
+    area.innerHTML+=`<div class="quiz-explain" style="display:block;margin-top:12px;">${timeoutMsg}<strong>${correct?'\u2705 Chính xác!':'\u274c Sai rồi.'}</strong> ${e.explain}</div><button class="game-btn" style="margin-top:14px;" onclick="emIdx++;loadEmail()">${emIdx<EMAILS.length-1?'Email tiếp →':'Xem kết quả 🏆'}</button>`;
+}
+function showEMResult(){
+    const pct=Math.round(emScore/EMAILS.length*100);
+    document.getElementById('em-email-area').style.display='none';
+    const r=document.getElementById('em-result');
+    r.style.display='block';
+    r.innerHTML=`<div class="game-result-emoji">${pct>=80?'🏆':pct>=60?'⭐':'📚'}</div><div class="game-result-score">${emScore}/${EMAILS.length}</div><h3>${pct}% Chính xác</h3><p>${pct>=80?'Xuất sắc! Bạn là thám tử email thực thụ!':pct>=60?'Khá tốt! Luyện thêm để tinh mắt hơn.':'Hãy đọc lại bài về lừa đảo mạng!'}</p><button class="game-btn" onclick="initEM()">🔄 Chơi lại</button>`;
+}
+
+// === GAME 2: VIRUS BLASTER ===
+const vbCanvas=document.getElementById('game-canvas');
+const vbCtx=vbCanvas?vbCanvas.getContext('2d'):null;
+let vbObjects=[],vbScore=0,vbHP=3,vbTime=30,vbRunning=false,vbInterval=null,vbSpawnInt=null;
+const VIRUS_EMOJIS=['🧫','☠️','👾'];
+const FILE_EMOJIS=['📄','📂','📝'];
+function initVB(){
+    if(!vbCanvas)return;
+    vbScore=0;vbHP=3;vbTime=30;vbObjects=[];vbRunning=true;
+    document.getElementById('vb-result').style.display='none';
+    document.getElementById('vb-score').textContent=0;
+    document.getElementById('vb-timer').textContent=30;
+    document.getElementById('vb-hp').style.width='100%';
+    clearInterval(vbInterval);clearInterval(vbSpawnInt);
+    vbSpawnInt=setInterval(spawnVBObject,800);
+    vbInterval=setInterval(()=>{
+        vbTime--;
+        document.getElementById('vb-timer').textContent=vbTime;
+        if(vbTime<=0||vbHP<=0){vbRunning=false;clearInterval(vbInterval);clearInterval(vbSpawnInt);setTimeout(showVBResult,500);}
+    },1000);
+    vbCanvas.onclick=vbClick;
+    requestAnimationFrame(drawVB);
+}
+function spawnVBObject(){
+    if(!vbRunning)return;
+    const isVirus=Math.random()>0.4;
+    vbObjects.push({x:Math.random()*(vbCanvas.width-60)+30,y:-40,size:40,speed:1.5+Math.random()*2,isVirus,emoji:isVirus?VIRUS_EMOJIS[Math.floor(Math.random()*3)]:FILE_EMOJIS[Math.floor(Math.random()*3)],hit:false});
+}
+function drawVB(){
+    if(!vbCtx)return;
+    vbCtx.clearRect(0,0,vbCanvas.width,vbCanvas.height);
+    vbCtx.fillStyle='#070514';
+    vbCtx.fillRect(0,0,vbCanvas.width,vbCanvas.height);
+    // grid
+    vbCtx.strokeStyle='rgba(124,58,237,0.08)';vbCtx.lineWidth=1;
+    for(let x=0;x<vbCanvas.width;x+=50){vbCtx.beginPath();vbCtx.moveTo(x,0);vbCtx.lineTo(x,vbCanvas.height);vbCtx.stroke();}
+    for(let y=0;y<vbCanvas.height;y+=50){vbCtx.beginPath();vbCtx.moveTo(0,y);vbCtx.lineTo(vbCanvas.width,y);vbCtx.stroke();}
+    vbObjects=vbObjects.filter(o=>{
+        if(!o.hit){o.y+=o.speed;}
+        if(o.y>vbCanvas.height+50){if(o.isVirus&&!o.hit){vbHP=Math.max(0,vbHP-1);document.getElementById('vb-hp').style.width=(vbHP/3*100)+'%';if(vbHP<=0){vbRunning=false;}}return false;}
+        if(!o.hit){
+            vbCtx.font=`${o.size}px serif`;
+            vbCtx.textAlign='center';
+            vbCtx.globalAlpha=1;
+            vbCtx.fillText(o.emoji,o.x,o.y);
+            // glow
+            vbCtx.shadowColor=o.isVirus?'#ef4444':'#10b981';
+            vbCtx.shadowBlur=15;
+            vbCtx.fillText(o.emoji,o.x,o.y);
+            vbCtx.shadowBlur=0;
+        }
+        return !o.hit||o.y<vbCanvas.height;
+    });
+    if(vbRunning)requestAnimationFrame(drawVB);
+}
+function vbClick(e){
+    if(!vbRunning)return;
+    const rect=vbCanvas.getBoundingClientRect();
+    const scaleX=vbCanvas.width/rect.width;
+    const scaleY=vbCanvas.height/rect.height;
+    const mx=(e.clientX-rect.left)*scaleX;
+    const my=(e.clientY-rect.top)*scaleY;
+    vbObjects.forEach(o=>{
+        if(o.hit)return;
+        const dist=Math.sqrt((mx-o.x)**2+(my-o.y)**2);
+        if(dist<o.size){
+            o.hit=true;
+            if(o.isVirus){vbScore+=10;document.getElementById('vb-score').textContent=vbScore;}
+            else{vbHP=Math.max(0,vbHP-1);document.getElementById('vb-hp').style.width=(vbHP/3*100)+'%';if(vbHP<=0){vbRunning=false;clearInterval(vbInterval);clearInterval(vbSpawnInt);setTimeout(showVBResult,500);}}
+        }
+    });
+}
+function showVBResult(){
+    const r=document.getElementById('vb-result');
+    r.style.display='block';
+    r.innerHTML=`<div class="game-result-emoji">${vbScore>=100?'🏆':vbScore>=50?'⭐':'💔'}</div><div class="game-result-score">${vbScore} điểm</div><h3>${vbHP>0?'Thời gian hết!':'Hết máu!'}</h3><p>${vbScore>=100?'Xuất sắc! Tiêu diệt virus chuyên nghiệp!':vbScore>=50?'Khá tốt! Luyện thêm để nhanh hơn.':'Cẩn thận với file an toàn nhé!'}</p><button class="game-btn" onclick="initVB()">🔄 Chơi lại</button>`;
+}
+
+// === GAME 3: CIPHER ===
+const CIPHER_DATA=[
+    {plain:'MAT KHAU MANH CAN CO CHU HOA SO VA KY TU DAC BIET',shift:3},
+    {plain:'KHONG CHIA SE OTP VE BAT KY AI QUA MANG',shift:5},
+    {plain:'HAY DUNG LAI SUY NGHI TRUOC KHI HANH DONG',shift:7}
+];
+let cpIdx=0,cpScore=0,cpHintShown=false;
+function initCP(){
+    cpIdx=0;cpScore=0;
+    document.getElementById('cp-result').style.display='none';
+    loadCipher();
+}
+function caesarEncode(text,shift){
+    return text.toUpperCase().split('').map(c=>{
+        if(c>='A'&&c<='Z'){return String.fromCharCode(((c.charCodeAt(0)-65+shift)%26)+65);}
+        return c;
+    }).join('');
+}
+function loadCipher(){
+    if(cpIdx>=CIPHER_DATA.length){showCPResult();return;}
+    cpHintShown=false;
+    const d=CIPHER_DATA[cpIdx];
+    const encoded=caesarEncode(d.plain,d.shift);
+    document.getElementById('cp-num').textContent=cpIdx+1;
+    document.getElementById('cp-score').textContent=cpScore;
+    document.getElementById('cp-cipher').textContent=encoded;
+    document.getElementById('cp-hint').innerHTML=`Gợi ý: Dịch chuyển: <span id="cp-shift-hint" style="color:#a78bfa;">?</span> (Nhấn "Xem gợi ý" để xem)`;
+    document.getElementById('cp-answer').value='';
+    const fb=document.getElementById('cp-feedback');
+    fb.style.display='none';fb.className='cipher-feedback';
+    document.getElementById('cp-hint-btn').style.display='inline-flex';
+}
+function showCipherHint(){
+    if(cpHintShown)return;
+    cpHintShown=true;
+    document.getElementById('cp-shift-hint').textContent=CIPHER_DATA[cpIdx].shift;
+    document.getElementById('cp-hint-btn').style.display='none';
+}
+function checkCipher(){
+    const ans=document.getElementById('cp-answer').value.toUpperCase().trim();
+    const correct=CIPHER_DATA[cpIdx].plain;
+    const isRight=ans===correct;
+    if(isRight){if(!cpHintShown)cpScore++;else cpScore+=0.5;}
+    const fb=document.getElementById('cp-feedback');
+    fb.className='cipher-feedback'+(isRight?'':' wrong-flash');
+    fb.style.cssText=isRight?'display:block;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);color:#6ee7b7;padding:14px 18px;border-radius:10px;':'display:block;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);color:#fca5a5;padding:14px 18px;border-radius:10px;';
+    fb.innerHTML=isRight?`✅ Chính xác! ${cpHintShown?'(-0.5đ do dùng gợi ý)':'(+1điểm)'}. <button class="game-btn" style="margin-top:10px;" onclick="cpIdx++;loadCipher()">${cpIdx<CIPHER_DATA.length-1?'Tiếp →':'Xem kết quả 🏆'}</button>`:`❌ Sai rồi! Câu trả lời đúng là: <strong style="color:#fde68a">${correct}</strong>. <button class="game-btn" style="margin-top:10px;" onclick="cpIdx++;loadCipher()">${cpIdx<CIPHER_DATA.length-1?'Tiếp →':'Xem kết quả'}</button>`;
+}
+function showCPResult(){
+    const r=document.getElementById('cp-result');
+    r.style.display='block';
+    r.innerHTML=`<div class="game-result-emoji">${cpScore>=2.5?'🏆':cpScore>=1.5?'⭐':'📚'}</div><div class="game-result-score">${cpScore}/${CIPHER_DATA.length} điểm</div><h3>${cpScore>=2.5?'Xuất sắc!':cpScore>=1.5?'Khá tốt!':'Hãy luyện thêm!'}</h3><p>${cpScore>=2?'Bạn hiểu rõ mã Caesar!':'Ghi nhớ: Dịch ngược lại số dịch chuyển để giải mã!'}</p><button class="game-btn" onclick="initCP()">🔄 Chơi lại</button>`;
+}
+
+// === GAME 4: SPEED QUIZ ===
+const SQ_DATA=[
+    {q:'Mật khẩu "123456" là mật khẩu AN TOÀN.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'Bạo lực mạng có thể xảy ra 24/7, không có nơi trốn tránh.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Link rút gọn (bit.ly, tinyurl) luôn AN TOÀN để click.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'AI có thể sai và bịa đặt thông tin.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Dấu chân số có thể bị xóa hoàn toàn sau khi đăng.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'Nếu tài khoản bạn thân nhắn xin tiền, hãy chuyển ngay.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'Mật khẩu dài hơn thường mạnh hơn.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Số 111 là đường dây bảo vệ trẻ em miễn phí tại Việt Nam.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Copy bài AI nguyên xi và nộp như của mình là gian lận học thuật.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Website có HTTPS luôn hoàn toàn an toàn.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'Cyberbullying chỉ xảy ra với trẻ em, không xảy ra với người lớn.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'Chia sẻ OTP ngân hàng với "nhân viên hỗ trợ" qua điện thoại là an toàn.',opts:['SAI','ĐÚNG'],c:0},
+    {q:'Mật khẩu khác nhau cho mỗi tài khoản là thói quen tốt.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Khi bị bắt nạt mạng, nên dừng phản hồi và lưu bằng chứng.',opts:['ĐÚNG','SAI'],c:0},
+    {q:'Fake news (tin giả) thường lan nhanh hơn tin thật trên mạng.',opts:['ĐÚNG','SAI'],c:0},
+];
+let sqIdx=0,sqScore=0,sqTimer=6,sqInterval=null,sqAnswered=false;
+function initSQ(){
+    sqIdx=0;sqScore=0;
+    document.getElementById('sq-result').style.display='none';
+    document.getElementById('sq-question').style.display='flex';
+    document.getElementById('sq-options').style.display='grid';
+    loadSQ();
+}
+function loadSQ(){
+    if(sqIdx>=SQ_DATA.length){clearInterval(sqInterval);showSQResult();return;}
+    sqAnswered=false;sqTimer=6;
+    const q=SQ_DATA[sqIdx];
+    document.getElementById('sq-num').textContent=sqIdx+1;
+    document.getElementById('sq-score').textContent=sqScore;
+    document.getElementById('sq-question').textContent=q.q;
+    const opts=document.getElementById('sq-options');
+    opts.innerHTML=q.opts.map((o,i)=>`<div class="sprint-opt" id="sq-opt-${i}" onclick="answerSQ(${i})">${o}</div>`).join('');
+    clearInterval(sqInterval);
+    sqInterval=setInterval(()=>{
+        sqTimer--;
+        document.getElementById('sq-timer').textContent=sqTimer;
+        document.getElementById('sq-tbar').style.width=(sqTimer/6*100)+'%';
+        if(sqTimer<=0){clearInterval(sqInterval);answerSQ(-1);}
+    },1000);
+}
+function answerSQ(choice){
+    if(sqAnswered)return;sqAnswered=true;clearInterval(sqInterval);
+    const correct=SQ_DATA[sqIdx].c;
+    if(choice===correct)sqScore++;
+    if(choice>=0)document.getElementById('sq-opt-'+choice).classList.add(choice===correct?'correct-flash':'wrong-flash');
+    document.getElementById('sq-opt-'+correct).classList.add('correct-flash');
+    setTimeout(()=>{sqIdx++;loadSQ();},800);
+}
+function showSQResult(){
+    const pct=Math.round(sqScore/SQ_DATA.length*100);
+    document.getElementById('sq-question').style.display='none';
+    document.getElementById('sq-options').style.display='none';
+    const r=document.getElementById('sq-result');
+    r.style.display='block';
+    r.innerHTML=`<div class="game-result-emoji">${pct>=80?'🏆':pct>=60?'⭐':'📚'}</div><div class="game-result-score">${sqScore}/${SQ_DATA.length}</div><h3>${pct}% Chính xác</h3><p>${pct>=80?'Xuất sắc! Bạn là chuyên gia an toàn mạng!':pct>=60?'Khá tốt! Tiếp tục học để giỏi hơn.':'Hãy đọc lại bài học và thử lại!'}</p><button class="game-btn" onclick="initSQ()">🔄 Chơi lại</button>`;
+}
+
+// Auto-load Cyber Defender game on page entry
+window.addEventListener('DOMContentLoaded', () => {
+    loadGame('mega');
+});
+</script>
+</body></html>

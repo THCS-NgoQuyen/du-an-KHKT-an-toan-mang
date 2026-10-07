@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Dân Số — An Toàn Mạng THCS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="loader"><div class="loader-emoji">🌐</div><div class="loader-title">CÔNG DÂN SỐ</div><div class="loader-sub" id="loader-text">Đang tải...</div><div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div></div>
+<div class="toast-container" id="toast-container"></div>
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><span>🛡️</span> AN TOÀN MẠNG</a>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">🏠 Trang chủ</a></li>
+        <li><a href="cong-dan-so.html" class="active">🌐 Công dân số</a></li>
+        <li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li>
+        <li><a href="lua-dao-mang.html">⚠️ Lừa đảo</a></li>
+        <li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li>
+        <li><a href="sach-dien-tu.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(139,92,246,.35);">📖 Sách 3D</a></li>
+        <li><a href="simulation.html" class="nav-sim">🎮 Giả Lập &amp; CTF</a></li>
+        <li><a href="games.html" class="nav-sim" style="background:linear-gradient(135deg,#f59e0b,#f97316);">🎯 Trò Chơi</a></li>
+        <li><a href="khao-sat.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(99,102,241,.35);">📋 Khảo Sát 32 Câu</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<section class="hero hero-mini hero-mini-purple">
+    <img src="assets/banner.jpg" alt="Công dân số" class="hero-banner">
+    <div class="hero-overlay" style="background:linear-gradient(180deg,rgba(124,58,237,.3) 0%,rgba(15,10,30,.85) 100%);"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><span class="blink" style="color:#a78bfa;">🟣</span> Chủ đề 1 / 4</div>
+        <h1 class="hero-title" style="font-size:2.8rem;">🌐 Công Dân Số<br><span class="grad-text">Là Gì?</span></h1>
+        <p class="hero-sub" style="font-size:1rem;">Tìm hiểu về quyền lợi, trách nhiệm và kỹ năng cần có để sống tốt trong thế giới kỹ thuật số hiện đại.</p>
+    </div>
+</section>
+<section class="section" style="padding-top:55px;">
+    <div style="max-width:1000px;margin:0 auto;">
+        <div class="page-tabs tabs-purple reveal" id="page-tabs">
+            <button class="page-tab active" onclick="switchTab('intro',this)">📖 Giới Thiệu</button>
+            <button class="page-tab" onclick="switchTab('trutot',this)">🏛️ 4 Trụ Cột</button>
+            <button class="page-tab" onclick="switchTab('daucha',this)">🌍 Dấu Chân Số</button>
+            <button class="page-tab" onclick="switchTab('story',this)">📖 Câu Chuyện</button>
+            <button class="page-tab" onclick="switchTab('quiz',this)">🧠 Quiz</button>
+        </div>
+        <!-- TAB 1: GIỚI THIỆU -->
+        <div class="page-panel active" id="panel-intro">
+            <div class="content-layout">
+                <div class="content-visual reveal-left">
+                    <div class="visual-card vc-purple">
+                        <span class="visual-emoji">🌐</span>
+                        <div class="visual-title" style="background:var(--grad-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Digital Citizen</div>
+                        <p class="visual-desc">Người sử dụng công nghệ một cách có trách nhiệm, an toàn và tôn trọng trong thế giới kỹ thuật số.</p>
+                        <span class="visual-badge badge-purple">Công dân thế kỷ 21</span>
+                    </div>
+                </div>
+                <div class="content-text reveal-right">
+                    <h2>Công Dân Số <span class="grad-text">Là Gì?</span></h2>
+                    <p><strong>Công dân số</strong> là người biết sử dụng internet và công nghệ một cách thông minh, có trách nhiệm và đạo đức. Giống như ngoài đời thực, trên mạng bạn cũng cần tuân theo luật lệ và tôn trọng mọi người.</p>
+                    <ul class="tip-list">
+                        <li><span class="tip-icon">🔐</span><span>Bảo vệ thông tin cá nhân: tên, địa chỉ, ảnh, số điện thoại của mình và gia đình.</span></li>
+                        <li><span class="tip-icon">💬</span><span>Giao tiếp lịch sự, tôn trọng — dù đang ở đây hay ở đó.</span></li>
+                        <li><span class="tip-icon">🔎</span><span>Kiểm tra thông tin trước khi tin và chia sẻ — không lan truyền tin giả.</span></li>
+                        <li><span class="tip-icon">⏰</span><span>Cân bằng thời gian online — không để mạng xã hội chiếm hết cuộc sống.</span></li>
+                        <li><span class="tip-icon">🤝</span><span>Giúp đỡ người khác, lên tiếng khi thấy ai đó bị đối xử sai trên mạng.</span></li>
+                    </ul>
+                    <div class="warn-box blue">
+                        <div class="warn-icon">💡</div>
+                        <div class="warn-content"><h4>Bạn có biết?</h4><p>Tại Việt Nam, Luật An ninh mạng 2018 quy định rõ quyền và nghĩa vụ của mọi người khi hoạt động trên không gian mạng. Vi phạm có thể bị xử phạt hành chính hoặc hình sự!</p></div>
+                    </div>
+                </div>
+            </div>
+            <!-- VIDEO BÀI HỌC CÔNG DÂN SỐ -->
+            <div style="margin-top:40px;border-radius:20px;overflow:hidden;border:1.5px solid rgba(124,58,237,.4);box-shadow:0 12px 40px rgba(0,0,0,.6);background:rgba(20,12,38,.85);">
+                <div style="padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-bottom:1px solid rgba(124,58,237,.25);background:linear-gradient(90deg,rgba(124,58,237,.2),transparent);">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.6rem;">📺</span>
+                        <div>
+                            <h3 style="margin:0;font-size:1.15rem;font-weight:800;color:#c4b5fd;">Video Bài Học: Công Dân Số</h3>
+                            <p style="margin:0;font-size:.85rem;color:var(--muted);">Tìm hiểu về trách nhiệm, an toàn và văn hóa ứng xử trên không gian số</p>
+                        </div>
+                    </div>
+                    <span style="background:rgba(124,58,237,.25);color:#ddd6fe;font-size:.8rem;font-weight:700;padding:6px 14px;border-radius:20px;border:1px solid rgba(124,58,237,.4);">
+                        ▶️ Đoạn trích 01:37
+                    </span>
+                </div>
+                <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+                    <iframe 
+                        src="https://www.youtube.com/embed/PPkp1G8tPVA?start=97" 
+                        title="Video Bài Học Công Dân Số" 
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+        <!-- TAB 2: 4 TRỤ CỘT -->
+        <div class="page-panel" id="panel-trutot">
+            <div class="section-header" style="margin-bottom:35px;"><h2 class="section-title">4 Trụ Cột Của <span class="grad-text">Công Dân Số</span></h2></div>
+            <div class="steps-grid">
+                <div class="step-card reveal" style="border-color:rgba(124,58,237,.3);"><span class="step-emoji">🔒</span><div class="step-num sn-purple">1</div><h3>An Toàn Thông Tin</h3><p>Biết bảo vệ tài khoản bằng mật khẩu mạnh, bật xác thực 2 lớp (2FA), không chia sẻ thông tin nhạy cảm với người lạ.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(236,72,153,.3);"><span class="step-emoji">🤝</span><div class="step-num sn-pink">2</div><h3>Đạo Đức Số</h3><p>Tôn trọng bản quyền, không sao chép công trình người khác; đối xử với người khác trên mạng như ngoài đời.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(251,191,36,.3);"><span class="step-emoji">🔎</span><div class="step-num sn-yellow">3</div><h3>Tư Duy Phản Biện</h3><p>Luôn đặt câu hỏi về nguồn gốc thông tin. Phân biệt tin thật — tin giả (fake news), không chia sẻ khi chưa kiểm tra.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(16,185,129,.3);"><span class="step-emoji">⚖️</span><div class="step-num sn-green">4</div><h3>Quyền &amp; Trách Nhiệm</h3><p>Hiểu quyền riêng tư của mình và người khác. Biết báo cáo nội dung vi phạm thay vì chia sẻ hoặc im lặng.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(6,182,212,.3);"><span class="step-emoji">💡</span><div class="step-num sn-teal">5</div><h3>Kỹ Năng Kỹ Thuật Số</h3><p>Biết dùng công nghệ cho mục đích tốt: học tập, sáng tạo, kết nối — không chỉ giải trí và lướt mạng xã hội.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(124,58,237,.3);"><span class="step-emoji">🌍</span><div class="step-num sn-purple">6</div><h3>Tham Gia Có Trách Nhiệm</h3><p>Đóng góp tích cực cho cộng đồng mạng: chia sẻ nội dung có giá trị, hỗ trợ người cần giúp đỡ, phản đối điều tiêu cực.</p></div>
+            </div>
+        </div>
+        <!-- TAB 3: DẤU CHÂN SỐ -->
+        <div class="page-panel" id="panel-daucha">
+            <div class="content-layout">
+                <div class="content-visual reveal-left">
+                    <div class="visual-card vc-purple">
+                        <span class="visual-emoji">👣</span>
+                        <div class="visual-title" style="color:#a78bfa;">Digital Footprint</div>
+                        <p class="visual-desc">Mọi hành động của bạn trên mạng đều để lại dấu vết — giống như dấu chân trên cát, nhưng dấu chân số tồn tại mãi mãi!</p>
+                        <span class="visual-badge badge-purple">Nghĩ trước — Đăng sau!</span>
+                    </div>
+                </div>
+                <div class="content-text reveal-right">
+                    <h2>Dấu Chân Số <span class="grad-text">Là Gì?</span></h2>
+                    <p><strong>Dấu chân số</strong> là tất cả thông tin về bạn được lưu lại trên internet: bài đăng, bình luận, ảnh, video, lịch sử tìm kiếm, thậm chí cả những tin nhắn bạn nghĩ đã xóa!</p>
+                    <div class="info-cards">
+                        <div class="info-card"><div class="info-card-icon">📸</div><h4>Ảnh &amp; Video</h4><p>Ảnh bạn đăng có thể bị lưu lại và chia sẻ bởi người khác, kể cả sau khi bạn xóa.</p></div>
+                        <div class="info-card"><div class="info-card-icon">💬</div><h4>Bình luận &amp; Bài đăng</h4><p>Những gì bạn viết trên mạng có thể được tìm thấy qua Google nhiều năm sau.</p></div>
+                        <div class="info-card"><div class="info-card-icon">🔍</div><h4>Lịch sử tìm kiếm</h4><p>Google, Bing lưu lại mọi thứ bạn tìm kiếm. Đây có thể bị dùng để quảng cáo hoặc phân tích.</p></div>
+                        <div class="info-card"><div class="info-card-icon">📍</div><h4>Vị trí &amp; Check-in</h4><p>Check-in địa điểm hoặc chia sẻ ảnh có dữ liệu GPS tiết lộ nơi bạn sống, học, chơi.</p></div>
+                    </div>
+                    <!-- ẢNH THỰC TẾ -->
+                    <div style="margin:28px 0;">
+                        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--text-primary);">📷 Học sinh THCS thực hành bảo mật thực tế</h3>
+                        <div style="border-radius:16px;overflow:hidden;position:relative;box-shadow:0 6px 28px rgba(0,0,0,.5);max-height:340px;">
+                            <img src="assets/real-2fa-security.jpg" alt="Học sinh sử dụng xác thực 2 yếu tố" style="width:100%;height:340px;object-fit:cover;display:block;">
+                            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.85));padding:20px;">
+                                <div style="font-weight:700;font-size:1rem;color:#6ee7b7;margin-bottom:4px;">🔐 Xác thực 2 yếu tố (2FA) — Lớp bảo vệ thứ hai</div>
+                                <div style="font-size:.85rem;color:#d1fae5;">Khi bật 2FA, dù hacker có biết mật khẩu của bạn, họ vẫn không thể vào tài khoản nếu không có mã OTP trên điện thoại!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warn-box yellow">
+                        <div class="warn-icon">⚡</div>
+                        <div class="warn-content"><h4>Quy tắc: Nghĩ Trước — Đăng Sau!</h4><p>Trước khi đăng bất kỳ thứ gì, hãy tự hỏi: <strong style="color:#fde68a">"Tôi có muốn thầy/cô, bố mẹ hoặc nhà tuyển dụng tương lai thấy điều này không?"</strong>. Nếu không — đừng đăng!</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TAB STORY: CÂU CHUYỆN -->
+        <div class="page-panel" id="panel-story">
+            <div class="story-episode">
+                <h2 class="story-title">📖 Thư Viện Truyện — Công Dân Số</h2>
+                <p class="story-subtitle">3 câu chuyện với số nhân vật khác nhau — Linh · Nam · ROBO · Hacker Mũ Đen</p>
+                <div class="story-nav">
+                    <button class="story-nav-btn active" onclick="showStory(0,this)">
+                        <span class="story-num">Câu chuyện 1 · 3 nhân vật</span>
+                        📖 Dấu Chân Vô Hình
+                        <span class="char-count-badge">Linh + Nam + Hacker Mũ Đen</span>
+                    </button>
+                    <button class="story-nav-btn" onclick="showStory(1,this)">
+                        <span class="story-num">Câu chuyện 2 · 2 nhân vật</span>
+                        🤖 ROBO Và Thông Tin Bị Rò Rỉ
+                        <span class="char-count-badge">ROBO + Linh</span>
+                    </button>
+                    <button class="story-nav-btn" onclick="showStory(2,this)">
+                        <span class="story-num">Câu chuyện 3 · 1 nhân vật</span>
+                        🦅 Quyết Định Của Nam
+                        <span class="char-count-badge">Chỉ mình Nam</span>
+                    </button>
+                </div>
+                <!-- TRUYỆN 1: 3 nhân vật -->
+                <div class="story-item active" id="cds-0">
+                    <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(124,58,237,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/cds-story1.jpg" alt="Dấu Chân Vô Hình" style="width:100%;display:block;"></div>
+                    <div class="story-chars-intro">
+                        <div class="story-char-card"><img src="assets/char-lan.jpg" alt="Linh"><div class="char-name">🛡️ LINH</div><div class="char-role">Chiến binh Số nhanh nhạy</div></div>
+                        <div class="story-char-card"><img src="assets/char-minh.jpg" alt="Nam"><div class="char-name">🔍 NAM</div><div class="char-role">Nhà phân tích tài năng</div></div>
+                        <div class="story-char-card" style="border-color:rgba(239,68,68,.3);"><img src="assets/char-shadow.jpg" alt="Hacker"><div class="char-name" style="color:#fca5a5;">⚠️ HACKER MŨ ĐEN</div><div class="char-role">Kẻ ẩn danh nguy hiểm</div></div>
+                    </div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 1 — Buổi sinh nhật vui vẻ</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div><div class="story-content"><div class="story-bubble narrator">Cuối tuần, Linh được mời dự sinh nhật bạn thân tại nhà hàng sang trọng trong Thành Phố Số. Cô bé chụp thật nhiều ảnh và háo hức chia sẻ lên mạng xã hội...</div><div class="story-bubble"><strong>Linh:</strong> "Sinh nhật vui quá! Đăng ảnh lên cho cả lớp xem ngay thôi! 📸🎂"</div><div class="story-bubble narrator">Linh đăng ảnh với caption: "Sinh nhật bạn Hoa tại Nhà hàng Sao Đêm, Q.3! 🎉" — bật check-in địa điểm, gắn hashtag rộn ràng, mà quên mất ảnh vẫn đang bật GPS...</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 2 — Bóng tối đang theo dõi</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-shadow.jpg" class="story-char-img" alt="Hacker"><div class="story-char-name" style="color:#fca5a5;">HACKER MŨ ĐEN</div></div><div class="story-content"><div class="story-bubble narrator">Cùng lúc đó, ở một góc tối của Thành Phố Số, Hacker Mũ Đen đang theo dõi mạng xã hội bằng những công cụ bí ẩn...</div><div class="story-bubble villain"><strong>Hacker Mũ Đen:</strong> "Haha... ảnh của cô bé này chứa dữ liệu GPS. Nhà hàng Sao Đêm, Quận 3... và trong ảnh còn thấy rõ biển số xe của gia đình. Thú vị đấy... 😈"</div><div class="story-bubble narrator">Chỉ từ một bài đăng, Hacker Mũ Đen đã biết: vị trí Linh thường lui tới, tên trường từ đồng phục, thói quen cuối tuần và nhận ra cả bố mẹ Linh!</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 3 — Nam cảnh báo kịp thời</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div><div class="story-content"><div class="story-bubble"><strong>Nam:</strong> "Linh ơi! Bài đăng vừa rồi tiết lộ rất nhiều thứ nguy hiểm đó. Xóa đi ngay! 🚨"</div><div class="story-bubble"><strong>Linh:</strong> "Sao vậy Nam? Đó chỉ là ảnh sinh nhật bình thường mà?"</div><div class="story-bubble"><strong>Nam:</strong> "Ảnh GPS, check-in địa điểm, biển số xe, đồng phục trường — tất cả tạo ra <strong style='color:#a78bfa;'>Dấu Chân Số</strong>! Kẻ xấu có thể dùng để theo dõi bạn và gia đình đấy!"</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 4 — Linh trở thành Chiến Binh Số thực thụ</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div><div class="story-content"><div class="story-bubble"><strong>Linh (hoảng hốt):</strong> "Ôi không! Mình xóa ngay! Nhưng sau này phải làm gì để tránh, Nam?"</div><div class="story-bubble"><strong>Nam:</strong> "Tắt GPS khi chụp ảnh chia sẻ. Không check-in địa chỉ nhà hay trường. Đặt tài khoản ở chế độ <strong>Riêng Tư</strong>. Và luôn tự hỏi: <em style='color:#fde68a;'>'Nếu người lạ nhìn bài này, họ biết được gì?'</em>"</div><div class="story-bubble narrator">Linh xóa bài, chỉnh cài đặt riêng tư ngay. Hacker Mũ Đen mất dấu vết. Thành Phố Số an toàn hơn! ✨🛡️</div></div></div></div>
+                    <div class="story-lesson-box"><div class="story-lesson-title">💡 Bài học: Dấu Chân Số tồn tại mãi mãi!</div><ul class="story-lesson-list"><li>Mỗi ảnh, bài đăng, check-in đều để lại dấu chân số tồn tại lâu dài trên internet</li><li>Ảnh có thể chứa metadata GPS — hãy tắt vị trí trước khi chụp ảnh chia sẻ</li><li>Đặt tài khoản mạng xã hội ở chế độ riêng tư, chỉ bạn bè mới xem được</li><li>Hỏi "Người lạ biết được gì từ bài này?" trước khi đăng bất cứ điều gì</li><li>Thông tin bị lộ không chỉ ảnh hưởng đến bạn mà còn ảnh hưởng đến cả gia đình!</li></ul></div>
+                </div>
+                <!-- TRUYỆN 2: 2 nhân vật -->
+                <div class="story-item" id="cds-1">
+                    <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(124,58,237,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/cds-story2.jpg" alt="ROBO Và Thông Tin Bị Rò Rỉ" style="width:100%;display:block;"></div>
+                    <div class="story-chars-intro">
+                        <div class="story-char-card"><img src="assets/char-robo.webp" alt="ROBO"><div class="char-name">🤖 ROBO</div><div class="char-role">Robot thám tử thông minh</div></div>
+                        <div class="story-char-card"><img src="assets/char-lan.jpg" alt="Linh"><div class="char-name">🛡️ LINH</div><div class="char-role">Chiến binh Số nhanh nhạy</div></div>
+                    </div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 1 — ROBO phát hiện cảnh báo bất thường</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble narrator">Một buổi sáng, ROBO — robot thám tử đang tuần tra dữ liệu mạng — phát hiện tín hiệu bất thường...</div><div class="story-bubble"><strong>ROBO (hú còi báo động):</strong> "CẢNH BÁO! Tên, ngày sinh, số điện thoại và trường học của Linh đang xuất hiện trên 12 website khác nhau! 🚨"</div><div class="story-bubble narrator">ROBO lập tức lăn bánh đến tìm Linh, mang theo hồ sơ điều tra chi tiết...</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 2 — Linh choáng váng trước sự thật</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div><div class="story-content"><div class="story-bubble"><strong>ROBO:</strong> "Linh! Em đã đăng ký bao nhiêu website và ứng dụng rồi vậy?! ROBO đếm được 12 nơi có thông tin của em!"</div><div class="story-bubble"><strong>Linh (mắt tròn xoe):</strong> "Ủa... mình không nhớ nữa! Có những cái đăng ký từ lớp 6 để chơi game, cái khác để xem phim, cái khác để tải ảnh... Trời ơi!"</div><div class="story-bubble narrator">ROBO hiện ra hologram danh sách — 12 dịch vụ đã lưu thông tin cá nhân của Linh!</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 3 — Hai nhân vật điều tra cùng nhau</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble"><strong>ROBO:</strong> "Đừng lo! ROBO sẽ giúp Linh dọn sạch. Đầu tiên: xem mỗi website đó có thật sự cần thông tin của em không?"</div><div class="story-bubble narrator">Hai nhân vật ngồi bên nhau, đi qua từng website. 7 cái không cần thiết → xóa tài khoản. 3 cái quan trọng → đổi mật khẩu mạnh hơn. 2 cái không xóa được → báo cáo phụ huynh.</div><div class="story-bubble"><strong>Linh:</strong> "ROBO ơi, tại sao mình lại đăng ký nhiều vậy mà không để ý nhỉ?"</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 4 — Bài học từ ROBO</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble"><strong>ROBO:</strong> "Vì mỗi lần đăng ký, người ta hỏi thông tin và em điền vào mà không đọc kỹ điều khoản! Từ nay trước khi đăng ký bất cứ đâu, hãy hỏi: <em style='color:#fde68a;'>Mình có thật sự cần service này không?</em>"</div><div class="story-bubble"><strong>Linh:</strong> "Và đọc kỹ xem họ dùng thông tin của mình để làm gì nữa!"</div><div class="story-bubble narrator">ROBO gật đầu hài lòng. Từ đó, Linh kiểm tra lại danh sách ứng dụng và website mỗi tháng một lần. 🔒✨</div></div></div></div>
+                    <div class="story-lesson-box"><div class="story-lesson-title">💡 Bài học: Kiểm soát dữ liệu cá nhân của bạn!</div><ul class="story-lesson-list"><li>Mỗi lần đăng ký website/app là bạn để lại thông tin — chỉ đăng ký khi thật sự cần</li><li>Đọc kỹ điều khoản trước khi đăng ký — website sẽ dùng dữ liệu của bạn thế nào?</li><li>Xóa tài khoản những dịch vụ không còn dùng để thu hồi dữ liệu cá nhân</li><li>Dùng địa chỉ email phụ để đăng ký các dịch vụ không quan trọng</li><li>Mỗi tháng kiểm tra lại danh sách ứng dụng đã đăng ký một lần</li></ul></div>
+                </div>
+                <!-- TRUYỆN 3: 1 nhân vật -->
+                <div class="story-item" id="cds-2">
+                    <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(124,58,237,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/cds-story3.jpg" alt="Quyết Định Của Nam" style="width:100%;display:block;"></div>
+                    <div class="story-chars-intro" style="justify-content:center;">
+                        <div class="story-char-card" style="max-width:220px;"><img src="assets/char-minh.jpg" alt="Nam"><div class="char-name">🔍 NAM</div><div class="char-role">Câu chuyện độc lập — chỉ một mình Nam</div></div>
+                    </div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 1 — Bữa tiệc và áp lực từ bạn bè</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div><div class="story-content"><div class="story-bubble narrator">Thứ Bảy, Nam được mời dự tiệc sinh nhật lớn tại nhà bạn. Cả lớp ồn ào chụp hình, selfie và đua nhau đăng lên TikTok, Instagram...</div><div class="story-bubble"><strong>Bạn bè:</strong> "Nam ơi đăng ảnh lên đi! Tag tao vào nha!" "Không đăng là không có kỷ niệm à?" "Story đi bro!"</div><div class="story-bubble narrator">Nam cầm điện thoại lên, ngón tay chạm nút chia sẻ, nhưng dừng lại...</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 2 — Nam suy nghĩ nghiêm túc</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div><div class="story-content"><div class="story-bubble narrator">Nam nhìn vào ảnh: có địa chỉ nhà chủ nhà, có mặt nhiều bạn chưa xin phép đăng ảnh, có thể nhìn thấy xe của bố mẹ...</div><div class="story-bubble"><strong>Nam (trong đầu):</strong> "Khoan đã. Mình đã được hỏi ý kiến trước chưa? Các bạn trong ảnh có muốn xuất hiện trên mạng không? Địa chỉ nhà này có cần chia sẻ công khai không?"</div><div class="story-bubble narrator">Những câu hỏi đó dồn dập trong đầu Nam — bài học về dấu chân số và quyền riêng tư của người khác hiện lên rõ ràng...</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 3 — Quyết định dũng cảm</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div><div class="story-content"><div class="story-bubble"><strong>Nam:</strong> "Tao sẽ không đăng. Không phải vì không vui, mà vì trong ảnh có nhà của Mai và có mặt nhiều bạn chưa được hỏi ý kiến."</div><div class="story-bubble"><strong>Bạn bè (ngạc nhiên):</strong> "Ủa... mày nói đúng ha. Tao cũng chưa hỏi ý kiến Mai là chủ nhà..." "Mình cũng chưa xin phép các bạn kia..."</div><div class="story-bubble narrator">Một giây im lặng... rồi cả nhóm đồng ý: hỏi từng người trước khi đăng. Một số bạn không muốn xuất hiện trên mạng — và điều đó hoàn toàn được tôn trọng.</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 4 — Kỷ niệm thật sự không cần màn hình</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div><div class="story-content"><div class="story-bubble"><strong>Nam (mỉm cười):</strong> "Mình sẽ giữ kỷ niệm này cho riêng mình. Không phải mọi khoảnh khắc đẹp đều cần chia sẻ với thế giới — đôi khi giữ cho chính mình mới là trân trọng nhất."</div><div class="story-bubble narrator">Nam cất điện thoại vào túi và tham gia trò chơi cùng bạn bè. Bữa tiệc vui hơn khi không ai lo chờ likes! 🎉</div><div class="story-bubble narrator">Hôm đó, Nam đã hành động như một Công Dân Số thực thụ — không phải vì bị bắt buộc, mà vì anh hiểu giá trị của quyền riêng tư. ✨</div></div></div></div>
+                    <div class="story-lesson-box"><div class="story-lesson-title">💡 Bài học: Quyền riêng tư — của bạn VÀ của người khác!</div><ul class="story-lesson-list"><li>Luôn hỏi ý kiến mọi người trong ảnh trước khi đăng — họ có quyền không muốn xuất hiện trên mạng</li><li>Không phải mọi khoảnh khắc đều cần chia sẻ — giữ cho riêng mình cũng rất đẹp!</li><li>Địa chỉ, xe cộ, chi tiết cá nhân của người khác cũng thuộc về quyền riêng tư của họ</li><li>Là Công Dân Số có trách nhiệm: bảo vệ quyền riêng tư của chính mình VÀ của bạn bè</li><li>Lần sau trước khi đăng ảnh nhóm: hỏi từng người, không giả định ai đó đồng ý</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <!-- TAB 4: QUIZ -->
+        <div class="page-panel" id="panel-quiz">
+            <div class="quiz-wrapper"><div class="quiz-card" id="quiz-box"></div></div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand"><h3>🛡️ AN TOÀN MẠNG</h3><p>Trang web giáo dục miễn phí cho học sinh THCS Việt Nam về kỹ năng số.</p></div>
+        <div><h4>Nội dung học</h4><ul class="footer-links"><li><a href="cong-dan-so.html">🌐 Công dân số</a></li><li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li><li><a href="lua-dao-mang.html">⚠️ Lừa đảo mạng</a></li><li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li></ul></div>
+        <div><h4>Thực hành</h4><ul class="footer-links"><li><a href="simulation.html">🎮 Phòng Giả Lập</a></li><li><a href="games.html">🎯 Trò Chơi</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 An Toàn Mạng 🇻🇳</p><div class="footer-tags"><span class="footer-tag">THCS</span><span class="footer-tag">Miễn phí</span></div></div>
+</footer>
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+<script src="js/shared.js"></script>
+<script>
+function showStory(idx,btn){document.querySelectorAll('.story-item').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.story-nav-btn').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.story-item')[idx].classList.add('active');btn.classList.add('active');}
+function switchTab(id,btn){document.querySelectorAll('.page-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('panel-'+id).classList.add('active');}
+const QD=[{q:'Công dân số là người như thế nào?',opts:['Người dùng mạng xã hội nhiều nhất','Người sử dụng công nghệ có trách nhiệm, an toàn và đạo đức','Người giỏi lập trình nhất','Người có nhiều followers nhất'],c:1,e:'Công dân số không chỉ là người dùng nhiều công nghệ, mà là người biết dùng có trách nhiệm và đạo đức.'},
+{q:'Dấu chân số (digital footprint) là gì?',opts:['Tên tài khoản mạng xã hội','Số thiết bị điện tử bạn có','Tất cả dữ liệu và thông tin bạn để lại khi hoạt động trực tuyến','Logo nhận dạng trên internet'],c:2,e:'Mỗi bình luận, bài đăng, lượt tìm kiếm đều tạo ra dấu chân số tồn tại lâu dài.'},
+{q:'Trước khi đăng một bài lên mạng xã hội, bạn nên làm gì?',opts:['Đăng ngay để không bỏ lỡ khoảnh khắc','Hỏi ý kiến bạn bè trước','Suy nghĩ xem bố mẹ/thầy cô/nhà tuyển dụng có thấy phù hợp không','Không cần suy nghĩ vì mạng xã hội là ẩn danh'],c:2,e:'Quy tắc vàng: Nghĩ trước — Đăng sau! Mọi thứ đăng lên đều để lại dấu vết lâu dài.'},
+{q:'4 trụ cột của công dân số KHÔNG bao gồm điều nào?',opts:['An toàn thông tin','Đạo đức số','Tư duy phản biện','Kiếm tiền từ mạng xã hội'],c:3,e:'4 trụ cột là: An toàn thông tin, Đạo đức số, Tư duy phản biện, và Quyền & Trách nhiệm.'},
+{q:'Bạn thấy một bài viết gây sốc trên Facebook. Bạn nên làm gì đầu tiên?',opts:['Chia sẻ ngay để mọi người biết','Kiểm tra nguồn gốc và xác minh tính chính xác trước','Like và bình luận để tăng tương tác','Bỏ qua hoàn toàn'],c:1,e:'Luôn kiểm tra nguồn tin trước! Tin giả lây lan nhanh hơn tin thật. Tư duy phản biện giúp bạn không trở thành công cụ phát tán tin giả.'}];
+let qi=0,qs=0,qa=false;
+function renderQ(){const b=document.getElementById('quiz-box');if(!b)return;if(qi>=QD.length){const p=Math.round(qs/QD.length*100);b.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${p>=80?'🏆':p>=60?'⭐':'📚'}</div><div class="quiz-result-score">${qs}/${QD.length}</div><h3>${p}% Chính xác</h3><p>${p>=80?'Xuất sắc! Bạn hiểu rõ về Công dân số!':p>=60?'Khá tốt! Hãy ôn lại một số phần nhé.':'Hãy đọc lại bài học và thử lại!'}</p><button class="quiz-next-btn" onclick="qi=0;qs=0;qa=false;renderQ();">🔄 Làm lại</button></div>`;return;}
+const q=QD[qi];qa=false;
+b.innerHTML=`<div class="quiz-progress-row">${QD.map((_,i)=>`<div class="qp-dot ${i<qi?'done':''} ${i===qi?'active':''}"></div>`).join('')}</div><div class="quiz-meta"><span class="quiz-cat">🌐 Công dân số</span><span class="quiz-score-disp">⭐ ${qs}/${QD.length}</span></div><div class="quiz-q-text">Câu ${qi+1}: ${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<div class="quiz-opt" onclick="pickA(${i})" id="qo${i}"><div class="quiz-opt-letter">${String.fromCharCode(65+i)}</div><span>${o}</span></div>`).join('')}</div><div id="quiz-exp" style="display:none;" class="quiz-explain"></div><div class="quiz-footer"><span style="color:var(--muted);font-size:.85rem;">Câu ${qi+1}/${QD.length}</span><button class="quiz-next-btn" id="qnext" disabled onclick="qi++;renderQ();">${qi<QD.length-1?'Câu tiếp →':'Xem kết quả 🏆'}</button></div>`;}
+function pickA(i){if(qa)return;qa=true;const c=QD[qi].c;document.getElementById('qo'+i).classList.add(i===c?'correct':'wrong');if(i!==c)document.getElementById('qo'+c).classList.add('correct');if(i===c)qs++;const e=document.getElementById('quiz-exp');e.style.display='block';e.innerHTML=`<strong>${i===c?'✅ Chính xác!':'❌ Chưa đúng.'}</strong> ${QD[qi].e}`;document.getElementById('qnext').disabled=false;}
+renderQ();
+</script>
+</body></html>

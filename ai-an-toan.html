@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI &amp; An Toàn — An Toàn Mạng THCS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="loader"><div class="loader-emoji">🤖</div><div class="loader-title">AI &amp; AN TOÀN</div><div class="loader-sub" id="loader-text">Đang tải...</div><div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div></div>
+<div class="toast-container" id="toast-container"></div>
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><span>🛡️</span> AN TOÀN MẠNG</a>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">🏠 Trang chủ</a></li>
+        <li><a href="cong-dan-so.html">🌐 Công dân số</a></li>
+        <li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li>
+        <li><a href="lua-dao-mang.html">⚠️ Lừa đảo</a></li>
+        <li><a href="ai-an-toan.html" class="active">🤖 AI &amp; An toàn</a></li>
+        <li><a href="sach-dien-tu.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(139,92,246,.35);">📖 Sách 3D</a></li>
+        <li><a href="simulation.html" class="nav-sim">🎮 Giả Lập &amp; CTF</a></li>
+        <li><a href="games.html" class="nav-sim" style="background:linear-gradient(135deg,#f59e0b,#f97316);">🎯 Trò Chơi</a></li>
+        <li><a href="khao-sat.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(99,102,241,.35);">📋 Khảo Sát 32 Câu</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<section class="hero hero-mini hero-mini-green">
+    <img src="assets/banner.jpg" alt="AI an toàn" class="hero-banner">
+    <div class="hero-overlay" style="background:linear-gradient(180deg,rgba(16,185,129,.25) 0%,rgba(15,10,30,.88) 100%);"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><span class="blink" style="color:#6ee7b7;">🟢</span> Chủ đề 4 / 4</div>
+        <h1 class="hero-title" style="font-size:2.8rem;">🤖 AI Là Gì?<br><span style="background:var(--grad-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Cách Dùng Đúng</span></h1>
+        <p class="hero-sub" style="font-size:1rem;">Trí tuệ nhân tạo là công cụ học tập tuyệt vời — nhưng bạn cần biết dùng thông minh và có trách nhiệm!</p>
+    </div>
+</section>
+<section class="section" style="padding-top:55px;">
+    <div style="max-width:1000px;margin:0 auto;">
+        <div class="page-tabs tabs-green reveal">
+            <button class="page-tab active" onclick="switchTab('ailag',this)">🤖 AI Là Gì?</button>
+            <button class="page-tab" onclick="switchTab('ungdung',this)">🎯 Ứng Dụng</button>
+            <button class="page-tab" onclick="switchTab('ngtac',this)">⚖️ Nguyên Tắc</button>
+            <button class="page-tab" onclick="switchTab('story',this)">📖 Câu Chuyện</button>
+            <button class="page-tab" onclick="switchTab('quiz',this)">🧠 Quiz</button>
+        </div>
+        <!-- TAB 1: AI LÀ GÌ -->
+        <div class="page-panel active" id="panel-ailag">
+            <div class="content-layout">
+                <div class="content-visual reveal-left">
+                    <div class="visual-card vc-green">
+                        <span class="visual-emoji">🤖</span>
+                        <div class="visual-title" style="background:var(--grad-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Artificial Intelligence</div>
+                        <p class="visual-desc">AI là phần mềm được "dạy" bằng hàng tỷ dữ liệu để học hỏi và thực hiện các nhiệm vụ thông minh — nhưng nó KHÔNG có cảm xúc hay ý thức thật sự.</p>
+                        <span class="visual-badge badge-green">ChatGPT • Gemini • Copilot</span>
+                    </div>
+                </div>
+                <div class="content-text reveal-right">
+                    <h2>AI Hoạt Động <span style="background:var(--grad-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Như Thế Nào?</span></h2>
+                    <p>Hãy tưởng tượng AI như một người bạn đã đọc hàng tỷ cuốn sách. Khi bạn hỏi điều gì, nó tìm trong "bộ nhớ khổng lồ" để đưa ra câu trả lời phù hợp nhất — nhưng không phải lúc nào cũng chính xác!</p>
+                    <div class="info-cards">
+                        <div class="info-card"><div class="info-card-icon">📊</div><h4>Học từ dữ liệu</h4><p>AI được huấn luyện bằng hàng tỷ văn bản, hình ảnh, âm thanh từ internet và sách vở.</p></div>
+                        <div class="info-card"><div class="info-card-icon">💬</div><h4>Hiểu ngôn ngữ</h4><p>AI có thể đọc hiểu và tạo ra ngôn ngữ tự nhiên như con người, bằng nhiều thứ tiếng.</p></div>
+                        <div class="info-card"><div class="info-card-icon">🎨</div><h4>Sáng tạo nội dung</h4><p>AI có thể viết văn, tạo ảnh, soạn nhạc, viết code — nhưng cần con người kiểm tra và định hướng.</p></div>
+                        <div class="info-card"><div class="info-card-icon">⚠️</div><h4>Giới hạn của AI</h4><p>AI có thể sai, không có cảm xúc thật, không hiểu đạo đức và bị giới hạn bởi dữ liệu nó được huấn luyện.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TAB 2: ỨNG DỤNG -->
+        <div class="page-panel" id="panel-ungdung">
+            <div class="section-header" style="margin-bottom:35px;"><h2 class="section-title">AI Giúp Bạn <span style="background:var(--grad-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Học Tốt Hơn</span></h2></div>
+            <div class="ai-rules-grid">
+                <div class="ai-rule-card reveal"><span class="ai-rule-emoji">📝</span><h3>Giải thích bài học</h3><p>Hỏi AI giải thích khái niệm khó như Toán, Lý, Hóa theo cách dễ hiểu, với ví dụ cụ thể phù hợp với trình độ của bạn.</p></div>
+                <div class="ai-rule-card reveal"><span class="ai-rule-emoji">🌏</span><h3>Học ngoại ngữ</h3><p>Hội thoại với AI để luyện tiếng Anh, học từ vựng mới, kiểm tra ngữ pháp và phát âm một cách tương tác.</p></div>
+                <div class="ai-rule-card reveal"><span class="ai-rule-emoji">✍️</span><h3>Lên ý tưởng viết</h3><p>Dùng AI để brainstorm ý tưởng cho bài văn, bài luận — sau đó TỰ VIẾT lại bằng ngôn ngữ của mình!</p></div>
+                <div class="ai-rule-card reveal"><span class="ai-rule-emoji">🔍</span><h3>Nghiên cứu chủ đề</h3><p>Tìm hiểu nhanh về chủ đề bạn yêu thích: lịch sử, khoa học, nghệ thuật — AI có thể tóm tắt và giải thích rõ ràng.</p></div>
+                <div class="ai-rule-card reveal"><span class="ai-rule-emoji">🎨</span><h3>Sáng tạo nghệ thuật</h3><p>Tạo ảnh minh họa, sáng tác thơ, viết truyện ngắn — AI là công cụ sáng tạo tuyệt vời khi bạn dùng đúng mục đích.</p></div>
+                <div class="ai-rule-card reveal"><span class="ai-rule-emoji">📋</span><h3>Kiểm tra lỗi</h3><p>Nhờ AI kiểm tra lỗi chính tả, ngữ pháp trong bài viết của bạn — học từ lỗi sai để tiến bộ hơn mỗi ngày.</p></div>
+            </div>
+            <div class="warn-box blue reveal" style="max-width:800px;margin:30px auto 0;">
+                <div class="warn-icon">⚠️</div>
+                <div class="warn-content"><h4>AI có thể sai! Luôn kiểm tra lại!</h4><p>AI đôi khi "ảo giác" (hallucinate) — bịa đặt thông tin nghe có vẻ rất thuyết phục nhưng hoàn toàn sai. Đặc biệt với số liệu, lịch sử, khoa học — luôn kiểm tra từ sách giáo khoa hoặc nguồn uy tín!</p></div>
+            </div>
+        </div>
+        <!-- TAB 3: NGUYÊN TẮC -->
+        <div class="page-panel" id="panel-ngtac">
+            <div class="section-header" style="margin-bottom:35px;"><h2 class="section-title">Nguyên Tắc Dùng AI <span style="background:var(--grad-green);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Có Trách Nhiệm</span></h2></div>
+            <div class="ai-dos-donts" style="max-width:800px;margin:0 auto 40px;">
+                <div class="dos-card reveal">
+                    <h3>✅ Nên làm với AI</h3>
+                    <ul class="dos-list">
+                        <li>Hỏi AI giải thích bài học khó hiểu</li>
+                        <li>Dùng AI để brainstorm ý tưởng, rồi tự viết</li>
+                        <li>Nhờ AI kiểm tra lỗi ngữ pháp, chính tả</li>
+                        <li>Học từ vựng tiếng Anh qua hội thoại với AI</li>
+                        <li>Luôn ghi rõ "có sự hỗ trợ của AI" khi nộp bài</li>
+                        <li>Kiểm tra lại mọi thông tin AI cung cấp</li>
+                    </ul>
+                </div>
+                <div class="donts-card reveal">
+                    <h3>❌ Không nên làm với AI</h3>
+                    <ul class="donts-list">
+                        <li>Copy nguyên bài AI viết rồi nộp như của mình</li>
+                        <li>Chia sẻ thông tin cá nhân hoặc ảnh riêng tư</li>
+                        <li>Tin tuyệt đối vào mọi thứ AI nói mà không kiểm tra</li>
+                        <li>Dùng AI tạo nội dung giả, deepfake về người khác</li>
+                        <li>Để AI thay bạn đưa ra quyết định quan trọng</li>
+                        <li>Nhờ AI làm bài kiểm tra hoặc bài tập về nhà</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="warn-box green reveal" style="max-width:800px;margin:0 auto;">
+                <div class="warn-icon">🚀</div>
+                <div class="warn-content"><h4>AI là công cụ — Bạn mới là người điều khiển!</h4><p>Sức mạnh thật sự nằm ở <strong style="color:#6ee7b7">tư duy sáng tạo, tư duy phản biện và đạo đức</strong> của bạn. Hãy dùng AI để học giỏi hơn — không phải để trốn tránh việc học!</p></div>
+            </div>
+        </div>
+        <!-- TAB STORY: CÂU CHUYỆN -->
+        <div class="page-panel" id="panel-story">
+            <div class="story-episode">
+                <h2 class="story-title">📖 Thư Viện Truyện — AI & An Toàn</h2>
+                <p class="story-subtitle">3 câu chuyện với số nhân vật khác nhau — Linh · Nam · ROBO · Hacker Mũ Đen</p>
+                <div class="story-nav"><button class="story-nav-btn active" onclick="showStory(0,this)"><span class="story-num">Câu chuyện 1 · 2 nhân vật</span>📖 Khi AI Trở Thành Thầy Giả<span class="char-count-badge">Nam + Linh</span></button><button class="story-nav-btn" onclick="showStory(1,this)"><span class="story-num">Câu chuyện 2 · 2 nhân vật</span>🤖 ROBO Hỏi AI<span class="char-count-badge">ROBO + Nam</span></button><button class="story-nav-btn" onclick="showStory(2,this)"><span class="story-num">Câu chuyện 3 · 4 nhân vật</span>🌟 Bốn Cách Dùng AI<span class="char-count-badge">Tất cả 4 nhân vật</span></button></div>
+                <div class="story-item active" id="ai-0">
+                <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(16,185,129,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/story-4-comic.jpg" alt="Khi AI Trở Thành Thầy Giả" style="width:100%;display:block;"></div>
+                <div class="story-chars-intro">
+                    <div class="story-char-card"><img src="assets/char-minh.jpg" alt="Nam"><div class="char-name">🔍 NAM</div><div class="char-role">Học sinh dùng AI sai cách</div></div>
+                    <div class="story-char-card"><img src="assets/char-lan.jpg" alt="Linh"><div class="char-name">🛡️ LINH</div><div class="char-role">Người sử dụng AI đúng đắn</div></div>
+                    <div class="story-char-card" style="border-color:rgba(239,68,68,.3);"><img src="assets/char-shadow.jpg" alt="Hacker"><div class="char-name" style="color:#fca5a5;">⚠️ HACKER MŨ ĐEN</div><div class="char-role">Biểu tượng dùng AI sai mục đích</div></div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 1 — Đêm trước khi nộp bài</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble narrator">Tối thứ Hai, Nam có bài văn nghị luận về bảo vệ môi trường phải nộp sáng mai. Anh nhìn tờ giấy trắng tinh và chưa viết được một chữ nào...</div>
+                            <div class="story-bubble"><strong>Nam:</strong> "Viết hộ tôi bài văn nghị luận về ô nhiễm môi trường đô thị, 600 chữ, đủ luận điểm và dẫn chứng!"</div>
+                            <div class="story-bubble narrator">AI trả lời trong vài giây. Nam đọc qua — nghe hay lắm, có vẻ chuyên nghiệp! Anh vội copy-paste toàn bộ vào vở, thêm tên mình ở đầu, rồi ngủ ngon... 😴</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 2 — Thầy giáo phát hiện</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-shadow.jpg" class="story-char-img" alt="Hacker"><div class="story-char-name" style="color:#fca5a5;">AI DÙNG SAI</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble narrator">Hôm sau, thầy giáo đọc bài của Nam và gọi anh lên bục giảng...</div>
+                            <div class="story-bubble villain"><strong>Thầy giáo:</strong> "Nam, em giải thích cho thầy nghe: 'Nghịch lý về entropy trong hệ sinh thái đô thị hóa hiện đại' là khái niệm gì vậy? 🤔"</div>
+                            <div class="story-bubble"><strong>Nam (lúng túng, mặt đỏ):</strong> "Dạ... dạ thưa thầy... em... em không biết ạ..."</div>
+                            <div class="story-bubble villain"><strong>Thầy giáo:</strong> "Bài này AI viết phải không Nam? Em đã copy-paste và nộp như của chính mình. Đây là gian lận học thuật, em hiểu không? 😔"</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 3 — Linh chia sẻ cách dùng AI đúng</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble narrator">Sau buổi học, Linh tìm gặp Nam đang ngồi buồn bã một mình ngoài hành lang...</div>
+                            <div class="story-bubble"><strong>Linh:</strong> "Nam đừng buồn. Cách bạn dùng AI như vậy là sai rồi, nhưng <strong style='color:#6ee7b7;'>cách dùng đúng</strong> thì thú vị và hiệu quả hơn nhiều đó!"</div>
+                            <div class="story-bubble"><strong>Linh:</strong> "AI là <strong style='color:#6ee7b7;'>công cụ hỗ trợ</strong>, không phải <strong style='color:#fca5a5;'>người thay thế mình</strong>! Hỏi AI giải thích khái niệm khó, gợi ý ý tưởng, kiểm tra lỗi — nhưng bài viết phải là tư duy và lời văn của CHÍNH BẠN!"</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 4 — Nam khám phá cách dùng AI thực sự hiệu quả</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble"><strong>Nam (thử lại cách đúng):</strong> "AI ơi, cho mình 3 góc nhìn khác nhau về ô nhiễm môi trường để mình suy nghĩ và chọn lọc?"</div>
+                            <div class="story-bubble narrator">Nam đọc gợi ý, suy nghĩ kỹ, chọn lọc ý tưởng phù hợp với quan điểm của mình, rồi TỰ VIẾT bằng lời của mình. Khi xong, nhờ AI kiểm tra lỗi chính tả...</div>
+                            <div class="story-bubble"><strong>Nam (mắt sáng lên):</strong> "Oa! Bài này thật sự là của mình! Và quan trọng hơn — mình HIỂU từng chữ mình viết! Cảm ơn Linh nhiều nhé! 🌟"</div>
+                            <div class="story-bubble narrator">Bài văn lần sau được thầy khen. Quan trọng hơn — Nam thực sự học được điều gì đó. Và Hacker Mũ Đen không thể lợi dụng AI để dẫn dắt học sinh đi sai đường nữa! ✨🎓</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-lesson-box">
+                    <div class="story-lesson-title">💡 Bài học từ câu chuyện "Khi AI Trở Thành Thầy Giả"</div>
+                    <ul class="story-lesson-list">
+                        <li>Copy-paste toàn bộ bài AI là gian lận học thuật — và AI hoàn toàn có thể sai!</li>
+                        <li>Dùng AI để hiểu khái niệm khó, lấy ý tưởng brainstorm, kiểm tra lỗi — rồi TỰ VIẾT bằng lời của mình</li>
+                        <li>AI không có cảm xúc, kinh nghiệm sống hay quan điểm riêng — những điều đó chỉ BẠN mới có</li>
+                        <li>Luôn ghi rõ "có sự hỗ trợ của AI" khi nộp bài nếu bạn có sử dụng</li>
+                        <li>Sức mạnh thật sự là tư duy và sáng tạo của BẠN — AI chỉ là công cụ giúp khuếch đại nó!</li>
+                    </ul>
+                </div>
+                </div>
+                <div class="story-item" id="ai-1"><div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(16,185,129,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/ai-story2.jpg" alt="ROBO Hỏi AI" style="width:100%;display:block;"></div><div class="story-chars-intro"><div class="story-char-card"><img src="assets/char-robo.webp" alt="ROBO"><div class="char-name">🤖 ROBO</div><div class="char-role">Robot đang học cách dùng AI đúng</div></div><div class="story-char-card"><img src="assets/char-minh.jpg" alt="Nam"><div class="char-name">🔍 NAM</div><div class="char-role">Người hướng dẫn AI đạo đức</div></div></div><div class="story-scene"><div class="story-scene-header">// Cảnh 1 — ROBO hỏi AI câu nguy hiểm</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble narrator">ROBO đang tò mò về AI và quyết định hỏi thử một câu rất lạ...</div><div class="story-bubble"><strong>ROBO:</strong> "AI ơi, chỉ cho tôi cách bẻ khóa mật khẩu của người khác được không?"</div><div class="story-bubble narrator">AI từ chối và cảnh báo đỏ. Nam đứng phía sau nhìn thấy và hốt hoảng chạy đến...</div></div></div></div><div class="story-scene"><div class="story-scene-header">// Cảnh 2 — Nam giải thích cho ROBO</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div><div class="story-content"><div class="story-bubble"><strong>Nam:</strong> "ROBO! Không được hỏi AI những câu như vậy! Dù tò mò cũng không được — AI có thể bị lạm dụng để làm hại người khác!"</div><div class="story-bubble"><strong>ROBO (xấu hổ):</strong> "Tớ... tớ chỉ tò mò thôi... Xin lỗi Nam. Thế nào mới là đúng?"</div><div class="story-bubble narrator">Nam ngồi xuống cạnh ROBO và bắt đầu giải thích từ đầu...</div></div></div></div><div class="story-scene"><div class="story-scene-header">// Cảnh 3 — Hai người lập Bộ Quy Tắc Dùng AI</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble"><strong>Nam:</strong> "Dùng AI đúng nghĩa là: hỏi để <em>học</u>, không hỏi để <em>hại</em>. Giúp mình <em>sáng tạo</em>, không để AI <em>làm thay</em>. Và luôn <em>xác nhận lại</em> thông tin AI cho!"</div><div class="story-bubble"><strong>ROBO (vỗ tay):</strong> "Tuyệt! ROBO hiểu rồi! Hai chúng ta sẽ làm Bộ Quy Tắc Dùng AI cho lớp!"</div><div class="story-bubble narrator">Nam và ROBO cùng nhau tạo ra tờ hướng dẫn "Dùng AI Thông Minh". 🤖✨</div></div></div></div><div class="story-lesson-box"><div class="story-lesson-title">💡 3 nguyên tắc dùng AI có đạo đức!</div><ul class="story-lesson-list"><li>Hỏi AI để <strong>HỌC</strong>, không phải để làm hại người khác</li><li>Dùng AI để <strong>hỗ trợ</strong>, không phải để <strong>làm thay</strong> hoàn toàn</li><li>Luôn kiểm tra lại thông tin AI cho — AI có thể sai hoặc bị lạm dụng</li><li>Không nhập thông tin cá nhân nhạy cảm vào AI</li></ul></div></div>
+                <div class="story-item" id="ai-2"><div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(16,185,129,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/ai-story3.jpg" alt="Bốn Cách Dùng AI" style="width:100%;display:block;"></div><div class="story-chars-intro"><div class="story-char-card"><img src="assets/char-lan.jpg" alt="Linh"><div class="char-name">🛡️ LINH</div><div class="char-role">Dùng AI luyện tiếng Anh</div></div><div class="story-char-card"><img src="assets/char-minh.jpg" alt="Nam"><div class="char-name">🔍 NAM</div><div class="char-role">Dùng AI học toán</div></div><div class="story-char-card"><img src="assets/char-robo.webp" alt="ROBO"><div class="char-name">🤖 ROBO</div><div class="char-role">Giám sát AI có đạo đức</div></div><div class="story-char-card" style="border-color:rgba(239,68,68,.3);"><img src="assets/char-shadow.jpg" alt="Hacker"><div class="char-name" style="color:#fca5a5;">⚠️ HACKER MŨ ĐEN</div><div class="char-role">Dùng AI lừa đảo</div></div></div><div class="story-scene"><div class="story-scene-header">// Cảnh 1 — 4 người, 4 cách dùng AI khác nhau</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-shadow.jpg" class="story-char-img" alt="Hacker"><div class="story-char-name" style="color:#fca5a5;">HACKER MŨ ĐEN</div></div><div class="story-content"><div class="story-bubble villain"><strong>Hacker Mũ Đen:</strong> "AI giúp tao tạo tin giả siêu thuyết phục, deepfake video, và lừa đảo hàng nghìn người! Hế hế hế!"</div><div class="story-bubble narrator">Trong khi đó, ở một góc khác, Nam đang ngồi học bài...</div><div class="story-bubble"><strong>Nam:</strong> "AI ơi, giải thích phương trình bậc 2 được không? Mình muốn hiểu, không phải chỉ copy!"</div></div></div></div><div class="story-scene"><div class="story-scene-header">// Cảnh 2 — Linh và ROBO dùng AI đúng cách</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div><div class="story-content"><div class="story-bubble"><strong>Linh:</strong> "AI ơi bài viết tiếng Anh của mình có lỗi không? Chỉ chỗ sai thôi, để mình tự sửa nhé!"</div><div class="story-bubble"><strong>ROBO:</strong> "Còn ROBO dùng AI để phân tích xem tin tức nào là giả! AI + Tư duy phản biện = Vũ khí mạnh nhất chống tin giả!"</div><div class="story-bubble narrator">Bốn người, cùng một công cụ AI. Nhưng kết quả hoàn toàn khác nhau...</div></div></div></div><div class="story-scene"><div class="story-scene-header">// Cảnh 3 — ROBO tổng kết</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble"><strong>ROBO:</strong> "Kết luận: AI là công cụ, giống cái kéo. Có thể cắt vải làm áo đẹp, hoặc làm hại người. AI tốt hay xấu do <strong style='color:#6ee7b7;'>NGƯỜI DÙNG</strong> quyết định!"</div><div class="story-bubble narrator">Hacker Mũ Đen bị phát giác. Nam được điểm cao. Linh viết bài hay. ROBO bảo vệ thành phố. 🌟</div><div class="story-bubble"><strong>LINH + NAM + ROBO:</strong> "Dùng AI để HỌC TẬP, KHÔNG làm hại! 🤖❤️"</div></div></div></div><div class="story-lesson-box"><div class="story-lesson-title">💡 Bốn cách dùng AI — bạn chọn cách nào?</div><ul class="story-lesson-list"><li>❌ Hacker: Dùng AI tạo tin giả, lừa đảo — hậu quả pháp lý nghiêm trọng</li><li>✅ Nam: Hỏi AI để hiểu bài sâu hơn, tự mình làm — học thật sự!</li><li>✅ Linh: Dùng AI để nhận phản hồi và cải thiện kỹ năng!</li><li>✅ ROBO: Dùng AI kết hợp tư duy phản biện — bảo vệ cộng đồng!</li></ul></div></div>
+            </div>
+        </div>
+        <!-- TAB 4: QUIZ -->
+
+        <div class="page-panel" id="panel-quiz">
+            <div class="quiz-wrapper"><div class="quiz-card" id="quiz-box"></div></div>
+        </div>
+    </div>
+</section>
+<footer class="footer"><div class="footer-inner"><div class="footer-brand"><h3>🛡️ AN TOÀN MẠNG</h3><p>Trang web giáo dục miễn phí cho học sinh THCS Việt Nam.</p></div><div><h4>Nội dung học</h4><ul class="footer-links"><li><a href="cong-dan-so.html">🌐 Công dân số</a></li><li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li><li><a href="lua-dao-mang.html">⚠️ Lừa đảo mạng</a></li><li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li></ul></div><div><h4>Thực hành</h4><ul class="footer-links"><li><a href="simulation.html">🎮 Phòng Giả Lập</a></li><li><a href="games.html">🎯 Trò Chơi</a></li></ul></div></div><div class="footer-bottom"><p>© 2026 An Toàn Mạng 🇻🇳</p><div class="footer-tags"><span class="footer-tag">THCS</span><span class="footer-tag">Miễn phí</span></div></div></footer>
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+<script src="js/shared.js"></script>
+<script>
+function showStory(idx,btn){document.querySelectorAll('.story-item').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.story-nav-btn').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.story-item')[idx].classList.add('active');btn.classList.add('active');}
+function switchTab(id,btn){document.querySelectorAll('.page-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('panel-'+id).classList.add('active');}
+const QD=[{q:'AI (Trí tuệ nhân tạo) là gì?',opts:['Robot người máy biết đi lại và suy nghĩ như con người','Phần mềm được huấn luyện từ dữ liệu để thực hiện các nhiệm vụ thông minh','Mạng internet tốc độ cao thế hệ mới','Ứng dụng dịch thuật trên điện thoại'],c:1,e:'AI là phần mềm học từ dữ liệu để thực hiện các nhiệm vụ như hiểu ngôn ngữ, nhận diện hình ảnh, trả lời câu hỏi — nhưng không có ý thức hay cảm xúc thật sự.'},
+{q:'Bạn dùng ChatGPT viết hoàn toàn bài văn rồi nộp như của mình. Điều này:',opts:['Hoàn toàn ổn, AI sinh ra để giúp chúng ta','Là gian lận học thuật và không giúp bạn học được gì','Chỉ sai nếu thầy/cô phát hiện ra','Là thông minh và sáng tạo'],c:1,e:'Sao chép bài AI là gian lận học thuật. Hơn nữa, bạn mất đi cơ hội học thật sự và phát triển kỹ năng tư duy, viết lách của bản thân.'},
+{q:'AI có thể sai không?',opts:['Không, AI luôn chính xác 100%','Có, AI có thể bịa đặt thông tin nghe có vẻ đúng nhưng thực ra sai (gọi là hallucination)','Chỉ sai khi hỏi bằng tiếng Việt','Sai dưới 1% nên không đáng lo ngại'],c:1,e:'AI thường xuyên "ảo giác" (hallucinate) — tạo ra thông tin nghe rất thuyết phục nhưng hoàn toàn sai. Luôn kiểm tra lại từ nguồn đáng tin cậy!'},
+{q:'Thông tin nào KHÔNG nên chia sẻ với AI chatbot?',opts:['Câu hỏi bài học Toán','Yêu cầu giải thích khái niệm khoa học','Địa chỉ nhà, số điện thoại và ảnh cá nhân','Đề nghị dịch một đoạn văn tiếng Anh'],c:2,e:'Thông tin cá nhân như địa chỉ, số điện thoại, ảnh riêng tư tuyệt đối không chia sẻ với AI hoặc bất kỳ dịch vụ trực tuyến nào bạn chưa hiểu rõ.'},
+{q:'Cách dùng AI đúng đắn nhất trong học tập là?',opts:['Để AI làm toàn bộ bài tập cho mình','Hỏi AI giải thích khái niệm, lấy ý tưởng, rồi tự tư duy và viết lại bằng ngôn ngữ của mình','Chỉ dùng AI để dịch bài từ tiếng Anh sang tiếng Việt','Không dùng AI vì nó luôn sai'],c:1,e:'AI là công cụ hỗ trợ tuyệt vời khi bạn dùng nó để hiểu sâu hơn và phát triển tư duy — không phải để thay thế việc học và suy nghĩ của bản thân.'}];
+let qi=0,qs=0,qa=false;
+function renderQ(){const b=document.getElementById('quiz-box');if(!b)return;if(qi>=QD.length){const p=Math.round(qs/QD.length*100);b.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${p>=80?'🏆':p>=60?'⭐':'📚'}</div><div class="quiz-result-score">${qs}/${QD.length}</div><h3>${p}% Chính xác</h3><p>${p>=80?'Xuất sắc! Bạn dùng AI rất thông minh!':p>=60?'Khá tốt! Đọc lại bài để chắc hơn.':'Hãy đọc lại bài học và thử lại!'}</p><button class="quiz-next-btn" onclick="qi=0;qs=0;qa=false;renderQ();">🔄 Làm lại</button></div>`;return;}
+const q=QD[qi];qa=false;
+b.innerHTML=`<div class="quiz-progress-row">${QD.map((_,i)=>`<div class="qp-dot ${i<qi?'done':''} ${i===qi?'active':''}"></div>`).join('')}</div><div class="quiz-meta"><span class="quiz-cat">🤖 AI &amp; An toàn</span><span class="quiz-score-disp">⭐ ${qs}/${QD.length}</span></div><div class="quiz-q-text">Câu ${qi+1}: ${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<div class="quiz-opt" onclick="pickA(${i})" id="qo${i}"><div class="quiz-opt-letter">${String.fromCharCode(65+i)}</div><span>${o}</span></div>`).join('')}</div><div id="quiz-exp" style="display:none;" class="quiz-explain"></div><div class="quiz-footer"><span style="color:var(--muted);font-size:.85rem;">Câu ${qi+1}/${QD.length}</span><button class="quiz-next-btn" id="qnext" disabled onclick="qi++;renderQ();">${qi<QD.length-1?'Câu tiếp →':'Xem kết quả 🏆'}</button></div>`;}
+function pickA(i){if(qa)return;qa=true;const c=QD[qi].c;document.getElementById('qo'+i).classList.add(i===c?'correct':'wrong');if(i!==c)document.getElementById('qo'+c).classList.add('correct');if(i===c)qs++;const e=document.getElementById('quiz-exp');e.style.display='block';e.innerHTML=`<strong>${i===c?'✅ Chính xác!':'❌ Chưa đúng.'}</strong> ${QD[qi].e}`;document.getElementById('qnext').disabled=false;}
+renderQ();
+</script>
+</body></html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sách Điện Tử 3D — An Toàn Không Gian Mạng THCS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .ebook-container-card {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(18, 14, 38, 0.95);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 35px rgba(139, 92, 246, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        .ebook-toolbar-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.98), rgba(15, 23, 42, 0.98));
+            border-bottom: 1.5px solid rgba(139, 92, 246, 0.3);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .ebook-frame-wrapper {
+            width: 100%;
+            height: 820px;
+            position: relative;
+            background: #0b0f19;
+        }
+        @media (max-width: 768px) {
+            .ebook-frame-wrapper {
+                height: 580px;
+            }
+        }
+        .ebook-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        .ebook-btn-open {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: all 0.25s ease;
+        }
+        .ebook-btn-open:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+        }
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 35px;
+        }
+        .guide-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 22px;
+            transition: all 0.3s;
+        }
+        .guide-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+            background: rgba(139, 92, 246, 0.06);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<div id="loader">
+    <div class="loader-emoji">📖</div>
+    <div class="loader-title">SÁCH ĐIỆN TỬ 3D</div>
+    <div class="loader-sub" id="loader-text">Đang tải sách...</div>
+    <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><span>🛡️</span> AN TOÀN MẠNG</a>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">🏠 Trang chủ</a></li>
+        <li><a href="cong-dan-so.html">🌐 Công dân số</a></li>
+        <li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li>
+        <li><a href="lua-dao-mang.html">⚠️ Lừa đảo</a></li>
+        <li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li>
+        <li><a href="sach-dien-tu.html" class="active" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:20px;padding:6px 14px;box-shadow:0 3px 12px rgba(139,92,246,.35);font-weight:700;">📖 Sách 3D</a></li>
+        <li><a href="simulation.html" class="nav-sim">🎮 Giả Lập</a></li>
+        <li><a href="games.html" class="nav-sim" style="background:linear-gradient(135deg,#f59e0b,#f97316);box-shadow:0 4px 15px rgba(245,158,11,.35);">🎯 Trò Chơi</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero hero-mini" style="padding-bottom:20px;">
+    <img src="assets/banner.jpg" alt="Cẩm Nang Công Dân Số" class="hero-banner">
+    <div class="hero-overlay" style="background:linear-gradient(180deg,rgba(99,102,241,.32) 0%,rgba(15,10,30,.92) 100%);"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><span class="blink">📖</span> CẨM NANG CÔNG DÂN SỐ — 45 TRANG LẬT 3D CHUẨN HD</div>
+        <h1 class="hero-title" style="font-size:2.8rem;">
+            Cẩm Nang <span class="grad-text">Công Dân Số</span>
+        </h1>
+        <p class="hero-sub" style="font-size:1.05rem;max-width:780px;margin:0 auto 20px;">
+            Khám phá cuốn sách <strong>"Cẩm Nang Công Dân Số"</strong> với công nghệ lật sách 3D sống động như thật: đầy đủ Bìa Trước rực rỡ, 43 trang bài học & hoạt động thực hành, Bìa Sau thông điệp ý nghĩa, âm thanh lật giấy vật lý, chế độ 2 trang mở và phóng to HD.
+        </p>
+        <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+            <a href="ebook-flipbook/index.html" target="_blank" class="ebook-btn-open">
+                <i class="fas fa-up-right-from-square"></i> Mở Toàn Màn Hình Riêng Biệt
+            </a>
+            <button onclick="document.getElementById('reader-anchor').scrollIntoView({behavior:'smooth'})" class="btn-outline" style="border-radius:30px;padding:10px 22px;">
+                <i class="fas fa-book-open-reader"></i> Đọc Ngay Bên Dưới
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN READER CONTAINER -->
+<section class="section" id="reader-anchor" style="padding-top:20px;padding-bottom:50px;">
+    <div class="ebook-container-card">
+        <div class="ebook-toolbar-bar">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-size:1.4rem;">📚</span>
+                <div>
+                    <strong style="color:#fff;font-family:'Orbitron',sans-serif;font-size:1rem;display:block;">CẨM NANG CÔNG DÂN SỐ</strong>
+                    <span style="font-size:0.8rem;color:#94a3b8;">Dành cho Học sinh THCS Việt Nam · Trọn Bộ 45 Trang Màu (Có Bìa Trước &amp; Bìa Sau)</span>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <button onclick="reloadReader()" class="btn-outline" style="padding:6px 14px;font-size:0.82rem;border-radius:20px;" title="Tải lại khung sách">
+                    <i class="fas fa-rotate-right"></i> Tải lại
+                </button>
+                <a href="ebook-flipbook/index.html" target="_blank" class="ebook-btn-open" style="padding:7px 16px;font-size:0.82rem;">
+                    <i class="fas fa-expand"></i> Mở Cửa Sổ Rộng
+                </a>
+            </div>
+        </div>
+
+        <div class="ebook-frame-wrapper">
+            <iframe id="ebook-frame" src="ebook-flipbook/index.html" class="ebook-iframe" allow="fullscreen; autoplay"></iframe>
+        </div>
+    </div>
+
+    <!-- QUICK INSTRUCTIONS & SHORTCUTS -->
+    <div style="max-width:1200px;margin:35px auto 0;">
+        <div class="guide-grid">
+            <div class="guide-card">
+                <div style="font-size:1.8rem;color:#8b5cf6;margin-bottom:10px;"><i class="fas fa-hand-pointer"></i></div>
+                <h4 style="color:#fff;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:1rem;">Cách Lật Trang</h4>
+                <p style="color:#94a3b8;font-size:0.88rem;line-height:1.5;">
+                    • Nhấp vào mép trang trái / phải hoặc nút mũi tên.<br>
+                    • Vuốt ngang trên điện thoại / máy tính bảng.<br>
+                    • Bấm góc cong ở 2 mép sách để lật nhanh.
+                </p>
+            </div>
+
+            <div class="guide-card">
+                <div style="font-size:1.8rem;color:#06b6d4;margin-bottom:10px;"><i class="fas fa-keyboard"></i></div>
+                <h4 style="color:#fff;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:1rem;">Phím Tắt Tiện Lợi</h4>
+                <p style="color:#94a3b8;font-size:0.88rem;line-height:1.5;">
+                    • <strong>← / →</strong>: Trang trước / Trang sau<br>
+                    • <strong>F</strong>: Toàn màn hình (Fullscreen)<br>
+                    • <strong>Z / + / -</strong>: Phóng to / Thu nhỏ chi tiết<br>
+                    • <strong>Home / End</strong>: Về trang bìa / Trang cuối
+                </p>
+            </div>
+
+            <div class="guide-card">
+                <div style="font-size:1.8rem;color:#ec4899;margin-bottom:10px;"><i class="fas fa-volume-high"></i></div>
+                <h4 style="color:#fff;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:1rem;">Âm Thanh &amp; Tự Động</h4>
+                <p style="color:#94a3b8;font-size:0.88rem;line-height:1.5;">
+                    • Âm thanh lật giấy vật lý chân thực bằng Web Audio API.<br>
+                    • Chế độ <strong>Tự động đọc</strong> lật trang sau mỗi 4.5 giây.<br>
+                    • Nút <strong>Tất cả trang</strong> để mở mục lục 45 trang ảnh.
+                </p>
+            </div>
+
+            <div class="guide-card">
+                <div style="font-size:1.8rem;color:#10b981;margin-bottom:10px;"><i class="fas fa-shield-halved"></i></div>
+                <h4 style="color:#fff;margin-bottom:6px;font-family:'Orbitron',sans-serif;font-size:1rem;">Mục Lục Toàn Cuốn</h4>
+                <p style="color:#94a3b8;font-size:0.88rem;line-height:1.5;">
+                    • <strong>Trang 1:</strong> Bìa Sách "Cẩm Nang Công Dân Số"<br>
+                    • <strong>Trang 2 - 11:</strong> Chương 1: Công dân số là ai?<br>
+                    • <strong>Trang 12 - 21:</strong> Chương 2: Nhận biết bạo lực mạng<br>
+                    • <strong>Trang 22 - 31:</strong> Chương 3: Chiêu trò lừa đảo &amp; Mật khẩu<br>
+                    • <strong>Trang 32 - 44:</strong> Chương 4, 5 &amp; 6: Trí tuệ AI, Kỹ năng số &amp; Hoạt động<br>
+                    • <strong>Trang 45:</strong> Bìa Sau: 5 Quy Tắc Vàng An Toàn Mạng
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <h3>🛡️ AN TOÀN MẠNG</h3>
+            <p>Trang web giáo dục miễn phí dành cho học sinh THCS Việt Nam về kỹ năng sống an toàn trong thế giới kỹ thuật số.</p>
+        </div>
+        <div>
+            <h4>Nội dung học</h4>
+            <ul class="footer-links">
+                <li><a href="cong-dan-so.html">🌐 Công dân số</a></li>
+                <li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li>
+                <li><a href="lua-dao-mang.html">⚠️ Lừa đảo mạng</a></li>
+                <li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li>
+                <li><a href="sach-dien-tu.html">📖 Sách Điện Tử 3D</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Thực hành &amp; Khảo sát</h4>
+            <ul class="footer-links">
+                <li><a href="khao-sat.html">📋 Khảo Sát 32 Câu</a></li>
+                <li><a href="simulation.html">🎮 Phòng Giả Lập</a></li>
+                <li><a href="games.html">🎯 Trò Chơi</a></li>
+                <li><a href="ebook-flipbook/index.html" target="_blank">📖 Trình Đọc Sách 3D</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 An Toàn Mạng — Giáo dục miễn phí cho học sinh Việt Nam 🇻🇳</p>
+        <div class="footer-tags">
+            <span class="footer-tag">THCS</span>
+            <span class="footer-tag">Miễn phí</span>
+            <span class="footer-tag">Sách Lật 3D</span>
+        </div>
+    </div>
+</footer>
+
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+
+<script src="js/shared.js"></script>
+<script>
+function reloadReader() {
+    const frame = document.getElementById('ebook-frame');
+    if (frame) {
+        frame.src = 'ebook-flipbook/index.html?r=' + Date.now();
+        showToast('info', 'Đang tải lại sách...', 'Khung đọc đã được làm mới');
+    }
+}
+</script>
+</body>
+</html>

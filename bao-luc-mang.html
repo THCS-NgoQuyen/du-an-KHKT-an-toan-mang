@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bạo Lực Mạng — An Toàn Mạng THCS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div id="loader"><div class="loader-emoji">🚨</div><div class="loader-title">BẠO LỰC MẠNG</div><div class="loader-sub" id="loader-text">Đang tải...</div><div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div></div>
+<div class="toast-container" id="toast-container"></div>
+<nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo"><span>🛡️</span> AN TOÀN MẠNG</a>
+    <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">🏠 Trang chủ</a></li>
+        <li><a href="cong-dan-so.html">🌐 Công dân số</a></li>
+        <li><a href="bao-luc-mang.html" class="active">🚨 Bạo lực mạng</a></li>
+        <li><a href="lua-dao-mang.html">⚠️ Lừa đảo</a></li>
+        <li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li>
+        <li><a href="sach-dien-tu.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(139,92,246,.35);">📖 Sách 3D</a></li>
+        <li><a href="simulation.html" class="nav-sim">🎮 Giả Lập &amp; CTF</a></li>
+        <li><a href="games.html" class="nav-sim" style="background:linear-gradient(135deg,#f59e0b,#f97316);">🎯 Trò Chơi</a></li>
+        <li><a href="khao-sat.html" class="nav-sim" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 4px 15px rgba(99,102,241,.35);">📋 Khảo Sát 32 Câu</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<section class="hero hero-mini hero-mini-pink">
+    <img src="assets/banner.jpg" alt="Bạo lực mạng" class="hero-banner">
+    <div class="hero-overlay" style="background:linear-gradient(180deg,rgba(236,72,153,.3) 0%,rgba(15,10,30,.85) 100%);"></div>
+    <div class="hero-content">
+        <div class="hero-badge"><span class="blink" style="color:#f9a8d4;">🔴</span> Chủ đề 2 / 4</div>
+        <h1 class="hero-title" style="font-size:2.8rem;">🚨 Bạo Lực Mạng<br><span class="grad-warm">Cyberbullying</span></h1>
+        <p class="hero-sub" style="font-size:1rem;">Nhận biết, phòng tránh và ứng phó với bạo lực, bắt nạt trên không gian mạng — xảy ra 24/7 và không có nơi trốn tránh.</p>
+    </div>
+</section>
+<section class="section" style="padding-top:55px;">
+    <div style="max-width:1000px;margin:0 auto;">
+        <div class="page-tabs tabs-pink reveal">
+            <button class="page-tab active" onclick="switchTab('nhanb',this)">📖 Nhận Biết</button>
+            <button class="page-tab" onclick="switchTab('xuly',this)">🆘 Xử Lý</button>
+            <button class="page-tab" onclick="switchTab('hotro',this)">🤝 Hỗ Trợ</button>
+            <button class="page-tab" onclick="switchTab('story',this)">📖 Câu Chuyện</button>
+            <button class="page-tab" onclick="switchTab('quiz',this)">🧠 Quiz</button>
+        </div>
+        <!-- TAB 1: NHẬN BIẾT -->
+        <div class="page-panel active" id="panel-nhanb">
+            <div class="content-layout">
+                <div class="content-visual reveal-left">
+                    <div class="visual-card vc-pink">
+                        <span class="visual-emoji">🚫</span>
+                        <div class="visual-title" style="background:var(--grad-warm);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Cyberbullying</div>
+                        <p class="visual-desc">Mọi hành vi dùng công nghệ để bắt nạt, xúc phạm, đe dọa hoặc cô lập ai đó đều là bạo lực mạng — dù chỉ là "đùa thôi"!</p>
+                        <span class="visual-badge badge-pink">Xảy ra mọi lúc, mọi nơi</span>
+                    </div>
+                </div>
+                <div class="content-text reveal-right">
+                    <h2>Các Dạng <span class="grad-warm">Bạo Lực Mạng</span></h2>
+                    <p>Bạo lực mạng có thể xảy ra ở Facebook, TikTok, Zalo, game online hay nhóm chat lớp học. Không giống bắt nạt học đường, nó diễn ra <strong>24/7</strong> — nạn nhân không có nơi trốn tránh.</p>
+                    <div class="info-cards">
+                        <div class="info-card"><div class="info-card-icon">💬</div><h4>Bình luận ác ý</h4><p>Chửi bới, lăng mạ, chế giễu ngoại hình trong bình luận hoặc tin nhắn riêng.</p></div>
+                        <div class="info-card"><div class="info-card-icon">📸</div><h4>Đăng ảnh/video xấu hổ</h4><p>Chia sẻ hình ảnh riêng tư hoặc chỉnh sửa ảnh để bêu xấu nạn nhân.</p></div>
+                        <div class="info-card"><div class="info-card-icon">🚪</div><h4>Cô lập, tẩy chay</h4><p>Cố ý loại trừ, không cho tham gia nhóm chat lớp, hội nhóm trực tuyến.</p></div>
+                        <div class="info-card"><div class="info-card-icon">👤</div><h4>Giả mạo danh tính</h4><p>Tạo tài khoản giả mạo nạn nhân để đăng nội dung xấu, phá hoại uy tín.</p></div>
+                    </div>
+                    <!-- ẢNH THỰC TẾ -->
+                    <div style="margin:28px 0;">
+                        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--text-primary);">📷 Hình ảnh thực tế về bạo lực mạng</h3>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
+                            <div style="border-radius:14px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.4);">
+                                <img src="assets/real-cyberbully-corridor.jpg" alt="Hacker bắt nạt qua mạng trong hành lang" style="width:100%;height:200px;object-fit:cover;display:block;">
+                                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:12px;font-size:.8rem;color:#fff;">Hacker gửi tin xấu, nạn nhân bị cô lập giữa đám đông cười chê</div>
+                            </div>
+                            <div style="border-radius:14px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.4);">
+                                <img src="assets/real-classroom-bully.jpg" alt="Bắt nạt trong lớp học" style="width:100%;height:200px;object-fit:cover;display:block;">
+                                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:12px;font-size:.8rem;color:#fff;">Bắt nạt trực tiếp thường đi kèm với bắt nạt trực tuyến</div>
+                            </div>
+                            <div style="border-radius:14px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.4);">
+                                <img src="assets/real-victim-support.jpg" alt="Hỗ trợ nạn nhân bị bắt nạt" style="width:100%;height:200px;object-fit:cover;display:block;">
+                                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.8));padding:12px;font-size:.8rem;color:#fff;">Chia sẻ cùng người thân — bước đầu tiên để vượt qua</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warn-box red">
+                        <div class="warn-icon">⚠️</div>
+                        <div class="warn-content"><h4>Dấu hiệu bạn đang bị bạo lực mạng</h4><p>Lo lắng sau khi dùng điện thoại · Không muốn đến trường · Cáu gắt, buồn bã không rõ lý do · Tránh nói về hoạt động trực tuyến · Đóng máy tính/điện thoại khi có người lại gần.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TAB 2: XỬ LÝ -->
+        <div class="page-panel" id="panel-xuly">
+            <div class="section-header" style="margin-bottom:35px;"><h2 class="section-title">Khi Bị Bạo Lực Mạng — <span class="grad-warm">Làm Ngay!</span></h2></div>
+            <div class="steps-grid">
+                <div class="step-card reveal"><span class="step-emoji">🛑</span><div class="step-num sn-pink">1</div><h3>Dừng Phản Hồi</h3><p>Đừng trả lời kẻ bắt nạt — phản ứng của bạn khiến chúng thích thú hơn và tiếp tục. Im lặng là vũ khí mạnh nhất.</p></div>
+                <div class="step-card reveal"><span class="step-emoji">📷</span><div class="step-num sn-yellow">2</div><h3>Lưu Bằng Chứng</h3><p>Chụp màn hình tất cả tin nhắn, bình luận xúc phạm. Đây là bằng chứng quan trọng khi báo cáo với nhà trường hoặc cảnh sát.</p></div>
+                <div class="step-card reveal"><span class="step-emoji">🚫</span><div class="step-num sn-purple">3</div><h3>Chặn &amp; Báo Cáo</h3><p>Dùng nút "Block/Chặn" và "Report/Báo cáo" trên mọi nền tảng. Nền tảng có trách nhiệm xử lý nội dung vi phạm.</p></div>
+                <div class="step-card reveal"><span class="step-emoji">🗣️</span><div class="step-num sn-green">4</div><h3>Nói Với Người Lớn</h3><p>Chia sẻ với bố mẹ, thầy/cô hoặc người bạn tin tưởng. Bạn KHÔNG cần đối mặt một mình với tình huống này!</p></div>
+                <div class="step-card reveal"><span class="step-emoji">❤️</span><div class="step-num sn-teal">5</div><h3>Chăm Sóc Bản Thân</h3><p>Dành thời gian cho hoạt động offline: thể thao, âm nhạc, gia đình. Tìm kiếm hỗ trợ tâm lý nếu cần thiết.</p></div>
+                <div class="step-card reveal"><span class="step-emoji">🤲</span><div class="step-num sn-pink">6</div><h3>Giúp Đỡ Người Khác</h3><p>Nếu thấy bạn bị bắt nạt, hãy lên tiếng, hỗ trợ họ, báo với thầy/cô. Đừng làm người đứng nhìn!</p></div>
+            </div>
+        </div>
+        <!-- TAB 3: HỖ TRỢ -->
+        <div class="page-panel" id="panel-hotro">
+            <div class="section-header" style="margin-bottom:35px;"><h2 class="section-title">Tìm Kiếm <span class="grad-warm">Sự Hỗ Trợ</span></h2></div>
+            <div class="steps-grid" style="grid-template-columns:repeat(2,1fr);">
+                <div class="step-card reveal" style="border-color:rgba(236,72,153,.3);"><span class="step-emoji">📞</span><div class="step-num sn-pink">111</div><h3>Đường Dây Bảo Vệ Trẻ Em</h3><p>Gọi miễn phí, 24/7. Được hỗ trợ tư vấn tâm lý và can thiệp khi cần thiết. Bảo mật thông tin hoàn toàn.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(124,58,237,.3);"><span class="step-emoji">🏫</span><div class="step-num sn-purple">TRƯỜNG</div><h3>Giáo Viên Chủ Nhiệm</h3><p>Thầy/cô có trách nhiệm bảo vệ học sinh. Báo cáo với GVCN để nhà trường can thiệp kịp thời.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(16,185,129,.3);"><span class="step-emoji">👨👩👧</span><div class="step-num sn-green">GIA ĐÌNH</div><h3>Bố Mẹ &amp; Gia Đình</h3><p>Bố mẹ là chỗ dựa vững chắc nhất. Chia sẻ với họ — đây không phải lỗi của bạn và họ muốn giúp bạn.</p></div>
+                <div class="step-card reveal" style="border-color:rgba(6,182,212,.3);"><span class="step-emoji">🌐</span><div class="step-num sn-teal">ONLINE</div><h3>Báo Cáo Online</h3><p>Tất cả nền tảng lớn có nút báo cáo vi phạm. Facebook, TikTok, YouTube đều xem xét và xử lý trong 24-48h.</p></div>
+            </div>
+            <div class="warn-box green reveal" style="max-width:800px;margin:30px auto 0;">
+                <div class="warn-icon">💪</div>
+                <div class="warn-content"><h4>Nhớ rằng: Đây KHÔNG phải lỗi của bạn!</h4><p>Bạo lực mạng xảy ra vì kẻ bắt nạt có vấn đề, KHÔNG phải vì bạn làm gì sai. Bạn xứng đáng được tôn trọng và an toàn — cả trên mạng lẫn ngoài đời. Hãy lên tiếng và tìm sự giúp đỡ!</p></div>
+            </div>
+        </div>
+        <!-- TAB STORY: CÂU CHUYỆN -->
+        <div class="page-panel" id="panel-story">
+            <div class="story-episode">
+                <h2 class="story-title">📖 Thư Viện Truyện — Bạo Lực Mạng</h2>
+                <p class="story-subtitle">3 câu chuyện với số nhân vật khác nhau — Linh · Nam · ROBO · Hacker Mũ Đen</p>
+                <div class="story-nav">
+                    <button class="story-nav-btn active" onclick="showStory(0,this)"><span class="story-num">Câu chuyện 1 · 3 nhân vật</span>📖 Khi Ngọn Đèn Tắt<span class="char-count-badge">Linh + Nam + Hacker Mũ Đen</span></button>
+                    <button class="story-nav-btn" onclick="showStory(1,this)"><span class="story-num">Câu chuyện 2 · 2 nhân vật</span>🦅 Đôi Cánh Giữa Bóng Tối<span class="char-count-badge">Nam cánh + Hacker Mũ Đen</span></button>
+                    <button class="story-nav-btn" onclick="showStory(2,this)"><span class="story-num">Câu chuyện 3 · 1 nhân vật</span>🤖 ROBO Điều Tra<span class="char-count-badge">Chỉ mình ROBO</span></button>
+                </div>
+                <div class="story-item active" id="blm-0">
+                <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(236,72,153,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);">
+                    <img src="assets/story-2-comic.jpg" alt="Truyện tranh: Khi Ngọn Đèn Tắt" style="width:100%;display:block;">
+                </div>
+                <div class="story-chars-intro">
+                    <div class="story-char-card"><img src="assets/char-lan.jpg" alt="Linh"><div class="char-name">🛡️ LINH</div><div class="char-role">Người bạn dũng cảm lên tiếng</div></div>
+                    <div class="story-char-card"><img src="assets/char-minh.jpg" alt="Nam"><div class="char-name">🔍 NAM</div><div class="char-role">Người hành động thực tế</div></div>
+                    <div class="story-char-card" style="border-color:rgba(239,68,68,.3);"><img src="assets/char-shadow.jpg" alt="Hacker"><div class="char-name" style="color:#fca5a5;">⚠️ HACKER MŨ ĐEN</div><div class="char-role">Kẻ kích động từ bóng tối</div></div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 1 — Bóng tối trong nhóm chat lớp 8A</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-shadow.jpg" class="story-char-img" alt="Hacker"><div class="story-char-name" style="color:#fca5a5;">HACKER MŨ ĐEN</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble narrator">Trong nhóm chat lớp 8A, ai đó — nghi là do Hacker Mũ Đen kích động từ xa — bắt đầu đăng ảnh chế giễu bạn An về ngoại hình và học lực...</div>
+                            <div class="story-bubble villain"><strong>Nhóm chat lớp 8A:</strong> "Haha trông buồn cười thật 😂" / "Đừng cho nó vào nhóm nữa" / "Học dốt mà còn hay nói!" 😈</div>
+                            <div class="story-bubble narrator">Mỗi ngày, An nhận hàng chục tin nhắn chế nhạo. Cô bé bắt đầu không muốn đến trường, không dám cầm điện thoại, không còn cười nữa...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 2 — Linh nhận ra dấu hiệu bất thường</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble narrator">Linh để ý thấy An ngày càng trầm lặng, hay cúi đầu, không cười đùa như trước. Sau giờ học, Linh nhắn tin riêng cho An...</div>
+                            <div class="story-bubble"><strong>Linh:</strong> "An ơi, bạn có sao không? Mình thấy nhóm chat đang xảy ra điều không hay. Mình xin lỗi vì không lên tiếng sớm hơn... 😔"</div>
+                            <div class="story-bubble"><strong>An (rơi nước mắt):</strong> "Mình... mình không biết mình làm gì sai nữa. Mình chỉ muốn mọi người thích mình thôi. Mỗi sáng thức dậy mình đều sợ phải xem điện thoại..." 😢</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 3 — Nam hành động ngay lập tức</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-minh.jpg" class="story-char-img" alt="Nam"><div class="story-char-name">NAM</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble"><strong>Nam:</strong> "Nghe Linh kể rồi. Đầu tiên — <strong style='color:#fde68a;'>ĐỪNG</strong> trả lời bọn đó, phản ứng của An khiến chúng thích thú và tiếp tục. Mình giúp An chụp màn hình tất cả tin nhắn xúc phạm làm bằng chứng! 📸"</div>
+                            <div class="story-bubble"><strong>Nam:</strong> "Tiếp theo — chặn và báo cáo từng người gửi tin nhắn xấu. Và quan trọng nhất: <strong>ngày mai mình cùng An nói với cô giáo chủ nhiệm!</strong>"</div>
+                            <div class="story-bubble"><strong>An:</strong> "Nhưng mình sợ bị trả thù..." <strong>Nam:</strong> "Có bằng chứng rồi, cô giáo sẽ xử lý công bằng. Bạn không phải đối mặt một mình đâu! Có mình và Linh bên cạnh!"</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-scene">
+                    <div class="story-scene-header">// Cảnh 4 — Ánh sáng trở lại với An</div>
+                    <div class="story-scene-body">
+                        <div class="story-char-col"><img src="assets/char-lan.jpg" class="story-char-img" alt="Linh"><div class="story-char-name">LINH</div></div>
+                        <div class="story-content">
+                            <div class="story-bubble narrator">Cô giáo xử lý nghiêm khắc. Những học sinh tham gia bắt nạt phải xin lỗi trước lớp. Hacker Mũ Đen mất đi những "con rối" trong lớp học...</div>
+                            <div class="story-bubble"><strong>Linh:</strong> "An ơi, điều này <strong style='color:#6ee7b7;'>KHÔNG PHẢI</strong> lỗi của bạn nhé! Kẻ bắt nạt mới có vấn đề, không phải người bị bắt nạt. Bạn xứng đáng được tôn trọng! ❤️"</div>
+                            <div class="story-bubble narrator">Dần dần, nụ cười của An trở lại. Cả lớp 8A học được bài học: <em>Im lặng khi thấy bắt nạt — cũng là một hình thức đồng lõa.</em> ✨</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="story-lesson-box">
+                    <div class="story-lesson-title">💡 Bài học từ câu chuyện "Khi Ngọn Đèn Tắt"</div>
+                    <ul class="story-lesson-list">
+                        <li>Bạo lực mạng gây tổn thương tinh thần nghiêm trọng dù "chỉ là lời nói trên mạng"</li>
+                        <li>Khi thấy bạn bị bắt nạt — hãy lên tiếng và hỗ trợ, đừng im lặng đứng nhìn</li>
+                        <li>Lưu bằng chứng bằng cách chụp màn hình trước khi báo cáo hoặc xóa</li>
+                        <li>Chặn và báo cáo kẻ bắt nạt trên nền tảng (Facebook, TikTok, Zalo...)</li>
+                        <li>Nói với thầy/cô, bố mẹ hoặc gọi số 111 — bạn KHÔNG phải đối mặt một mình!</li>
+                        <li>Đây KHÔNG PHẢI lỗi của nạn nhân — kẻ bắt nạt mới là người có vấn đề!</li>
+                    </ul>
+                </div>
+                </div>
+                <!-- STORY 2: 2 nhan vat - Nam wings + Hacker -->
+                <div class="story-item" id="blm-1">
+                    <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(236,72,153,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/blm-story2.jpg" alt="Đôi Cánh Giữa Bóng Tối" style="width:100%;display:block;"></div>
+                    <div class="story-chars-intro">
+                        <div class="story-char-card"><img src="assets/char-nam-wings.jpg" alt="Nam cánh"><div class="char-name">🦅 NAM (ĐÔI CÁNH)</div><div class="char-role">Hình thức mạnh nhất của Nam</div></div>
+                        <div class="story-char-card" style="border-color:rgba(239,68,68,.3);"><img src="assets/char-shadow.jpg" alt="Hacker"><div class="char-name" style="color:#fca5a5;">⚠️ HACKER MŨ ĐEN</div><div class="char-role">Kẻ tạo tài khoản giả</div></div>
+                    </div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 1 — Tài khoản giả lan tin đồn</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-shadow.jpg" class="story-char-img" alt="Hacker"><div class="story-char-name" style="color:#fca5a5;">HACKER MŨ ĐEN</div></div><div class="story-content"><div class="story-bubble narrator">Hacker Mũ Đen tạo ra một tài khoản giả mạo dưới tên một học sinh trong trường, rồi bắt đầu phát tán những tin đồn bịa đặt...</div><div class="story-bubble villain"><strong>Hacker Mũ Đen:</strong> "Tài khoản giả hoàn hảo! Không ai biết đây là tôi. Tin đồn này sẽ lan khắp trường trong vài giờ! 😈"</div><div class="story-bubble narrator">Nhưng Hacker Mũ Đen không biết: mọi hành động trên mạng đều để lại dấu vết kỹ thuật số. Và Nam đang theo dõi...</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 2 — Nam dạng cánh — Tìm ra tài khoản giả!</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-nam-wings.jpg" class="story-char-img" alt="Nam cánh"><div class="story-char-name">NAM (ĐÔI CÁNH)</div></div><div class="story-content"><div class="story-bubble narrator">Đôi cánh cơ khí của Nam bỗng phát sáng mạnh — dấu hiệu anh đã phát hiện điều gì đó!</div><div class="story-bubble"><strong>Nam (dạng cánh bước ra):</strong> "Tìm ra rồi! Tài khoản giả mạo này xuất phát từ địa chỉ IP xác định được — tôi đã thu thập đủ bằng chứng!"</div><div class="story-bubble"><strong>Nam:</strong> "Báo cáo nền tảng... Gửi hồ sơ cho nhà trường... Tài khoản giả chỉ có thể ẩn người dùng, không thể ẩn dấu vết kỹ thuật số!"</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 3 — Hacker Mũ Đen thất bại</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-nam-wings.jpg" class="story-char-img" alt="Nam cánh"><div class="story-char-name">NAM (ĐÔI CÁNH)</div></div><div class="story-content"><div class="story-bubble villain"><strong>Hacker Mũ Đen (hoảng loạn):</strong> "Tài khoản của tao bị khóa rồi! Và ai đó biết IP của tao?!"</div><div class="story-bubble narrator">Tài khoản giả bị xóa. Tin đồn bị gỡ bỏ. Hacker Mũ Đen bỏ trốn, được dạy bài học đắc giá: <em style='color:#fde68a;'>"Không có gì thực sự vô danh trên mạng!"</em></div><div class="story-bubble"><strong>Nam:</strong> "Bất kỳ ai bắt nạt trên mạng — dù ẩn sau tài khoản giả — vẫn để lại dấu vết. Hằng số của internet: không có gì biến mất hoàn toàn! 🛡️"</div></div></div></div>
+                    <div class="story-lesson-box"><div class="story-lesson-title">💡 Bài học: Tài khoản giả không phải là vô hình!</div><ul class="story-lesson-list"><li>Tài khoản giả vẫn có thể bị truy tìm qua địa chỉ IP và dữ liệu kỹ thuật số</li><li>Screenshot bằng chứng trước khi báo cáo — nền tảng có thể xóa nội dung sau đó</li><li>Báo cáo tài khoản giả trên nền tảng và trình báo nhà trường nếu cần</li><li>Không ai thực sự vô danh hoàn toàn trên mạng</li></ul></div>
+                </div>
+                <!-- STORY 3: 1 nhan vat - ROBO -->
+                <div class="story-item" id="blm-2">
+                    <div style="margin:0 0 28px;border-radius:16px;overflow:hidden;border:2px solid rgba(236,72,153,.3);box-shadow:0 8px 32px rgba(0,0,0,.4);"><img src="assets/blm-story3.jpg" alt="ROBO Điều Tra" style="width:100%;display:block;"></div>
+                    <div class="story-chars-intro" style="justify-content:center;"><div class="story-char-card" style="max-width:220px;"><img src="assets/char-robo.webp" alt="ROBO"><div class="char-name">🤖 ROBO</div><div class="char-role">Câu chuyện độc lập — chỉ một mình ROBO</div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 1 — ROBO phát hiện 47 tin nhắn xúc phạm</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble narrator">ROBO đang tuần tra mạng lưới thông tin học đường thì phát hiện dữ liệu bất thường trong nhóm chat lớp...</div><div class="story-bubble"><strong>ROBO (đèn báo đỏ nhấp nháy):</strong> "Phát hiện 47 tin nhắn xuất hiện trong 2 giờ! Tất cả đều nhắm vào cùng một người. Đây là bạo lực mạng!"</div><div class="story-bubble narrator">ROBO phân tích nội dung: chế giễu ngoại hình, đe dọa loại trừ khỏi nhóm, lưu phát những câu nói sai...</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 2 — ROBO lưu bằng chứng bài bản</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble"><strong>ROBO:</strong> "Trước khi báo cáo, phải lưu bằng chứng đầy đủ. Chụp màn hình. Lưu tên người gửi. Lưu ngày giờ. Tất cả!"</div><div class="story-bubble narrator">ROBO tầm tẩp lưu bằng chứng một cách cẩn thận, sau đó tạo hồ sơ điều tra chi tiết...</div><div class="story-bubble"><strong>ROBO:</strong> "Báo cáo hoàn tất. Gửi đến giáo viên chủ nhiệm, ban giám hiệu và phòng bảo vệ học sinh. XONG! 📎"</div></div></div></div>
+                    <div class="story-scene"><div class="story-scene-header">// Cảnh 3 — ROBO tuyên bố chân lý</div><div class="story-scene-body"><div class="story-char-col"><img src="assets/char-robo.webp" class="story-char-img" alt="ROBO"><div class="story-char-name">ROBO</div></div><div class="story-content"><div class="story-bubble narrator">Nhà trường xử lý nhanh chóng nhờ bằng chứng đầy đủ. Kẻ bắt nạt phải đối mặt với hậu quả. Nạn nhân được bảo vệ. ROBO đứng trước cổng trường, hãnh diện...</div><div class="story-bubble"><strong>ROBO:</strong> "Bọn xoấy bắt nạt nghĩ rằng trên mạng thì không ai biết. Nhưng mọi tin nhắn xấu đều để lại dấu vết kỹ thuật số. ROBO sẽ tìm ra! 🕵️"</div><div class="story-bubble narrator">Bài học hôm đó: Im lặng không phải giải pháp. Bằng chứng và sự hỗ trợ mới là câu trả lời! ✨</div></div></div></div>
+                    <div class="story-lesson-box"><div class="story-lesson-title">💡 Bài học: 3 bước xử lý bạo lực mạng!</div><ul class="story-lesson-list"><li>Bước 1: Đừng trả lời — phản ứng của bạn chỉ khiến kẻ bắt nạt thích hơn</li><li>Bước 2: Lưu bằng chứng — chụp màn hình, ghi ngày giờ, tên người gửi</li><li>Bước 3: Báo cáo — nói với thầy/cô, bố mẹ và báo cáo trên nền tảng</li><li>Không ai thực sự vô danh trên mạng — mọi hành vi đều có thể bị truy tìm</li></ul></div>
+                </div>
+            </div>
+        </div>
+        <!-- TAB 4: QUIZ -->
+        <div class="page-panel" id="panel-quiz">
+            <div class="quiz-wrapper"><div class="quiz-card" id="quiz-box"></div></div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-brand"><h3>🛡️ AN TOÀN MẠNG</h3><p>Trang web giáo dục miễn phí cho học sinh THCS Việt Nam về kỹ năng số.</p></div>
+        <div><h4>Nội dung học</h4><ul class="footer-links"><li><a href="cong-dan-so.html">🌐 Công dân số</a></li><li><a href="bao-luc-mang.html">🚨 Bạo lực mạng</a></li><li><a href="lua-dao-mang.html">⚠️ Lừa đảo mạng</a></li><li><a href="ai-an-toan.html">🤖 AI &amp; An toàn</a></li></ul></div>
+        <div><h4>Thực hành</h4><ul class="footer-links"><li><a href="simulation.html">🎮 Phòng Giả Lập</a></li><li><a href="games.html">🎯 Trò Chơi</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 An Toàn Mạng 🇻🇳</p><div class="footer-tags"><span class="footer-tag">THCS</span><span class="footer-tag">Miễn phí</span></div></div>
+</footer>
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+<script src="js/shared.js"></script>
+<script>
+function showStory(idx,btn){document.querySelectorAll('.story-item').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.story-nav-btn').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.story-item')[idx].classList.add('active');btn.classList.add('active');}
+function switchTab(id,btn){document.querySelectorAll('.page-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('panel-'+id).classList.add('active');}
+const QD=[{q:'Bạo lực mạng (Cyberbullying) là gì?',opts:['Tấn công máy tính bằng virus','Mọi hành vi dùng công nghệ để bắt nạt, xúc phạm hoặc đe dọa người khác','Trò chơi điện tử có nội dung bạo lực','Spam email hàng loạt'],c:1,e:'Cyberbullying là bất kỳ hành vi nào dùng thiết bị/mạng để làm tổn thương người khác — dù là bình luận ác ý, đăng ảnh xấu hổ hay cô lập.'},
+{q:'Điểm khác biệt nguy hiểm nhất của bạo lực mạng so với bắt nạt học đường là gì?',opts:['Ít đau hơn vì chỉ là lời nói','Xảy ra 24/7, nạn nhân không có nơi trốn tránh','Dễ quên hơn','Ít người biết hơn'],c:1,e:'Bạo lực mạng theo dõi nạn nhân mọi lúc, mọi nơi — ngay cả khi về đến nhà, nạn nhân vẫn bị tấn công.'},
+{q:'Khi bị bạo lực mạng, BƯỚC ĐẦU TIÊN bạn nên làm là gì?',opts:['Chửi lại để tự bảo vệ','Lưu bằng chứng bằng cách chụp màn hình','Xóa tài khoản mạng xã hội của mình','Kể với tất cả bạn bè'],c:1,e:'Lưu bằng chứng trước tiên! Sau đó chặn kẻ bắt nạt và báo cáo với người lớn tin tưởng.'},
+{q:'Nếu thấy bạn cùng lớp đang bị bắt nạt trong nhóm chat, bạn nên?',opts:['Im lặng vì không phải việc của mình','Cùng tham gia cho vui','Lên tiếng bảo vệ, báo cáo tin nhắn và nói với thầy/cô','Rời khỏi nhóm chat'],c:2,e:'Đứng ra bảo vệ người bị bắt nạt rất quan trọng! Sự can thiệp của bạn bè đồng trang lứa có thể ngăn chặn bạo lực mạng hiệu quả.'},
+{q:'Đường dây hỗ trợ trẻ em miễn phí 24/7 ở Việt Nam là số mấy?',opts:['112','113','111','119'],c:2,e:'Số 111 là đường dây bảo vệ trẻ em, miễn phí, hoạt động 24/7. Hãy ghi nhớ số này!'}];
+let qi=0,qs=0,qa=false;
+function renderQ(){const b=document.getElementById('quiz-box');if(!b)return;if(qi>=QD.length){const p=Math.round(qs/QD.length*100);b.innerHTML=`<div class="quiz-result"><div class="quiz-result-emoji">${p>=80?'🏆':p>=60?'⭐':'📚'}</div><div class="quiz-result-score">${qs}/${QD.length}</div><h3>${p}% Chính xác</h3><p>${p>=80?'Xuất sắc! Bạn hiểu rõ về Bạo lực mạng!':p>=60?'Khá tốt! Hãy ôn lại một số phần nhé.':'Hãy đọc lại bài học và thử lại!'}</p><button class="quiz-next-btn" onclick="qi=0;qs=0;qa=false;renderQ();">🔄 Làm lại</button></div>`;return;}
+const q=QD[qi];qa=false;
+b.innerHTML=`<div class="quiz-progress-row">${QD.map((_,i)=>`<div class="qp-dot ${i<qi?'done':''} ${i===qi?'active':''}"></div>`).join('')}</div><div class="quiz-meta"><span class="quiz-cat">🚨 Bạo lực mạng</span><span class="quiz-score-disp">⭐ ${qs}/${QD.length}</span></div><div class="quiz-q-text">Câu ${qi+1}: ${q.q}</div><div class="quiz-options">${q.opts.map((o,i)=>`<div class="quiz-opt" onclick="pickA(${i})" id="qo${i}"><div class="quiz-opt-letter">${String.fromCharCode(65+i)}</div><span>${o}</span></div>`).join('')}</div><div id="quiz-exp" style="display:none;" class="quiz-explain"></div><div class="quiz-footer"><span style="color:var(--muted);font-size:.85rem;">Câu ${qi+1}/${QD.length}</span><button class="quiz-next-btn" id="qnext" disabled onclick="qi++;renderQ();">${qi<QD.length-1?'Câu tiếp →':'Xem kết quả 🏆'}</button></div>`;}
+function pickA(i){if(qa)return;qa=true;const c=QD[qi].c;document.getElementById('qo'+i).classList.add(i===c?'correct':'wrong');if(i!==c)document.getElementById('qo'+c).classList.add('correct');if(i===c)qs++;const e=document.getElementById('quiz-exp');e.style.display='block';e.innerHTML=`<strong>${i===c?'✅ Chính xác!':'❌ Chưa đúng.'}</strong> ${QD[qi].e}`;document.getElementById('qnext').disabled=false;}
+renderQ();
+</script>
+</body></html>
