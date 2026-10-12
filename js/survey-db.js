@@ -22,11 +22,100 @@ const SurveyDB = (function() {
         return 'http://localhost:3000';
     }
 
+    function extractScore(val) {
+        if (val === null || val === undefined || val === '') return null;
+        if (typeof val === 'number') {
+            return (val >= 1 && val <= 5) ? val : null;
+        }
+        const str = String(val).trim();
+        const m = str.match(/^(\d+)/);
+        if (m) {
+            const num = parseInt(m[1], 10);
+            return (num >= 1 && num <= 5) ? num : null;
+        }
+        return null;
+    }
+
+    function normalizeSubmission(s) {
+        if (!s) return null;
+        let rawAns = s.answers || {};
+        if (typeof rawAns === 'string') {
+            try { rawAns = JSON.parse(rawAns); } catch(e) { rawAns = {}; }
+        }
+
+        let gender = rawAns.gender;
+        if (!gender && rawAns[1]) {
+            const m = String(rawAns[1]).match(/Giới tính:\s*(.+)/i);
+            gender = m ? m[1].trim() : String(rawAns[1]).trim();
+        }
+
+        let grade = rawAns.grade;
+        if (!grade && rawAns[2]) {
+            const m = String(rawAns[2]).match(/Khối lớp:\s*(.+)/i);
+            grade = m ? m[1].trim() : String(rawAns[2]).trim();
+        }
+
+        let timeOnline = rawAns.timeOnline;
+        if (!timeOnline && rawAns[3]) {
+            const m = String(rawAns[3]).match(/Thời gian online:\s*(.+)/i);
+            timeOnline = m ? m[1].trim() : String(rawAns[3]).trim();
+        }
+
+        let purpose = rawAns.purpose;
+        if (!purpose && rawAns[4]) {
+            const m = String(rawAns[4]).match(/Mục đích:\s*(.+)/i);
+            purpose = m ? m[1].trim() : String(rawAns[4]).trim();
+        }
+
+        let open1 = rawAns.open1;
+        if (!open1 && rawAns[29]) {
+            const m = String(rawAns[29]).match(/Nguy cơ lớn nhất:\s*(.+)/i);
+            open1 = m ? m[1].trim() : String(rawAns[29]).trim();
+        }
+        let open2 = rawAns.open2;
+        if (!open2 && rawAns[30]) {
+            const m = String(rawAns[30]).match(/Mong muốn hỗ trợ:\s*(.+)/i);
+            open2 = m ? m[1].trim() : String(rawAns[30]).trim();
+        }
+
+        const phase = rawAns.phase || (rawAns['Dot'] ? String(rawAns['Dot']).replace(/\D/g, '') : 1);
+
+        const normAns = {
+            ...rawAns,
+            gender: gender || '—',
+            grade: grade || '—',
+            timeOnline: timeOnline || '—',
+            purpose: purpose || '—',
+            open1: open1 || '',
+            open2: open2 || '',
+            phase: phase || 1
+        };
+
+        for (let q = 5; q <= 32; q++) {
+            const val = extractScore(rawAns[q] !== undefined ? rawAns[q] : rawAns[String(q)]);
+            if (val !== null) {
+                normAns[q] = val;
+                normAns[String(q)] = val;
+            }
+        }
+
+        return {
+            id: s.id || (s.serverDbId ? `#${s.serverDbId}` : '—'),
+            studentName: (s.studentName || s.student_name || 'Học sinh').trim(),
+            studentClass: (s.studentClass || s.student_class || 'THCS').trim().toUpperCase(),
+            submittedAt: s.submittedAt || s.submitted_at || new Date().toLocaleString('vi-VN'),
+            totalAnswered: s.totalAnswered || s.total_answered || Object.keys(normAns).length,
+            riskScore: s.riskScore || s.risk_score || 0,
+            answers: normAns
+        };
+    }
+
     // Helper: get local submissions from localStorage
     function getLocalSubmissions() {
         try {
             const data = localStorage.getItem(LOCAL_DB_KEY);
-            return data ? JSON.parse(data) : [];
+            const list = data ? JSON.parse(data) : [];
+            return list.map(normalizeSubmission).filter(Boolean);
         } catch(e) {
             return [];
         }
@@ -35,7 +124,8 @@ const SurveyDB = (function() {
     // Helper: save local submissions to localStorage
     function saveLocalSubmissions(submissions) {
         try {
-            localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(submissions || []));
+            const normalized = (submissions || []).map(normalizeSubmission).filter(Boolean);
+            localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(normalized));
         } catch(e) {
             console.error('Error saving to localStorage:', e);
         }
@@ -125,37 +215,69 @@ const SurveyDB = (function() {
     }
 
     /**
-     * Get all submissions from Google Sheets OR Server OR LocalStorage
+     * Get all submissions from Google Sheets, Server SQLite, or LocalStorage
      */
     async function getAll() {
-        // Try Google Sheets first
+        const mergedMap = new Map();
+
+        // 1. Seed with local storage
+        getLocalSubmissions().forEach(item => {
+            const key = `${item.studentName}|${item.studentClass}|${item.submittedAt}`;
+            mergedMap.set(key, item);
+        });
+
+        // 2. Try Node.js SQLite server
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3500);
+            const response = await fetch(`${getApiBase()}/api/survey/submissions`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (response.ok) {
+                const data = await response.json();
+                if (Array.isArray(data.submissions)) {
+                    data.submissions.forEach(raw => {
+                        const norm = normalizeSubmission(raw);
+                        if (norm) {
+                            const key = `${norm.studentName}|${norm.studentClass}|${norm.submittedAt}`;
+                            mergedMap.set(key, norm);
+                        }
+                    });
+                }
+            }
+        } catch(e) {}
+
+        // 3. Try Google Sheets Cloud API
         const googleScriptUrl = getGoogleScriptUrl();
         if (googleScriptUrl) {
             try {
-                const gRes = await fetch(googleScriptUrl);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000);
+                const gRes = await fetch(googleScriptUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
                 if (gRes.ok) {
                     const gData = await gRes.json();
                     if (Array.isArray(gData.submissions)) {
-                        saveLocalSubmissions(gData.submissions);
-                        return gData.submissions;
+                        gData.submissions.forEach(raw => {
+                            const norm = normalizeSubmission(raw);
+                            if (norm) {
+                                const key = `${norm.studentName}|${norm.studentClass}|${norm.submittedAt}`;
+                                mergedMap.set(key, norm);
+                            }
+                        });
                     }
                 }
             } catch(e) {}
         }
 
-        // Try Node.js SQLite server
-        try {
-            const response = await fetch(`${getApiBase()}/api/survey/submissions`);
-            if (response.ok) {
-                const data = await response.json();
-                if (Array.isArray(data.submissions)) {
-                    saveLocalSubmissions(data.submissions);
-                    return data.submissions;
-                }
-            }
-        } catch(e) {}
+        const combinedList = Array.from(mergedMap.values()).sort((a, b) => {
+            return (b.id || 0) - (a.id || 0);
+        });
 
-        return getLocalSubmissions();
+        if (combinedList.length > 0) {
+            saveLocalSubmissions(combinedList);
+        }
+
+        return combinedList;
     }
 
     /**
