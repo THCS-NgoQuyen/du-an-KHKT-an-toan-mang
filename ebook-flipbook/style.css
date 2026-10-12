@@ -307,6 +307,13 @@ body {
   height: 100%;
   object-fit: fill;
   display: block;
+  transition: opacity 0.2s ease;
+  background: #fdfcf7;
+}
+
+.base-image:not([src]), .base-image[src=""] {
+  opacity: 0 !important;
+  visibility: hidden;
 }
 
 /* Subtle gutter shadow on inner binding edge */

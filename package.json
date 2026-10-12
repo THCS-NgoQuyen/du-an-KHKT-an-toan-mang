@@ -1,0 +1,19 @@
+{
+  "name": "cybersecurity-web",
+  "version": "1.0.0",
+  "description": "Website An Toàn Mạng Cho Học Sinh THCS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "cybersecurity",
+    "education",
+    "vietnam"
+  ],
+  "author": "",
+  "license": "ISC"
+}

@@ -130,14 +130,74 @@
     }
   }
 
-  // Preload images into memory
-  const preloadedImages = new Map();
-  function preloadAllImages() {
-    for (let i = 1; i <= TOTAL_PAGES; i++) {
-      const img = new Image();
-      img.src = `${IMAGES_DIR}${i}.png`;
-      preloadedImages.set(i, img);
+  // Flipping animation watchdog to prevent lockups
+  let flipWatchdogTimer = null;
+  function setFlipping(val) {
+    isFlipping = val;
+    clearTimeout(flipWatchdogTimer);
+    if (val) {
+      flipWatchdogTimer = setTimeout(() => {
+        console.warn('Animation watchdog triggered: auto-recovering flipbook state');
+        try {
+          sheetsContainer.innerHTML = '';
+        } catch(e) {}
+        isFlipping = false;
+        renderStatic();
+      }, 850);
     }
+  }
+
+  // Safe Image Loader with Automatic Retry
+  function setPageImage(imgEl, pageNum) {
+    if (!imgEl || !pageNum) return;
+    const targetSrc = `${IMAGES_DIR}${pageNum}.png`;
+    const curLoaded = imgEl.getAttribute('data-loaded-page');
+    if (curLoaded === String(pageNum) && imgEl.complete && imgEl.naturalWidth > 0) {
+      imgEl.style.opacity = '1';
+      return;
+    }
+    imgEl.setAttribute('data-loaded-page', String(pageNum));
+    imgEl.onerror = function() {
+      console.warn(`Retry loading page ${pageNum}...`);
+      setTimeout(() => {
+        if (imgEl.getAttribute('data-loaded-page') === String(pageNum)) {
+          imgEl.src = `${targetSrc}?retry=${Date.now()}`;
+        }
+      }, 600);
+    };
+    imgEl.onload = function() {
+      imgEl.style.opacity = '1';
+    };
+    imgEl.src = targetSrc;
+  }
+
+  // Preload images into memory smartly (Prioritize current & adjacent pages)
+  const preloadedImages = new Map();
+  function preloadPage(pageNum) {
+    if (pageNum < 1 || pageNum > TOTAL_PAGES || preloadedImages.has(pageNum)) return;
+    const img = new Image();
+    img.src = `${IMAGES_DIR}${pageNum}.png`;
+    preloadedImages.set(pageNum, img);
+  }
+
+  function preloadAdjacentImages(center) {
+    const targets = [
+      center,
+      center - 1, center + 1,
+      center - 2, center + 2,
+      1, 2, TOTAL_PAGES
+    ];
+    targets.forEach(p => preloadPage(p));
+  }
+
+  // Progressive background idle preloader so network is never saturated
+  let idleQueue = [];
+  for (let i = 1; i <= TOTAL_PAGES; i++) idleQueue.push(i);
+  function scheduleProgressivePreload() {
+    if (idleQueue.length === 0) return;
+    const nextP = idleQueue.shift();
+    preloadPage(nextP);
+    setTimeout(scheduleProgressivePreload, 250);
   }
 
   // Responsive Book Sizing
@@ -215,12 +275,14 @@
 
   // Render bases statically (without animation)
   function renderStatic() {
+    preloadAdjacentImages(currentPage);
+
     if (viewMode === 'spread') {
       const { left, right } = getSpreadForPage(currentPage);
 
       if (left) {
         leftBase.style.visibility = 'visible';
-        leftBaseImg.src = `${IMAGES_DIR}${left}.png`;
+        setPageImage(leftBaseImg, left);
         leftBaseNum.textContent = `Trang ${left}`;
         leftBaseNum.style.display = 'block';
       } else {
@@ -230,7 +292,7 @@
 
       if (right) {
         rightBase.style.visibility = 'visible';
-        rightBaseImg.src = `${IMAGES_DIR}${right}.png`;
+        setPageImage(rightBaseImg, right);
         rightBaseNum.textContent = `Trang ${right}`;
         rightBaseNum.style.display = 'block';
       } else {
@@ -254,7 +316,7 @@
       // Single page mode
       leftBase.style.visibility = 'hidden';
       rightBase.style.visibility = 'visible';
-      rightBaseImg.src = `${IMAGES_DIR}${currentPage}.png`;
+      setPageImage(rightBaseImg, currentPage);
       rightBaseNum.textContent = `Trang ${currentPage}`;
       rightBaseNum.style.display = 'block';
       if (currentPage === 1) {
@@ -368,7 +430,7 @@
 
       if (!turningFrontPage) return;
 
-      isFlipping = true;
+      setFlipping(true);
       playPaperSound();
 
       // Create animated 3D sheet
@@ -390,10 +452,9 @@
       sheetsContainer.appendChild(sheet);
 
       // Underneath preparation:
-      // Right base immediately reveals the next right page (or becomes hidden if end)
       if (nextSpread.right) {
         rightBase.style.visibility = 'visible';
-        rightBaseImg.src = `${IMAGES_DIR}${nextSpread.right}.png`;
+        setPageImage(rightBaseImg, nextSpread.right);
         rightBaseNum.textContent = `Trang ${nextSpread.right}`;
         rightBaseNum.style.display = 'block';
       } else {
@@ -401,9 +462,8 @@
         rightBaseNum.style.display = 'none';
       }
 
-      // Animate flip using requestAnimationFrame for smooth physics curve
       const startTime = performance.now();
-      const flipDuration = 650; // ms
+      const flipDuration = 600;
       const frontLighting = sheet.querySelector('.sheet-face.front .sheet-lighting');
       const backLighting = sheet.querySelector('.sheet-face.back .sheet-lighting');
 
@@ -421,21 +481,27 @@
 
         // Lighting shadow effects
         if (progress < 0.5) {
-          frontLighting.style.opacity = (progress * 2 * 0.6).toFixed(2);
-          backLighting.style.opacity = '0';
+          if (frontLighting) frontLighting.style.opacity = (progress * 2 * 0.6).toFixed(2);
+          if (backLighting) backLighting.style.opacity = '0';
         } else {
-          frontLighting.style.opacity = '0';
-          backLighting.style.opacity = ((1 - progress) * 2 * 0.6).toFixed(2);
+          if (frontLighting) frontLighting.style.opacity = '0';
+          if (backLighting) backLighting.style.opacity = ((1 - progress) * 2 * 0.6).toFixed(2);
         }
 
         if (progress < 1) {
           requestAnimationFrame(animateFlip);
         } else {
-          // Animation finished
-          sheetsContainer.removeChild(sheet);
-          currentPage = targetPage;
-          renderStatic();
-          isFlipping = false;
+          try {
+            if (sheet && sheet.parentNode === sheetsContainer) {
+              sheetsContainer.removeChild(sheet);
+            }
+          } catch(e) {
+            sheetsContainer.innerHTML = '';
+          } finally {
+            currentPage = targetPage;
+            renderStatic();
+            setFlipping(false);
+          }
         }
       }
 
@@ -445,7 +511,7 @@
       // Single page flip forward
       if (currentPage >= TOTAL_PAGES) return;
 
-      isFlipping = true;
+      setFlipping(true);
       playPaperSound();
 
       const targetPage = currentPage + 1;
@@ -467,11 +533,11 @@
       sheetsContainer.appendChild(sheet);
 
       // Underneath reveals targetPage
-      rightBaseImg.src = `${IMAGES_DIR}${targetPage}.png`;
+      setPageImage(rightBaseImg, targetPage);
       rightBaseNum.textContent = `Trang ${targetPage}`;
 
       const startTime = performance.now();
-      const flipDuration = 550;
+      const flipDuration = 500;
 
       function animateSingle(now) {
         const elapsed = now - startTime;
@@ -486,10 +552,17 @@
         if (progress < 1) {
           requestAnimationFrame(animateSingle);
         } else {
-          sheetsContainer.removeChild(sheet);
-          currentPage = targetPage;
-          renderStatic();
-          isFlipping = false;
+          try {
+            if (sheet && sheet.parentNode === sheetsContainer) {
+              sheetsContainer.removeChild(sheet);
+            }
+          } catch(e) {
+            sheetsContainer.innerHTML = '';
+          } finally {
+            currentPage = targetPage;
+            renderStatic();
+            setFlipping(false);
+          }
         }
       }
 
@@ -517,7 +590,7 @@
 
       if (!turningBackPage || !turningFrontPage) return;
 
-      isFlipping = true;
+      setFlipping(true);
       playPaperSound();
 
       // Create animated 3D sheet starting at -180deg (flipped to the left)
@@ -540,10 +613,9 @@
       sheetsContainer.appendChild(sheet);
 
       // Underneath preparation:
-      // Left base reveals prevSpread.left
       if (prevSpread.left) {
         leftBase.style.visibility = 'visible';
-        leftBaseImg.src = `${IMAGES_DIR}${prevSpread.left}.png`;
+        setPageImage(leftBaseImg, prevSpread.left);
         leftBaseNum.textContent = `Trang ${prevSpread.left}`;
         leftBaseNum.style.display = 'block';
       } else {
@@ -552,7 +624,7 @@
       }
 
       const startTime = performance.now();
-      const flipDuration = 650;
+      const flipDuration = 600;
       const frontLighting = sheet.querySelector('.sheet-face.front .sheet-lighting');
       const backLighting = sheet.querySelector('.sheet-face.back .sheet-lighting');
 
@@ -570,20 +642,27 @@
 
         // Lighting shadow effects
         if (progress < 0.5) {
-          backLighting.style.opacity = (progress * 2 * 0.6).toFixed(2);
-          frontLighting.style.opacity = '0';
+          if (backLighting) backLighting.style.opacity = (progress * 2 * 0.6).toFixed(2);
+          if (frontLighting) frontLighting.style.opacity = '0';
         } else {
-          backLighting.style.opacity = '0';
-          frontLighting.style.opacity = ((1 - progress) * 2 * 0.6).toFixed(2);
+          if (backLighting) backLighting.style.opacity = '0';
+          if (frontLighting) frontLighting.style.opacity = ((1 - progress) * 2 * 0.6).toFixed(2);
         }
 
         if (progress < 1) {
           requestAnimationFrame(animateBack);
         } else {
-          sheetsContainer.removeChild(sheet);
-          currentPage = targetPage;
-          renderStatic();
-          isFlipping = false;
+          try {
+            if (sheet && sheet.parentNode === sheetsContainer) {
+              sheetsContainer.removeChild(sheet);
+            }
+          } catch(e) {
+            sheetsContainer.innerHTML = '';
+          } finally {
+            currentPage = targetPage;
+            renderStatic();
+            setFlipping(false);
+          }
         }
       }
 
@@ -593,7 +672,7 @@
       // Single page flip backward
       if (currentPage <= 1) return;
 
-      isFlipping = true;
+      setFlipping(true);
       playPaperSound();
 
       const targetPage = currentPage - 1;
@@ -616,7 +695,7 @@
       sheetsContainer.appendChild(sheet);
 
       const startTime = performance.now();
-      const flipDuration = 550;
+      const flipDuration = 500;
 
       function animateSingleBack(now) {
         const elapsed = now - startTime;
@@ -631,10 +710,17 @@
         if (progress < 1) {
           requestAnimationFrame(animateSingleBack);
         } else {
-          sheetsContainer.removeChild(sheet);
-          currentPage = targetPage;
-          renderStatic();
-          isFlipping = false;
+          try {
+            if (sheet && sheet.parentNode === sheetsContainer) {
+              sheetsContainer.removeChild(sheet);
+            }
+          } catch(e) {
+            sheetsContainer.innerHTML = '';
+          } finally {
+            currentPage = targetPage;
+            renderStatic();
+            setFlipping(false);
+          }
         }
       }
 
@@ -644,10 +730,11 @@
 
   // Jump directly to any page
   function goToPage(target) {
+    if (isFlipping) return;
     target = Math.max(1, Math.min(TOTAL_PAGES, parseInt(target, 10) || 1));
     if (target === currentPage) return;
 
-    if (Math.abs(target - currentPage) <= 2) {
+    if (Math.abs(target - currentPage) === 1 || (viewMode === 'spread' && Math.abs(target - currentPage) <= 2)) {
       if (target > currentPage) {
         flipForward();
       } else {
@@ -977,9 +1064,14 @@
 
   // Initialize
   function init() {
-    preloadAllImages();
+    preloadAdjacentImages(1);
+    scheduleProgressivePreload();
     buildThumbnailsAndGrid();
     setupEventListeners();
+
+    window.addEventListener('orientationchange', () => {
+      setTimeout(resizeBook, 150);
+    });
 
     if (viewMode === 'spread') {
       btnModeSpread.classList.add('active');
