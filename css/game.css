@@ -971,3 +971,577 @@
 }
 
 
+
+/* ===================================================================
+   SIMULATION PAGE ENHANCEMENTS (Terminal, Password, Scam, URL, Server, Pledge)
+   =================================================================== */
+
+/* Overview KPI Strip */
+.sim-overview-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 860px;
+    margin: 0 auto 32px;
+}
+.sim-kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: linear-gradient(145deg, rgba(26, 16, 53, 0.88), rgba(15, 23, 42, 0.9));
+    border: 1.5px solid rgba(124, 58, 237, 0.28);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s ease;
+}
+.sim-kpi-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow: 0 12px 30px rgba(6, 182, 212, 0.15);
+}
+.sim-kpi-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.25), rgba(6, 182, 212, 0.2));
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.45rem;
+    flex-shrink: 0;
+}
+.sim-kpi-title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 800;
+    font-size: 0.92rem;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.sim-kpi-sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+
+/* Sim Intro Header Card */
+.sim-intro {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.14), rgba(6, 182, 212, 0.08));
+    border: 1.5px solid rgba(139, 92, 246, 0.3);
+    border-left: 4px solid #06b6d4;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+.sim-intro h3 {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Terminal Quick Command Chips */
+.term-quick-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    background: rgba(18, 13, 39, 0.85);
+    border: 1px solid rgba(124, 58, 237, 0.25);
+    border-radius: 14px;
+}
+.term-quick-label {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: #a78bfa;
+    margin-right: 4px;
+}
+.term-chip {
+    padding: 5px 12px;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 50px;
+    color: #e2e8f0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.term-chip:hover {
+    background: var(--grad-main);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+}
+
+/* Password Generator & Checks Enhancements */
+.pw-check {
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    font-weight: 700;
+}
+.pw-check.ok {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #6ee7b7;
+}
+.pw-gen-section {
+    margin-top: 28px;
+    padding-top: 26px;
+    border-top: 1.5px dashed rgba(124, 58, 237, 0.3);
+}
+.pw-gen-section h4 {
+    font-weight: 900;
+    font-size: 1.08rem;
+    color: #fff;
+    margin-bottom: 16px;
+}
+.pw-length-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--text);
+}
+.pw-length-row input[type="range"] {
+    flex: 1;
+    accent-color: #8b5cf6;
+    cursor: pointer;
+    height: 6px;
+}
+.pw-length-val {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    color: #67e8f9;
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    padding: 3px 10px;
+    border-radius: 8px;
+}
+.pw-gen-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.pw-opt-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.pw-opt-label:hover {
+    border-color: rgba(167, 139, 250, 0.45);
+    background: rgba(124, 58, 237, 0.1);
+}
+.pw-opt-label input[type="checkbox"] {
+    accent-color: #10b981;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.pw-generated {
+    padding: 16px 20px;
+    background: #070514;
+    border: 1.5px solid rgba(6, 182, 212, 0.35);
+    border-radius: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.15rem;
+    color: #6ee7b7;
+    text-align: center;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    word-break: break-all;
+    box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.08);
+}
+.pw-gen-btn-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.btn-gen {
+    flex: 1;
+    padding: 13px 24px;
+    background: var(--grad-main);
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+}
+.btn-gen:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glow-purple);
+}
+.btn-copy {
+    padding: 11px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(167, 139, 250, 0.35);
+    color: #e2e8f0;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.btn-copy:hover {
+    background: rgba(124, 58, 237, 0.22);
+    border-color: #a78bfa;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Scam Detective Cards */
+.scam-detective {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.scam-messages {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+.scam-msg-card {
+    background: var(--grad-card);
+    border: 1.5px solid rgba(124, 58, 237, 0.28);
+    border-radius: 18px;
+    padding: 22px 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+.scam-msg-card:hover {
+    border-color: rgba(167, 139, 250, 0.5);
+    transform: translateY(-2px);
+}
+.scam-msg-sender {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    background: rgba(124, 58, 237, 0.18);
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: #c4b5fd;
+    margin-bottom: 12px;
+}
+.scam-msg-text {
+    background: rgba(7, 5, 20, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 15px 18px;
+    font-size: 0.96rem;
+    color: #f1f5f9;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+.scam-msg-btns {
+    display: flex;
+    gap: 12px;
+}
+.scam-btn-safe,
+.scam-btn-scam {
+    flex: 1;
+    padding: 11px 18px;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+.scam-btn-safe {
+    background: rgba(16, 185, 129, 0.14);
+    border: 1.5px solid rgba(16, 185, 129, 0.4);
+    color: #6ee7b7;
+}
+.scam-btn-safe:hover:not(:disabled) {
+    background: rgba(16, 185, 129, 0.28);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
+}
+.scam-btn-scam {
+    background: rgba(239, 68, 68, 0.14);
+    border: 1.5px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+.scam-btn-scam:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.28);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25);
+}
+.scam-msg-btns button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+.scam-feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 13px 16px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    animation: fadeInUp 0.3s ease;
+}
+.scam-feedback.ok {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #a7f3d0;
+}
+.scam-feedback.ng {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fecaca;
+}
+.scam-result {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.15));
+    border: 2px solid rgba(167, 139, 250, 0.45);
+    border-radius: 18px;
+    padding: 28px;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+.scam-result h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.scam-result p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+}
+
+/* Digital Citizen Pledge Card (Cam Kết Công Dân Số) */
+.pledge-card {
+    background: linear-gradient(145deg, rgba(26, 16, 53, 0.96), rgba(15, 23, 42, 0.96));
+    border: 1.5px solid rgba(139, 92, 246, 0.4);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55), 0 0 35px rgba(124, 58, 237, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+.pledge-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.pledge-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.pledge-action-btn {
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1.5px solid rgba(6, 182, 212, 0.45);
+    background: rgba(6, 182, 212, 0.15);
+    color: #67e8f9;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.pledge-action-btn:hover {
+    background: linear-gradient(135deg, #06b6d4, #3b82f6);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(6, 182, 212, 0.35);
+}
+.pledge-action-btn.reset {
+    border-color: rgba(248, 113, 113, 0.4);
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+}
+.pledge-action-btn.reset:hover {
+    background: rgba(239, 68, 68, 0.28);
+    color: #fff;
+}
+.pledge-progress-wrap {
+    margin-bottom: 22px;
+}
+.pledge-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #cbd5e1;
+    margin-bottom: 8px;
+}
+.pledge-progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 50px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.pledge-progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #7c3aed, #06b6d4, #10b981);
+    border-radius: 50px;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
+}
+.pledge-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 26px;
+}
+.pledge-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1.5px solid rgba(255, 255, 255, 0.09);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+.pledge-item:hover {
+    border-color: rgba(167, 139, 250, 0.55);
+    background: rgba(124, 58, 237, 0.1);
+    transform: translateX(4px);
+}
+.pledge-item.checked {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(6, 182, 212, 0.1));
+    border-color: rgba(16, 185, 129, 0.55);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+}
+.pledge-checkbox {
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    border: 2px solid rgba(167, 139, 250, 0.5);
+    background: rgba(7, 5, 20, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1rem;
+    color: transparent;
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+}
+.pledge-item.checked .pledge-checkbox {
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    border-color: #6ee7b7;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    transform: scale(1.06);
+}
+.pledge-num-tag {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: 50px;
+    background: rgba(124, 58, 237, 0.2);
+    color: #c4b5fd;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    flex-shrink: 0;
+}
+.pledge-item.checked .pledge-num-tag {
+    background: rgba(16, 185, 129, 0.25);
+    color: #6ee7b7;
+    border-color: rgba(16, 185, 129, 0.45);
+}
+.pledge-text {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    line-height: 1.5;
+    flex: 1;
+}
+.pledge-item.checked .pledge-text {
+    color: #fff;
+}
+.pledge-score {
+    background: linear-gradient(135deg, rgba(15, 10, 30, 0.9), rgba(30, 27, 75, 0.75));
+    border: 1.5px solid rgba(167, 139, 250, 0.35);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+}
+.pledge-score-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    background: var(--grad-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+}
+#pledge-score-msg {
+    color: #cbd5e1;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+.pledge-badge-earned {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(6, 182, 212, 0.22));
+    border: 2px solid #10b981;
+    border-radius: 50px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.05rem;
+    color: #6ee7b7;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+    animation: pulse-once 0.6s ease;
+}
+
+@media (max-width: 768px) {
+    .sim-overview-strip {
+        grid-template-columns: 1fr;
+    }
+    .pw-gen-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .pledge-card {
+        padding: 20px;
+    }
+}
